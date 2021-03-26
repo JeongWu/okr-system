@@ -25,7 +25,7 @@
 <div layout:fragment="right-floating-toolbar">
     <div class="d-flex align-items-center">
         <!--begin::Button-->
-        <a href="/members" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">
+        <a href="/members/list" class="btn btn-primary font-weight-bold px-10 font-size-base">
         Back
         </a>
         <!--<button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
@@ -157,7 +157,7 @@
                                         <div class="col-lg-3 col-xl-9">
                                             
                                                 <div class="image-input image-input-outline" id="kt_image_4">
-                                                <div class="image-input-wrapper" style= "background-image: url(assets/media/image/default.jpg)"></div>
+                                                <div class="image-input-wrapper" style="background-image:url(/assets/media/image/default.jpg)"></div>
                             
                                                 <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
                                                  <i class="fa fa-pen icon-sm text-muted"></i>
@@ -194,7 +194,8 @@
                                 <div class="mr-2">
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
+                                    <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" 
+                                    data-wizard-type="action-next">
                                         Next
                                     </button>
                                 </div>
@@ -334,11 +335,7 @@
 </body>
 <!--end::Global Theme Bundle-->
 <th:block layout:fragment="script">
-    <script src="/assets/js/pages/custom/members/datepicker.js?v=7.0.6"></script>
-    <script src="/assets/js/pages/custom/members/image-input.js?v=7.0.6"></script>
+    <script src="/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6"></script>
     <script src="/assets/js/pages/custom/members/member-add.js?v=7.0.6"></script>
-    <script src="/assets/js/pages/custom/members/member-history.js?v=7.0.6"></script>
-    <script src="/assets/js/pages/custom/members/datatables.bundle.js?v=7.0.6"></script>
-    <!-- use this block either to include external or writing internal scripts your own script, as many <script> blocks as needed -->
 </th:block>
 </html>

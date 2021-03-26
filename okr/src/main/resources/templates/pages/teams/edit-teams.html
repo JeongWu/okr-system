@@ -52,7 +52,7 @@
                                             </div>
                                         </div>
                                         <!--end::Group-->
-                                        <!--begin::Select-->
+                                        <!--begin::Group-->
                                         <div class="form-group row">
                                             <label for="division" class="col-3 col-form-label">Division
                                                 *</label>
@@ -62,8 +62,8 @@
 
                                             </div>
                                         </div>
-                                        <!--end::Select-->
-                                        <!--begin::Select-->
+                                        <!--end::Group-->
+                                        <!--begin::Group-->
                                         <div class="form-group row">
                                             <label for="teamType" class="col-3  col-form-label">Team Type
                                                 *</label>
@@ -72,7 +72,7 @@
                                                     type="text" required th:field="*{teamType}" disabled>
                                             </div>
                                         </div>
-                                        <!--end::Select-->
+                                        <!--end::Group-->
                                     
                                           <!-- begin::Group -->
                                           <div class="form-group row">
@@ -83,7 +83,7 @@
                                                     style="background-image: url(/assets/media/image/default.jpg)">
 
                                                     <div class="image-input-wrapper"
-                                                        th:style="'background-image: url('+${image} +');'"></div>
+                                                        th:style="'background-image: url('+${dataModel.image} +');'"></div>
 
                                                     <label
                                                         class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"

@@ -2,7 +2,7 @@ package com.eximbay.okr.dto.team;
 
 import com.eximbay.okr.dto.DivisionDto;
 import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.ObjectiveDto;
+import com.eximbay.okr.dto.objective.ObjectiveDto;
 import com.eximbay.okr.enumeration.TeamType;
 import lombok.Data;
 

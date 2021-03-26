@@ -14,7 +14,7 @@
 			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">Back</a>
 
 		<div class="btn-group ml-2 pl-0 py-4 w-120px">
-			<button form="dictionary_form" type="submit" class="btn btn-primary font-weight-bold" name="action"
+			<button form="dictionary_form" type="button" class="btn btn-primary font-weight-bold" name="action"
 				value="submit">Submit</button>
 			<button type="button" class="btn btn-primary font-weight-bold dropdown-toggle dropdown-toggle-split"
 				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -67,12 +67,6 @@
 										<label for="dictionaryType" class="col-xl-2 col-lg-2 col-form-label">사전 구분
 											*</label>
 										<div class="col-lg-4 col-xl-4">
-											<!-- <select name="dictionaryType" class="form-control" id="dictionaryType"
-												required th:field="*{dictionaryType}">
-												<option value="">Choose...</option>
-												<option value="KEY_RESULT">핵심 결과</option>
-												<option value="COMPETENCE">역량</option>
-											</select> -->
 											<select name="dictionaryType" class="form-control" id="dictionaryType"
 												required th:field="*{dictionaryType}">
 												<option value="">Choose...</option>
@@ -92,7 +86,6 @@
 													<option th:value="${codeList.codeListId.code}"
 														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="GENERAL">일반</option> -->
 											</select>
 										</div>
 									</div>
@@ -125,8 +118,6 @@
 													<option th:value="${codeList.codeListId.code}"
 														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="QUANTITATIVE">적량적</option>
-												<option value="QUALITATIVE">정성적</option> -->
 											</select>
 										</div>
 										<label for="taskMetric" class="col-xl-2 col-lg-2 col-form-label">측정 기준
@@ -139,8 +130,6 @@
 													<option th:value="${codeList.codeListId.code}"
 														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="UPWARD">상향</option>
-												<option value="DOWNWARD">하향</option> -->
 											</select>
 										</div>
 									</div>
@@ -160,8 +149,6 @@
 													<option th:value="${codeList.codeListId.code}"
 														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="QUANTITATIVE">적량적</option>
-                                                <option value="QUALITATIVE">정성적</option> -->
 											</select>
 										</div>
 										<label for="category" class="col-xl-2 col-lg-2 col-form-label">역량 항목 *</label>
@@ -173,8 +160,6 @@
 													<option th:value="${codeList.codeListId.code}"
 														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="UPWARD">상향</option>
-                                                <option value="DOWNWARD">하향</option> -->
 											</select>
 										</div>
 									</div>
@@ -194,9 +179,6 @@
 													<option th:value="${codeList.codeListId.code}"
 														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="PERCENTAGE">%</option>
-												<option value="AMOUNT">원</option>
-												<option value="COUNT">건,회</option> -->
 											</select>
 										</div>
 
@@ -242,31 +224,22 @@
 		<script type="text/javascript">
 			$().ready(function () {
 				$("#dictionary_form").validate();
-				// $(".general").hide();
-				// $(".form1").hide();
-				// $(".form2").hide();
 				$('#dictionaryType, #jobType, #taskType, #categoryGroup, #category, #taskIndicator, #taskMetric').selectpicker();
+
 				$("#dictionaryType").change(function () {
 
 					var type = $("#dictionaryType option:selected").val();
 					if (type == "KEY_RESULT") {
 						$(".form2").attr("hidden", true);
 						$(".general,.form1").attr("hidden", false);
-						// $(".form2").hide();
-						// $(".general").show();
-						// $(".form1").show();
+
 					} else if (type == "COMPETENCE") {
 						$(".form1").attr("hidden", true);
 						$(".general,.form2").attr("hidden", false);
 
-						// $(".form1").hide();
-						// $(".general").show();
-						// $(".form2").show();
 					} else {
 						$(".form1,.general,.form2").attr("hidden", true);
-						// $(".general").hide();
-						// $(".form1").hide();
-						// $(".form2").hide();
+
 					}
 
 				});

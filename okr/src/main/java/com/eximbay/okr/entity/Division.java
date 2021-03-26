@@ -21,7 +21,7 @@ import java.util.Set;
 public class Division extends AbstractAuditable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DIVISION_SEQ", length = 11)
     private Integer divisionSeq;
 

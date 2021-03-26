@@ -29,13 +29,13 @@
 
       <div layout:fragment="content" class="container">
         <div class="card card-custom">
-            <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="step-second" data-wizard-clickable="true">
+            <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="step-first" data-wizard-clickable="true">
             <!--begin: Wizard Nav-->
             <div class="wizard-nav">
                 <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
     
                     <!--begin::Wizard Step 1 Nav-->
-                    <div class="wizard-step" data-wizard-type="step">
+                    <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
                         <div class="wizard-label">
                             <h3 class="wizard-title">
                                 <span>1.</span> Member Details
@@ -52,7 +52,7 @@
                             <h3 class="wizard-title">
                                 <a th:href="@{/members/belong/} + ${memberSeq}">
                                 <span>2.</span> Belong To
-                            </a>
+                                </a>
                             </h3>
                             <div class="wizard-bar"></div>
                         </div>
@@ -104,8 +104,11 @@
                     </td>
                     <td>
                         <button type="submit" class=" col-sm-12 form-control btn button-color btn-secondary
-                                btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" id="reset-button">
-                            Reset
+                                btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-4 mr-2" id="reset-button">
+                        <span>
+                        <i class="la la-close"></i>
+                                    Reset
+                        </span>
                         </button>
                     </td>
                 </tr>
@@ -123,10 +126,9 @@
 </div>
 
 <th:block layout:fragment="script">
-    <script th:src="@{/assets/js/datatables.bundle.js}"></script>
+    <script src="/assets/js/pages/datatables.bundle.js"></script>
     <script src="/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6"></script>
     <script th:src="@{/assets/js/pages/custom/members/member-history.js}"></script>
-    <script src="/assets/js/pages/custom/members/member-wizard.js?v=7.0.6"></script>
 </th:block>
 
 </body>

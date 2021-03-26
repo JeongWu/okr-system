@@ -58,18 +58,5 @@ public class CodeGroupService implements ICodeGroupService {
         return codeGroup.map(m-> mapper.map(m, CodeGroupDto.class));
     }
 
-    // @Override
-    // public CodeGroupModel buildCodeGroupModel() {
-    //     // TODO Auto-generated method stub
-
-    //     // List<CodeGroup> codeGroups=codeGroupRepository.findAll();
-    //     // List<CodeGroupDto> codeGroupDtos=findAll();
-     
-
-      
-
-
-    //     return null;
-    // }
   
 }

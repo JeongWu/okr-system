@@ -7,4 +7,6 @@ public class ErrorMessages {
     public static String errorWhileSavingFile = "Error while saving files";
     public static String loginRequired = "Login required";
     public static String canNotLog = "Can not log";
+    public static String teamSeqIsNotNull = "TeamSeq is not null";
+    public static String resourceNotFound = "Can not found resource with seq = ";
 }

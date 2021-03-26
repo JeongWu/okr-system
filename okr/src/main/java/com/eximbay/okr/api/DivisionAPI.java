@@ -18,7 +18,7 @@ public class DivisionAPI {
     private final IDivisionService divisionService;
 
     @PostMapping("/datatables")
-    public List<DivisionForDivisionsModel> getTeam() {
+    public List<DivisionForDivisionsModel> getDivisions() {
         List<DivisionForDivisionsModel> divisions = divisionService.buildDivisionsModel().getDivisions();
         return divisions;
     }

@@ -2,25 +2,23 @@ package com.eximbay.okr.entity;
 
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.listener.AbstractAuditable;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.List;
 
 @Data
 @Table(name = "objective")
 @Entity
-@ToString(exclude = {"company", "division", "team", "member"})
-@EqualsAndHashCode(callSuper = true, exclude = {"company", "division", "team", "member"})
+@ToString(exclude = { "company", "division", "team", "member"})
+@EqualsAndHashCode(callSuper = true, exclude = { "company", "division", "team", "member"})
 public class Objective extends AbstractAuditable {
-
-    public static final String OBJECTIVE_TYPE_COMPANY = "COMPANY";
-    public static final String OBJECTIVE_TYPE_DIVISON = "DIVISION";
-    public static final String OBJECTIVE_TYPE_TEAM = "TEAM";
-    public static final String OBJECTIVE_TYPE_MEMBER = "MEMBER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,10 +26,10 @@ public class Objective extends AbstractAuditable {
     private Integer objectiveSeq;
 
     @Column(name = "YEAR", length = 4, nullable = false)
-    private int year;
+    private Integer year;
 
     @Column(name = "QUARTER", length = 11, nullable = false)
-    private int quarter;
+    private Integer quarter;
 
     @Column(name = "BEGIN_DATE", length = 8, nullable = false)
     private String beginDate;
@@ -40,17 +38,34 @@ public class Objective extends AbstractAuditable {
     private String endDate;
 
     @Column(name = "OBJECTIVE_TYPE", length = 10, nullable = false)
-    private String objectiveType;
+    private String objectiveLevel;
 
-    @ManyToOne
+    // @Column(name = "OBJECTIVE_LEVEL", length = 10, nullable = false)
+    // private String objectiveLevel;
+
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "DIVISION_SEQ")
+    // @JsonIgnore
+    // private Division division;
+
+    // @ManyToOne
+    // @Column(name = "OBJECTIVE_TYPE", length = 10, nullable = false)
+    // private String objectiveType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANY_SEQ")
+    @JsonBackReference
     private Company company;
+
+    // @ManyToOne
+    // @JoinColumn(name = "DIVISION_SEQ")
+    // private Division division;
 
     @ManyToOne
     @JoinColumn(name = "TEAM_SEQ")
     private Team team;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MEMBER_SEQ")
     private Member member;
 
@@ -58,10 +73,13 @@ public class Objective extends AbstractAuditable {
     private String objective;
 
     @Column(name = "PRIORITY", length = 11, nullable = false)
-    private int priority;
+    private Integer priority;
 
     @Column(name = "PROGRESS", length = 11, nullable = false)
-    private int progress = 0;
+    private Integer progress;
+
+    @Column(name = "LATEST_UPDATE_DT", nullable = false)
+    private Instant lastUpdateDate;
 
     @Column(name = "CLOSE_FLAG", length = 1, nullable = false)
     private String closeFlag = FlagOption.N;
@@ -71,10 +89,4 @@ public class Objective extends AbstractAuditable {
 
     @Column(name = "CLOSE_DATE")
     private Instant closeDate;
-
-    @Column(name = "LIKES", length = 11, nullable = false)
-    private Integer likes = 0;
-
-    @OneToMany(mappedBy = "objective")
-    private List<KeyResult> keyResults;
 }

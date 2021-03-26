@@ -1,6 +1,5 @@
 package com.eximbay.okr.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,8 +92,8 @@ public class OkrScheduleServiceImpl implements IOkrScheduleService {
                 sb.append(arr[i]+",");
             }
         }
-
         okrSchedule.get().setRemindBeforeDays(sb.toString());
+        
     	OkrSchedule saveSchedule = okrScheduleRepository.save(okrSchedule.get());
     	System.out.println("saveSchedule::"+saveSchedule);
     }

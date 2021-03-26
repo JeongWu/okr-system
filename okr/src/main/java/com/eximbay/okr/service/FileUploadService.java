@@ -43,15 +43,15 @@ public class FileUploadService {
         String extension = uploadFileName.substring(uploadFileName.lastIndexOf("."));
 
         Optional<MemberDto> memberDto = memberService.getCurrentMember();
-        // if (memberDto.isEmpty()) throw new UserException(ErrorMessages.loginRequired);
+        if (memberDto.isEmpty()) throw new UserException(ErrorMessages.loginRequired);
 
         try {
-            String saveFileName = entityType.name()  + extension;
+            String saveFileName = entityType.name() + memberDto.get().getMemberSeq() + extension;
             Path saveDestination = Paths.get(imagePath)
                     .resolve(getSubPath(fileContentType) + saveFileName)
                     .normalize().toAbsolutePath();
             FileCopyUtils.copy(file.getBytes(), saveDestination.toFile());
-            return saveFileName;
+            return getPrefix(fileContentType) + saveFileName;
         }catch (Exception e){
             e.printStackTrace();
             throw new UserException(ErrorMessages.errorWhileSavingFile);
@@ -64,7 +64,7 @@ public class FileUploadService {
         String uploadFileName = file.getOriginalFilename();
         if (uploadFileName == null)
             throw new UserException(new IllegalArgumentException(ErrorMessages.fileExtensionIsNotSupported));
-        String extension = uploadFileName.substring(uploadFileName.lastIndexOf(".") + 1);
+        String extension = uploadFileName.substring(uploadFileName.lastIndexOf(".") + 1).toLowerCase();
         if (!supportedImageExtensions.contains(extension))
             throw new UserException(new IllegalArgumentException(ErrorMessages.fileExtensionIsNotSupported));
         if (file.getSize() > imageMaxSize)
@@ -77,6 +77,15 @@ public class FileUploadService {
                 return AppConst.AVATAR_SUB_PATH;
             case IMAGE:
             default: return "";
+        }
+    }
+
+    private String getPrefix(FileContentType fileContentType){
+        switch (fileContentType){
+            case AVATAR:
+                return AppConst.AVATAR_PREFIX;
+            case IMAGE:
+            default: return AppConst.IMAGE_PREFIX;
         }
     }
 }

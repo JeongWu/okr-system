@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class MemberHistoryModel {
-    private String subheader = Subheader.MEMBER_HISTORY;
+    private String subheader = Subheader.TEAM_HISTORY;
     private String mutedHeader;
-    private String name;
+    private DivisionUpdateFormModel model;
 }
 

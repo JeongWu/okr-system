@@ -1,9 +1,6 @@
 package com.eximbay.okr.controller;
 
-import com.eximbay.okr.model.company.CompanyOkrModel;
-import com.eximbay.okr.model.company.CompanyUpdateFormModel;
-import com.eximbay.okr.model.company.CompanyDashboardModel;
-import com.eximbay.okr.model.company.EditCompanyModel;
+import com.eximbay.okr.model.company.*;
 import com.eximbay.okr.service.Interface.ICompanyService;
 import com.eximbay.okr.utils.DateTimeUtils;
 import lombok.AllArgsConstructor;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.Valid;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
@@ -41,21 +36,4 @@ public class CompanyController {
         return "redirect:/";
     }
 
-    @GetMapping("/dashboard")
-    public String showDashBoard(Model model,String quarter){
-        if (quarter == null || !Pattern.compile("^\\d{4}-\\dQ").matcher(quarter).matches()) quarter = "";
-        CompanyDashboardModel viewModel = companyService.buildCompanyDashboardModel(quarter);
-        model.addAttribute("model", viewModel);
-        return "pages/companies/dashboard";
-    }
-
-    @GetMapping("/okr")
-    public String viewOkr(Model model,String quarter){
-        if (quarter == null || !Pattern.compile("^\\d{4}-\\dQ").matcher(quarter).matches())
-            quarter = DateTimeUtils.findCurrentQuarter();
-
-        CompanyOkrModel viewModel = companyService.buildCompanyOkrModel(quarter);
-        model.addAttribute("model", viewModel);
-        return "pages/companies/okr";
-    }
 }

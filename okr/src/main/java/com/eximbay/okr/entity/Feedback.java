@@ -15,8 +15,6 @@ import java.util.List;
 @Table(name = "feedback")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@ToString(exclude = { "feedbackThreads"})
-@EqualsAndHashCode(exclude = { "feedbackThreads"})
 public class Feedback {
 
     @Id
@@ -36,12 +34,6 @@ public class Feedback {
     @ManyToOne
     @JoinColumn(name = "MEMBER_SEQ", nullable = false)
     private Member member;
-
-    @Column(name = "LIKES",length = 11, nullable = false)
-    private Integer likes = 0;
-
-    @OneToMany(mappedBy = "feedback")
-    private List<FeedbackThread> feedbackThreads;
 
     @CreatedDate
     @Column(name = "REG_DT", nullable = false)

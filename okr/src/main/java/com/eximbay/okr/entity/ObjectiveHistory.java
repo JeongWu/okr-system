@@ -1,17 +1,12 @@
 package com.eximbay.okr.entity;
 
+import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.listener.AbstractAuditable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,8 +14,6 @@ import java.time.Instant;
 @Table(name = "objective_history")
 @Entity
 public class ObjectiveHistory extends AbstractAuditable {
-
-    public static final String DEFAULT_ADD_OBJECTIVE_JUSTIFICATION = "Add new objective";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,10 +25,10 @@ public class ObjectiveHistory extends AbstractAuditable {
     private Objective objectiveObject;
 
     @Column(name = "YEAR", length = 4)
-    private int year;
+    private Integer year;
 
     @Column(name = "QUARTER", length = 11)
-    private int quarter;
+    private Integer quarter;
 
     @Column(name = "BEGIN_DATE", length = 8)
     private String beginDate;
@@ -62,10 +55,10 @@ public class ObjectiveHistory extends AbstractAuditable {
     private String objective;
 
     @Column(name = "PRIORITY", length = 11)
-    private int priority;
+    private Integer priority;
 
     @Column(name = "PROGRESS", length = 11)
-    private int progress = 0;
+    private Integer progress = 0;
 
     @Column(name = "LATEST_UPDATE_DT")
     private Instant lastUpdateDate;
@@ -78,9 +71,6 @@ public class ObjectiveHistory extends AbstractAuditable {
 
     @Column(name = "CLOSE_DATE")
     private Instant closeDate;
-
-    @Column(name = "LIKES", length = 11)
-    private Integer likes;
 
     @Column(name = "JUSTIFICATION", nullable = false)
     private String justification;

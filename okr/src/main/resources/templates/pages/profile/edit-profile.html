@@ -80,7 +80,7 @@
                                                     style="background-image: url(/assets/media/image/default.jpg)">
 
                                                     <div class="image-input-wrapper"
-                                                        th:style="'background-image: url('+${image} +');'"></div>
+                                                        th:style="'background-image: url('+${dataModel.image} +');'"></div>
 
                                                     <label
                                                         class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
@@ -150,16 +150,8 @@
     </div>
 </body>
 <th:block layout:fragment="script">
-    <script type="text/javascript">
-        $().ready(function () {
-            $("#submitBtn").click(function (e) {
-                e.preventDefault();
-                console.log("submit event!!");
-                $("#kt_form").submit();
-            });
-            inputImage("kt_user_edit_avatar");
-        })
-    </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/assets/js/pages/custom/profile/edit-profile.js"></script>
 </th:block>
 
 </html>

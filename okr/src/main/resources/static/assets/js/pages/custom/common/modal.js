@@ -194,8 +194,6 @@ var KTDatatableModalForKeyResult = (function () {
       datatable.search($(this).val().toLowerCase(), "jobTypeCodeName");
     });
 
-
-
     $("#kt_search").on("click", function (e) {
       e.preventDefault();
       console.log(datatable.getDataSourceQuery());
@@ -238,24 +236,12 @@ var KTDatatableModalForKeyResult = (function () {
             ".selectButton",
             function (e) {
               var index=localStorage.getItem("index");
-              console.log("index")
-              console.log(index)
-              // console.log(e.currentTarget.dataset.sentence);
-              // console.log(e.currentTarget.dataset.tasktype);
-              // console.log(e.currentTarget.dataset.taskmetric);
-              // console.log(e.currentTarget.dataset.taskindicator);
+ 
               $('.key-result:eq('+index+')').val(e.currentTarget.dataset.sentence);
               $('.task-type:eq('+index+')').val(e.currentTarget.dataset.tasktype);
               $('.task-metric:eq('+index+')').val(e.currentTarget.dataset.taskmetric);
               $('.task-indicator:eq('+index+')').val(e.currentTarget.dataset.taskindicator);
-            
-              // $('.key-result[data-index="'+index+'"]').val(e.currentTarget.dataset.sentence);
-              // $('.task-type[data-index="'+index+'"]').val(e.currentTarget.dataset.tasktype);
-              // $('.task-metric[data-index="'+index+'"]').val(e.currentTarget.dataset.taskmetric);
-              // $('.task-indicator[data-index="'+index+'"]').val(e.currentTarget.dataset.taskindicator);
-      
 
-              
             }
           );
 

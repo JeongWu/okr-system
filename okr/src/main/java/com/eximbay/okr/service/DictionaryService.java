@@ -35,6 +35,7 @@ public class DictionaryService implements IDictionaryService {
     private final CodeListRepository codeListRepository;
     private final CodeListQuery codeListQuery;
     private final MapperFacade mapper;
+    private final ICodeGroupService codeGroupService;
 
     @Override
     public List<DictionaryDto> findAll() {
@@ -98,9 +99,9 @@ public class DictionaryService implements IDictionaryService {
 
         Dictionary dictionary = mapper.map(dictionaryAddModel, Dictionary.class);
         if (dictionaryAddModel.isUseFlag()) {
-            dictionary.setUseFlag(FlagOption.Y);
+            dictionary.setUseFlag("Y");
         } else {
-            dictionary.setUseFlag(FlagOption.N);
+            dictionary.setUseFlag("N");
         }
         dictionaryRepository.save(dictionary);
 

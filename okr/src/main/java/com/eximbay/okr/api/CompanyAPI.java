@@ -9,10 +9,13 @@ import com.eximbay.okr.exception.*;
 import com.eximbay.okr.model.company.*;
 import com.eximbay.okr.service.FileUploadService;
 import com.eximbay.okr.service.Interface.*;
+import com.eximbay.okr.service.TemplateService;
+import com.eximbay.okr.utils.DateTimeUtils;
 import javassist.*;
 import lombok.*;
 import ma.glasnost.orika.*;
 import org.springframework.http.*;
+import org.springframework.ui.Model;
 import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,7 @@ public class CompanyAPI {
     private final IMemberService memberService;
     private final FileUploadService fileUploadService;
     private final MapperFacade mapper;
+    private final TemplateService templateService;
 
     @PostMapping()
     @ResponseStatus(value = HttpStatus.ACCEPTED)
@@ -56,11 +60,34 @@ public class CompanyAPI {
         return updateFormModel;
     }
 
-    @GetMapping("/dashboard")
+    @GetMapping("/okrs/quarterly/dashboard/chart")
     @ResponseStatus(value = HttpStatus.OK)
-    public CompanyDashboardResponse getModel(String quarter){
-        if (quarter == null || !Pattern.compile("^\\d{4}-\\dQ").matcher(quarter).matches()) quarter = "";
+    public CompanyDashboardResponse getCompanyDashboardChart(String quarter){
+        formatQuarter(quarter);
         return companyService.getCompanyDashboardModel(quarter);
+    }
+
+    @GetMapping("/okrs/quarterly/dashboard")
+    public String getCompanyDashboardContent(String quarter){
+        formatQuarter(quarter);
+        CompanyDashboardContentModel viewModel = companyService.buildCompanyDashboardContentModel(quarter);
+        Map<String, Object> variables = Map.of("model", viewModel);
+        return templateService.buildTemplate(variables, "pages/companies/dashboard-content");
+    }
+
+    private void formatQuarter(String quarter){
+        if (quarter == null || !Pattern.compile("^\\d{4}-\\dQ").matcher(quarter).matches())
+            quarter = DateTimeUtils.findCurrentQuarter();
+    }
+
+    @GetMapping("/okrs/quarterly")
+    public String viewOkr(Model model, String quarter){
+        if (quarter == null || !Pattern.compile("^\\d{4}-\\dQ").matcher(quarter).matches())
+            quarter = DateTimeUtils.findCurrentQuarter();
+
+        CompanyOkrModel viewModel = companyService.buildCompanyOkrModel(quarter);
+        Map<String, Object> variables = Map.of("model", viewModel);
+        return templateService.buildTemplate(variables, "pages/companies/okr");
     }
 }
 

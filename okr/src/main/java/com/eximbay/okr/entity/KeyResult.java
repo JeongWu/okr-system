@@ -4,14 +4,7 @@ import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.listener.AbstractAuditable;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 
 @Data
@@ -27,9 +20,6 @@ public class KeyResult extends AbstractAuditable {
     @ManyToOne
     @JoinColumn(name = "OBJECTIVE_SEQ", nullable = false)
     private Objective objective;
-
-    @Column(name = "OBJECTIVE_LEVEL", length = 20)
-    private String objectiveLevel;
 
     @Column(name = "KEY_RESULT")
     private String keyResult;
@@ -49,8 +39,11 @@ public class KeyResult extends AbstractAuditable {
     @Column(name = "TASK_INDICATOR", length = 20)
     private String taskIndicator;
 
+    @Column(name = "PROPORTION", length = 11, nullable = false)
+    private Integer proportion = 0;
+
     @Column(name = "PROGRESS", length = 11, nullable = false)
-    private int progress = 0;
+    private Integer progress = 0;
 
     @Column(name = "LATEST_UPDATE_DT")
     private Instant lastUpdatedDate;
@@ -63,7 +56,4 @@ public class KeyResult extends AbstractAuditable {
 
     @Column(name = "CLOSE_DATE", length = 8)
     private String closeDate;
-
-    @Column(name = "LIKES", length = 11, nullable = false)
-    private Integer likes = 0;
 }

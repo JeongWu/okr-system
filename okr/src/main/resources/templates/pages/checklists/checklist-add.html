@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"></html>
+
+
+<head>
+	<meta charset="utf-8" />
+    <title>OKRs Checklist</title>
+    <meta name="description" content="Page with empty content" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="/assets/plugins/global/plugins.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
+    <link href="/assets/plugins/custom/prismjs/prismjs.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/style.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/assets/css/pages/custom.css">
+    <!--end::Global Theme Styles-->
+</head>
+
+<body  id="kt_body"  
+		class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading"  >
+	
+	<!--begin::Header Mobile-->
+	<div th:replace="pages/fragments/header_mobile::header_mobile"></div>
+	<!--end::Header Mobile-->
+
+
+	<div class="d-flex flex-column flex-root">
+		<!--begin::Page-->
+		<div class="d-flex flex-row flex-column-fluid page">
+
+			<!--begin::Aside-->
+			<aside th:replace="/pages/fragments/aside::aside"></aside>
+			<!--end::Aside-->
+
+			<!--begin::Wrapper-->
+			<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+				<!--begin::Content-->
+				<div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+					<!--begin::Subheader-->
+					<div class="subheader py-3 py-lg-8  subheader-transparent " id="kt_subheader">
+					    <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+
+							<!--begin::Info-->
+					        <div class="d-flex align-items-center flex-wrap mr-1">
+					
+								<!--begin::Page Heading-->
+								<div class="d-flex align-items-baseline flex-wrap mr-5">
+									<!--begin::Page Title-->
+						            <h2 class="subheader-title text-dark font-weight-bold my-1 mr-3">
+						                OKRs Checklist </h2>
+									<!--end::Page Title-->
+						            </div>
+								<!--end::Page Heading-->
+					        </div>
+							<!--end::Info-->
+
+							<!--begin::Toolbar-->
+                            <div class="btn-group ml-2">
+								<!-- view history url link add-->
+                                <a href="/okr-checklist-groups" type="button" class="btn btn-primary font-weight-bold">View History</a>
+                            </div>
+				<!--end::Toolbar-->
+			</div>
+		</div>
+		<!--end::Subheader-->
+
+					<!--begin::Entry-->
+					<div class="d-flex flex-column-fluid">
+						<!--begin::Container-->
+						<div class=" container ">
+							<!--begin::Card-->
+							<div class="card card-custom gutter-b">
+								<div class="card-body">
+								<!--begin::Search Form-->
+								
+                                <div class="mb-7">
+                                    <div class="row align-items-center mb-4">
+                                        <div class="col-lg-12 col-xl-12">
+                                            <div class="row align-items-center">
+                                             <div class="col-md-2 my-2 my-md-0">
+                                             <label>Type</label>
+                                             <div class="d-flex align-items-center">
+                                                <!-- <label class="mr-3 mb-0 d-none d-md-block">Type:</label> -->
+                                                <select class="form-control datatable-input" id="kt_datatable_search_okr_type">
+                                                    <option value="">Choose</option>
+                                                    <option value="OBJECTIVE">OBJECTIVE</option>
+                                                    <option value="KEYRESULT">KEY RESULT</option>
+                                                </select>
+                                            </div>
+                                                </div>
+                                    ​
+                                                            
+                                                <div class="col-md-2 my-2 my-md-0">
+                                                <label>Active</label>
+                                                <div class="d-flex align-items-center">
+                                                    <!-- <label class="mr-3 mb-0 d-none d-md-block">Type:</label> -->
+                                                    <select class="form-control datatable-input" id="kt_datatable_search_okr_active">
+                                                        <option value="">Choose</option>
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
+                                                </div>
+                                                </div>
+												<div class="card-toolbar col-xl-4 mt-5 pt-8 mt-lg-0 ">
+													<button class="btn btn-primary btn-primary--icon" id="kt_search">
+														<span>
+															<i class="la la-search"></i>
+															<span>Search</span>
+														</span>
+													</button>
+													&nbsp;&nbsp;
+													<button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+														<span>
+															<i class="la la-close"></i>
+															<span>Reset</span>
+														</span>
+													</button>
+												</div>
+                                        </div>
+                                        </div>                                   ​
+                                    </div>
+                                    </div>
+								<!--end::Search Form-->
+
+								<!--begin: Datatable-->
+								<div class="datatable dataTables_wrapper datatable-bordered datatable-head-custom" id="kt_checklist">
+								</div>
+
+                                <div class="mt-30">
+                                    <form action="/checklists/add" method="POST" id="checklist_form">
+                                    <div class="row align-items-center mb-4">
+                                        <div class="col-lg-12 col-xl-12">
+                                            <div class="row align-items-center">
+                                             <div class="col-md-2 my-2 my-md-0">
+                                             <label>Type</label>
+                                             <div class="d-flex align-items-center">
+                                                <!-- <label class="mr-3 mb-0 d-none d-md-block">Type:</label> -->
+                                                <select class="form-control" name="type" id="type">
+                                                    <option value="">Choose</option>
+                                                    <option value="OBJECTIVE">OBJECTIVE</option>
+                                                    <option value="KEYRESULT">KEY RESULT</option>
+                                                </select>
+                                            </div>
+                                                </div>
+                                    ​     
+                                                <div class="col-md-7 my-2 my-md-0">
+                                                <label>Question</label>
+                                                <div class="d-flex align-items-center">
+                                                    <!-- <label class="mr-3 mb-0 d-none d-md-block">Type:</label> -->
+                                                    <input id="question" type="text" class="form-control" placeholder="Enter your Question.." name="question" required/>
+                                                </div>
+                                                </div>
+                                                
+                                            <div class="col-md-1 my-2 my-md-0 mr-6">	
+                                                        <label>&nbsp;</label>
+                                            <div>			<button type="submit" class="btn btn-primary px-8 font-weight-bold">
+                                                Add
+                                            </button></div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    ​
+                                    </div>
+                                    </form>
+                                    </div>
+
+								<!--end: Datatable-->
+
+						</div>
+						<!--end::Card-->
+
+						<!--begin::Modal-->
+
+						<!--end::Modal-->
+					</div>
+					<!--end::Container-->
+				</div>
+				<!--end::Entry-->
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Wrapper-->
+	</div>
+	<!--end::Page-->
+</div>
+<!--end::Main-->			
+
+
+
+
+<div th:replace="pages/fragments/notifications::notifications">
+
+</div>
+
+<!--Member Profile-->
+<div th:replace="pages/fragments/member_profile::member_profile">
+</div>
+
+
+<!--Setting-->
+<div th:replace="pages/fragments/setting::setting">
+</div>
+
+<!--begin::Global Config(global config for global JS scripts)-->
+<script>
+	var KTAppSettings = {
+		"breakpoints": {
+			"sm": 576,
+			"md": 768,
+			"lg": 992,
+			"xl": 1200,
+			"xxl": 1200
+		},
+		"colors": {
+			"theme": {
+				"base": {
+					"white": "#ffffff",
+					"primary": "#1BC5BD",
+					"secondary": "#E5EAEE",
+					"success": "#1BC5BD",
+					"info": "#6993FF",
+					"warning": "#FFA800",
+					"danger": "#F64E60",
+					"light": "#F3F6F9",
+					"dark": "#212121"
+				},
+				"light": {
+					"white": "#ffffff",
+					"primary": "#1BC5BD",
+					"secondary": "#ECF0F3",
+					"success": "#C9F7F5",
+					"info": "#E1E9FF",
+					"warning": "#FFF4DE",
+					"danger": "#FFE2E5",
+					"light": "#F3F6F9",
+					"dark": "#D6D6E0"
+				},
+				"inverse": {
+					"white": "#ffffff",
+					"primary": "#ffffff",
+					"secondary": "#212121",
+					"success": "#ffffff",
+					"info": "#ffffff",
+					"warning": "#ffffff",
+					"danger": "#ffffff",
+					"light": "#464E5F",
+					"dark": "#ffffff"
+				}
+			},
+			"gray": {
+				"gray-100": "#F3F6F9",
+				"gray-200": "#ECF0F3",
+				"gray-300": "#E5EAEE",
+				"gray-400": "#D6D6E0",
+				"gray-500": "#B5B5C3",
+				"gray-600": "#80808F",
+				"gray-700": "#464E5F",
+				"gray-800": "#1B283F",
+				"gray-900": "#212121"
+			}
+		},
+		"font-family": "Poppins"
+	};
+</script>
+<!--end::Global Config-->
+<th:block layout:fragment="script">
+		<script src="/assets/js/jquery.validate.js"></script>
+    <script src="/assets/plugins/global/plugins.bundle.js?v=7.0.6"></script>
+    <script src="/assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.6"></script>
+    <script src="/assets/js/scripts.bundle.js?v=7.0.6"></script>
+    <script src="/assets/js/pages/custom/checklists/checklist-add.js?v=7.0.6"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</th:block>
+            </body>
+    <!--end::Body-->
+</html>

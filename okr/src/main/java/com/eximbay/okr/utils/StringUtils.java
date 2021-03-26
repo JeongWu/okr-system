@@ -30,4 +30,9 @@ public class StringUtils {
             return null;
         }
     }
+
+    public static String shortenString(String str, Integer length){
+        if (isNullOrEmpty(str) || str.length() <= length) return str;
+        return str.substring(0, length) + "...";
+    }
 }

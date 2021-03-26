@@ -106,10 +106,12 @@ var KTWizard3 = function () {
 			_formEl = KTUtil.getById('kt_form');
 			initWizard();
 			initValidation();
+			inputImage("kt_image_4");
 		}
 	};
 }();
 
 jQuery(document).ready(function () {
 	KTWizard3.init();
+	
 });

@@ -23,13 +23,14 @@ public class OkrScheduleController {
 	@GetMapping
 	public String showEditForm(Model model) {
 		EditOkrScheduleModel viewModel = okrScheduleService.buildEditOkrScheduleModel();
+		model.addAttribute("model", viewModel);
 		model.addAttribute("dataQuarterlyModel", viewModel.getQuarterlyModel());
 		model.addAttribute("dataMonthlyModel", viewModel.getMonthlyModel());
 		model.addAttribute("dataWeeklyModel", viewModel.getWeeklyModel());
         return "pages/schedules/schedules-edit";
 	}
 
-	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@PostMapping("/save")
 	public String saveSchedule(@Validated QuarterlyScheduleUpdateModel quarterlyScheduleUpdateModel, BindingResult error) {
 		if (error.hasErrors())
 			return "redirect:/okr-schedule-edit" + quarterlyScheduleUpdateModel.getScheduleSeq();

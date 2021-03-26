@@ -53,7 +53,7 @@ public class OkrScheduleHistoryServiceImpl implements IOkrScheduleHistoryService
 
     @Override
     public DataTablesOutput<OkrScheduleHistory> getDataForDatatables(ScheduleHistoryDatatablesInput input) {
-        DataTablesOutput<OkrScheduleHistory> output = okrScheduleHistoryRepository
+    	   DataTablesOutput<OkrScheduleHistory> output = okrScheduleHistoryRepository
                                                         .findAll(input,
                                                                 okrScheduleHistoryQuery.buildQueryForDatatables(input)
                                                         );

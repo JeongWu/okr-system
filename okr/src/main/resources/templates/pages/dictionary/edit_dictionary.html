@@ -192,47 +192,20 @@
   <script type="text/javascript">
     $().ready(function () {
       $("#dictionary_form").validate();
-      $('#dictionaryType, #jobType, #taskType, #categoryGroup, #category, #taskIndicator, #taskMetric').selectpicker();
-				
       var type = $("#dictionaryType option:selected").val();
       if (type == "KEY_RESULT") {
         $(".form2").attr("hidden", true);
         $(".general,.form1").attr("hidden", false);
-        // $(".form2").hide();
-        // $(".general").show();
-        // $(".form1").show();
       } else if (type == "COMPETENCE") {
         $(".form1").attr("hidden", true);
         $(".general,.form2").attr("hidden", false);
-        // $(".form1").hide();
-        // $(".general").show();
-        // $(".form2").show();
       } else {
         $(".form1,.general,.form2").attr("hidden", true);
-        // $(".general").hide();
-        // $(".form1").hide();
-        // $(".form2").hide();
       }
-
+      $('#dictionaryType, #jobType, #taskType, #categoryGroup, #category, #taskIndicator, #taskMetric').selectpicker();
+			
     });
-    // $("#dictionaryType").change(function () {
 
-    //   var type = $("#dictionaryType option:selected").val();
-    //   if (type == "KEY_RESULT") {
-    //     $(".form2").hide();
-    //     $(".general").show();
-    //     $(".form1").show();
-    //   } else if (type == "COMPETENCE") {
-    //     $(".form1").hide();
-    //     $(".general").show();
-    //     $(".form2").show();
-    //   } else {
-    //     $(".general").hide();
-    //     $(".form1").hide();
-    //     $(".form2").hide();
-    //   }
-
-    // });
   </script>
 </th:block>
 </body>

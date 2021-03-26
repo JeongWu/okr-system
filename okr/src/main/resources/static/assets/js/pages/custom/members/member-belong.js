@@ -84,7 +84,10 @@ var KTDatatableJsonRemoteDemo = function() {
                 title: 'Justification',
 				textAlign: 'center',
                 template: function(row) {
-				return '<span >' + row.justification +'</span>';
+                    var output = ''
+                    output = '<span data-toggle="tooltip" data-placement="top" data-trigger="focus"\
+                    title="'+row.justification+'"><span class="d-inline-block text-truncate" style="max-width: 150px;">'+row.justification+'</span></span>';
+                    return output;
 			},
             }
 			]
@@ -111,7 +114,16 @@ var KTDatatableJsonRemoteDemo = function() {
             datatable.search(n.toLowerCase(), 'teamLeadFlag');
         });
 
-        $('#kt_datatable_search_teamManager, #kt_datatable_search_teamLead').selectpicker();	
+        $("#kt_datatable_search_justification").on("keyup", function () {
+			datatable.search($(this).val().toLowerCase(), "justification");
+		});
+
+        $("#kt_datatable_search_team").on("keyup", function () {
+			datatable.search($(this).val().toLowerCase(), "teamMemberId.team.localName");
+		  });
+
+        $('#kt_datatable_search_teamManager, #kt_datatable_search_teamLead, #kt_datatable_search_justification", kt_datatable_search_team')
+        .selectpicker();	
         
         $('#reset').on('click', function(e) {
             e.preventDefault();

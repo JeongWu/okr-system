@@ -1,12 +1,15 @@
 package com.eximbay.okr.dto.auditLog;
 
 import com.eximbay.okr.enumeration.LogType;
+import com.eximbay.okr.listener.AbstractAuditableDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.Instant;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class AuditLogDto {
+public class AuditLogDto extends AbstractAuditableDto {
     private Integer logSeq;
     private LogType logType;
     private String email;

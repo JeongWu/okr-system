@@ -62,8 +62,8 @@
                     <!--begin::Symbol-->
                     <div class="symbol symbol-40 symbol-light mr-4">
                         <span class="symbol-label bg-hover-white">
-                            <img th:src="@{~/{imgUrl}(imgUrl=${teamModel.image})}" th:alt="${teamModel.image}"
-                                class="h-50 align-self-center" />
+                            <img th:src="${teamModel.image} ? ${teamModel.image}:'/image/default.jpg'" th:alt="${teamModel.image}"
+                                class="h-75 align-self-center" style="border-radius: 0.42rem" />
                         </span>
                     </div>
                     <!--end::Symbol-->

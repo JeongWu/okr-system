@@ -22,6 +22,7 @@ let KTDatatablesDataSourceAjaxServer = function() {
             searchDelay: 500,
             processing: true,
             serverSide: true,
+            sortable: false,
             autoWidth: false,
             language: {
                 lengthMenu: "_MENU_",
@@ -43,11 +44,11 @@ let KTDatatablesDataSourceAjaxServer = function() {
             },
             columnDefs: [
                 {
-                    targets: [5, 6, 7],
+                    targets: [0,1,2,3,4,5,6,7,8],
                     sortable: false
                 },
                 {
-                    targets: [ 4, 5],
+                    targets: [6],
                     width: 120,
                 },
                 {
@@ -63,7 +64,7 @@ let KTDatatablesDataSourceAjaxServer = function() {
                 }, 
                 {
                     target: 1,
-                    title: "NAME",
+                    title: "MEMBER",
                     data: 'name'
                 },
                 {
@@ -73,11 +74,6 @@ let KTDatatablesDataSourceAjaxServer = function() {
                 },
                 {
                     target: 3,
-                    title: "CAREER",
-                    data: 'career'
-                },
-                {
-                    target: 4,
                     title: "JOININGDATE",
                     data: 'joiningDate',
                     render: function (data){
@@ -91,31 +87,82 @@ let KTDatatablesDataSourceAjaxServer = function() {
                     }
                 },
                 {
-                    target: 5,
+                    target: 4,
                     title: "CAREER",
                     data: 'career',
-                },
-                {
-                    target:6,
-                    title: "LEVEL",
-                    data: 'level',
 
                 },
                 {
-                    target: 7,
+                    target: 5,
+                    title: "LEVEL",
+                    data: 'level',
+                },
+                {
+                    target:6,
+                    title: "EDIT COMPANY OKR",
+                    data: 'editCompanyOkrFlag',
+                    render : function(data){
+                        var output = '';
+
+						if (data == 'Y'){
+							output = '<div class="col-3 ">\
+							<span class="switch switch-icon align-items-center">\
+							 <label>\
+							  <input type="checkbox" checked="checked"  disabled="disabled" />\
+							  <span></span>\
+							 </label>\
+							</span>\
+						   </div>\
+						  </div>';
+						}
+						else{
+							output = '<div class="col-3 align-items-center">\
+							<span class="switch switch-icon">\
+							 <label>\
+							  <input type="checkbox"  disabled="disabled" />\
+							  <span></span>\
+							 </label>\
+							</span>\
+						   </div>\
+						  </div>';
+						}
+						return output;	
+					}
+                },
+                {
+                    target:7,
+                    title: "ACTIVE",
+                    data: 'useFlag',
+                    render: function(data){
+                        var Active = {
+							Y: {'title': 'Active'},
+							N: {'title': 'Inactive'},
+						};
+						return '<span class="font-weight-bold">' +
+							Active[data].title + '</span>';
+                    }
+                },
+                {
+                    target: 8,
                     title: "JUSTIFICATION",
                     data: 'justification',
+                    render : function(data) {
+                        var output = ''
+                        output = '<span data-toggle="tooltip" data-placement="top" data-trigger="focus"\
+                        title="'+data+'"><span class="d-inline-block text-truncate" style="max-width: 150px;">'+data+'</span></span>';
+                        return output;
+                    }
                  },
             ],
         });
 
         $("#search-button").on('click', function (){
             let searchValue = searchBox.val();
-            table.columns(7).search(searchValue).draw();
+            table.columns(8).search(searchValue).draw();
         });
         $("#reset-button").on('click', function (){
             searchBox.val("");
-            table.columns(7).search("");
+            table.columns(8).search("");
             endDate.val(getCurrentDateInISOFormat());
             beginDate.val(getOffsetDateInISOFormat(-6));
             table.ajax.reload();

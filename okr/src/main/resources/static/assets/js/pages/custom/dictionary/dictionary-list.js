@@ -17,12 +17,12 @@ var KTDefaultDatatableDemo = (function () {
         pageSize: 10,
       },
 
-      // layout definition
-      layout: {
-        scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
-        height: 550, // datatable's body's fixed height
-        footer: false, // display/hide footer
-      },
+      // // layout definition
+      // layout: {
+      // 	scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
+      // 	height: 550, // datatable's body's fixed height
+      // 	footer: false, // display/hide footer
+      // },
 
       // column sorting
       sortable: true,
@@ -148,6 +148,7 @@ var KTDefaultDatatableDemo = (function () {
         fileext: ".xls",
       });
     });
+
     $(function () {
       $("btnExport").click(function (e) {
         var table = $(this).prev("kt_datatable");

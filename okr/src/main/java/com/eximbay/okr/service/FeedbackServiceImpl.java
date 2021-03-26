@@ -1,10 +1,9 @@
 package com.eximbay.okr.service;
 
-import com.eximbay.okr.dto.feedback.FeedBackWithThreadsDto;
 import com.eximbay.okr.dto.feedback.FeedbackDto;
 import com.eximbay.okr.entity.Feedback;
-import com.eximbay.okr.enumeration.SourceTable;
-import com.eximbay.okr.model.feedback.FeedbackForCompanyViewOkrModel;
+import com.eximbay.okr.entity.Member;
+import com.eximbay.okr.model.feedback.FeedbackForViewOkrModel;
 import com.eximbay.okr.repository.FeedbackRepository;
 import com.eximbay.okr.service.Interface.IFeedbackService;
 import com.eximbay.okr.service.specification.FeedbackQuery;
@@ -13,7 +12,6 @@ import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,16 +49,24 @@ public class FeedbackServiceImpl implements IFeedbackService {
     }
 
     @Override
-    public List<FeedBackWithThreadsDto> findTop10ByOrderByCreatedDateDesc() {
+    public List<FeedbackDto> findTop10ByOrderByCreatedDateDesc() {
         List<Feedback> feedbacks = feedbackRepository.findTop10ByOrderByCreatedDateDesc();
-        return mapper.mapAsList(feedbacks, FeedBackWithThreadsDto.class);
+        return mapper.mapAsList(feedbacks, FeedbackDto.class);
     }
 
     @Override
-    public List<FeedbackForCompanyViewOkrModel> getFeedbackForCompanyViewOkr(List<Integer> objectiveSeqList, List<Integer> keyResultSeqList){
+    public List<FeedbackForViewOkrModel> getFeedbackForViewOkr(List<Integer> objectiveSeqList, List<Integer> keyResultSeqList){
         List<Feedback> feedbacks = feedbackRepository.findAll(
                 feedbackQuery.getFeedbackForCompanyViewOkr(objectiveSeqList, keyResultSeqList)
         );
-        return mapper.mapAsList(feedbacks, FeedbackForCompanyViewOkrModel.class);
+        return mapper.mapAsList(feedbacks, FeedbackForViewOkrModel.class);
+    }
+
+    @Override
+    public List<FeedbackDto> findByMember(Member member) {
+        List<Feedback> feedbacks = feedbackRepository.findAll(
+            feedbackQuery.findByMember(member)
+        );
+        return mapper.mapAsList(feedbacks, FeedbackDto.class);
     }
 }

@@ -3,11 +3,13 @@ package com.eximbay.okr.entity;
 import lombok.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 @Data
 @Embeddable
-@ToString(exclude = { "team", "member"})
 @EqualsAndHashCode(exclude = { "team", "member"})
 public class TeamMemberId implements Serializable {
 

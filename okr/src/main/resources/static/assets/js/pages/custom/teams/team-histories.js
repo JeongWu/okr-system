@@ -101,8 +101,11 @@ let KTDatatablesDataSourceAjaxServer = function() {
                     target: 7,
                     title: "JUSTIFICATION",
                     data: 'justification',
-                    render: function (data){
-                        return renderStringWithTooltip(data, 10);
+                    render : function(data) {
+                        var output = ''
+                        output = '<span data-toggle="tooltip" data-placement="top" data-trigger="focus"\
+                        title="'+data+'"><span class="d-inline-block text-truncate" style="max-width: 150px;">'+data+'</span></span>';
+                        return output;
                     }
                 },
             ],

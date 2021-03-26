@@ -8,6 +8,7 @@ import com.eximbay.okr.enumeration.TeamType;
 
 import org.springframework.web.multipart.MultipartFile;
 
+
 @Data
 public class AllTeamUpdateModel {
     private Integer teamSeq;

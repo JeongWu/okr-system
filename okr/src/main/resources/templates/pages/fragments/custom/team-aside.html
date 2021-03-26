@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--begin::Tab Pane-->
+<div th:fragment="quarterly_okr" class="tab-pane p-3 px-lg-7 py-lg-5 fade show active" id="kt_aside_tab_team">
+    <!--begin::Form-->
+    <form class="p-2 p-lg-3">
+        <div class="d-flex">
+                <select class="form-control form-control-lg form-control-solid h-40px"
+                        id="member_select">
+                    <option value="">All</option>
+                    <option th:each="member:${model.members}" th:value="${member.memberSeq}" th:text="${member.localName} + ' | ' + ${member.name}"></option>
+                </select>
+            </div>
+    </form>
+    <!--end::Form-->
+
+    <!--begin::List-->
+
+    <div class="list list-hover">
+        <div th:if="${currentMember}" th:insert="~{pages/fragments/custom/team-aside::item}"
+             th:with="image=${currentMember.image}, content=${currentMember.localName}, link='member', seq=${currentMember.memberSeq}"></div>
+        <div th:insert="~{pages/fragments/custom/team-aside::item}"
+             th:with="image='/image/default.jpg', content='View all members', link='view_all_members', seq=''"></div>
+        <div th:insert="~{pages/fragments/custom/team-aside::item}"
+             th:with="image='/image/default.jpg', content='View all teams', link='view_all_teams', seq=''"></div>
+        <hr>
+        <div th:each="team:${teams}" th:insert="~{::item}"
+             th:with="image=${team.image}, content=${team.localName}, leader=${team.leaderOrManager}, link='team', seq=${team.teamSeq}">
+        </div>
+
+    </div>
+    <!--end::List-->
+</div>
+<!--end::Tab Pane-->
+<!--begin::Item-->
+<div th:fragment="item" class="list-item hoverable p-2 okr-list" th:data-okr="${link}" th:data-seq="${seq}" th:id="${link}+${seq}">
+    <div class="d-flex align-items-center">
+        <!--begin::Symbol-->
+        <div class="symbol symbol-40 symbol-light mr-4">
+                        <span class="symbol-label bg-hover-white">
+                            <img th:src="${image}"
+                                 class="h-75 align-self-center" style="border-radius: 0.42rem"/>
+                        </span>
+        </div>
+        <!--end::Symbol-->
+        <!--begin::Text-->
+        <div class="d-flex flex-column flex-grow-1 mr-2">
+            <span class="text-dark-75 font-size-h6 mb-0" th:text="${content}"></span>
+            <a th:if="${leader}" class="text-muted text-hover-primary font-weight-bold"
+               th:text="${leader.localName}"></a>
+        </div>
+    </div>
+</div>
+<!--end::Item-->
+
+</html>

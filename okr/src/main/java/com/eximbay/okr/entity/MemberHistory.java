@@ -47,9 +47,6 @@ public class MemberHistory extends AbstractAuditable {
     @Column(name = "CONTACT_PHONE", length = 20)
     private String contactPhone;
 
-    // @Column(name = "PASSWORD")
-    // private String password;
-
     @Column(name = "INTRODUCTION")
     private String introduction;
 
@@ -71,18 +68,6 @@ public class MemberHistory extends AbstractAuditable {
     @Column(name = "RETIREMENT_DATE", length = 10)
     private String retirementDate;
 
-    // @Column(name = "PASSWORD_MOD_DT")
-    // private Instant lastPasswordChange;
-
-    // @Column(name = "PASSWORD_TEMP_FLAG",length = 1)
-    // private String passwordTempFlag = FlagOption.N;
-
-    // @Column(name = "PASSWORD_ERROR_COUNT", length = 11)
-    // private int passwordErrorCount = 0;
-
-    // @Column(name = "LATEST_LOGIN_DT")
-    // private Instant lassLoginDate;
-
     @Column(name = "ADMIN_FLAG",length = 1)
     private String adminFlag;
 
@@ -94,5 +79,8 @@ public class MemberHistory extends AbstractAuditable {
 
     @Column(name = "JUSTIFICATION", nullable = true)
     private String justification;
+
+    @Column(name = "EDIT_COMPANY_OKR_FLAG", length = 1, nullable = false)
+    private String editCompanyOkrFlag = FlagOption.N;
 
 }

@@ -9,4 +9,5 @@ public interface ISerivce <V, K>{
     Optional<V> findById(K id);
     void remove(V v);
     V save (V v);
+
 }

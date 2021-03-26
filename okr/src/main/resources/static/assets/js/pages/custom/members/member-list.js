@@ -45,37 +45,25 @@ var KTDefaultDatatableDemo = function() {
 					field: 'name',
 					title: 'Member',	
 					width: 100,
-					template: function (data) {
-					  var output = "";
-					  var stateNo = KTUtil.getRandomInt(0, 7);
-					  var states = [
-						"success",
-						"primary",
-						"danger",
-						"success",
-						"warning",
-						"dark",
-						"primary",
-						"info",
-					  ];
-					  var state = states[stateNo];
-		  
-					  output =
-						'<div class="d-flex align-items-center">\
-								  <div class="symbol symbol-40 symbol-' +
-						state +
-						' flex-shrink-0">\
-									  <div class="symbol-label">' +
-						data.name.substring(0, 1) +
-						'</div>\
-								  </div>\
-								  <div class="ml-2">\
-										  <h7 class="font-weight-bold mb-3">' + data.name + "</h7> </div>\
-								  </div>\
-							  </div>";
-
-					  return output;
-					},
+					template: function (row) {
+						var output = "";
+			
+						var memberImg = row.image;
+						var memberName = row.localName;
+			
+						output = '<div class="d-flex align-items-center">';
+						output += makeImageSymbol(memberName, memberImg, "big");
+			
+						output +=
+						  '<div class="ml-2">\
+						  <div class="text-dark-75 font-weight-bold line-height-sm">' +
+						  memberName +
+						  "</div>\
+							</div>\
+						</div>";
+			
+						return output;
+					  },
 
 				},{
 					field: 'position',
@@ -131,14 +119,14 @@ var KTDefaultDatatableDemo = function() {
 									var state = states[stateNo];
 									output += 
 										'<div class="symbol symbol-40 symbol-circle symbol-light-'+state+' data-toggle="tooltip" title="'+arrName[i] +'" >\
-										<a href="/team?id='+arrName[i]+'">\
+										<a href="/teams/list?='+arrName[i]+'">\
 										<span class="symbol-label font-size-h4">' + arrName[i].substring(0, 1) + '</span>\
 										</a>\
 										</div>';
 								}
 								else{
 
-									output +='<a href="/team?id='+arrName[i]+'">\
+									output +='<a href="/teams/list?='+arrName[i]+'">\
 											<div class="symbol symbol-40 symbol-circle" data-toggle="tooltip" title="' +arrName[i] +'">\
 													<img class="" src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
 											</div>\
@@ -153,13 +141,13 @@ var KTDefaultDatatableDemo = function() {
 										var state = states[stateNo];
 											output += 
 											'<div class="symbol symbol-40 symbol-circle symbol-light-'+state+' data-toggle="tooltip" title="'+arrName[i] +'" >\
-											<a href="/team?id='+arrName[i]+'">\
+											<a href="/teams/list?='+arrName[i]+'">\
 											<span class="symbol-label font-size-h4">' + arrName[i].substring(0, 1) + '</span>\
 											</a>\
 											</div>';
 									}
 									else{
-										output +='<a href="/team?id='+arrName[i]+'">\
+										output +='<a href="/teams/list?='+arrName[i]+'">\
 										<div class="symbol symbol-40 symbol-circle" data-toggle="tooltip" title="' +arrName[i] +'">\
 												<img class="" src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
 										</div>\
@@ -178,7 +166,7 @@ var KTDefaultDatatableDemo = function() {
 										var stateNo = KTUtil.getRandomInt(0, 7);
 										var state = states[stateNo];
 										output += '<li class="nav-item">\
-														<a class="nav-link" href="/team?id='+arrName[i]+'">\
+														<a class="nav-link" href="/teams/list?='+arrName[i]+'">\
 															<div class="symbol symbol-40 symbol-circle symbol-light-'+state+' data-toggle="tooltip" title="'+arrName[i] +'" >\
 															<span class="symbol-label font-size-h4">'+ arrName[i].substring(0, 1) +'</span>\
 															</div>\
@@ -191,7 +179,7 @@ var KTDefaultDatatableDemo = function() {
 													<div class="symbol symbol-40 symbol-circle" >\
 														<img src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
 													</div> &nbsp &nbsp\
-													<a class="" href="/team?id='+arrName[i]+'">\
+													<a class="" href="/teams/list?='+arrName[i]+'">\
 															<span class="nav-text">'+arrName[i]+'</span>\
 													</a>\
 											</li>';
@@ -313,7 +301,7 @@ var KTDefaultDatatableDemo = function() {
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
 									<ul class="nav nav-hoverable flex-column">\
 							    		<li class="nav-item"><a class="nav-link" href="/members/edit/'+row.memberSeq+'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>\
-							    		<li class="nav-item"><a class="nav-link" href="/memberhistorys/'+row.memberSeq+'"><i class="nav-icon la la-leaf"></i><span class="nav-text">View History</span></a></li>\
+							    		<li class="nav-item"><a class="nav-link" href="/memberhistorys/'+row.memberSeq+'"><i class="nav-icon la la-eye"></i><span class="nav-text">View History</span></a></li>\
 									\
 									</ul>\
 							  	</div>\
@@ -386,6 +374,48 @@ var KTDefaultDatatableDemo = function() {
 		$('#kt_datatable_search_level, #kt_datatable_search_active','#kt_datatable_search_team','#kt_datatable_search_company_okr').selectpicker();
 
 	};
+
+	var makeImageSymbol = function (name, image, size, shape) {
+		var output = "";
+  
+		var stateNo = KTUtil.getRandomInt(0, 7);
+		var states = [
+		  "success",
+		  "primary",
+		  "danger",
+		  "success",
+		  "warning",
+		  "dark",
+		  "primary",
+		  "info",
+		];
+		var state = states[stateNo];
+  
+		output =
+		  '<div class="symbol symbol-' +
+		  (size === "big" ? "40" : "30") +
+		  " " +
+		  (shape === "circle" && "symbol-circle") +
+		  " symbol-light-" +
+		  state +
+		  ' flex-shrink-0" data-toggle="tooltip" title="' +
+		  name +
+		  '">';
+  
+		if (image === null) {
+		  output +=
+			'<span class="symbol-label font-size-' +
+			(size === "big" && "h4") +
+			'">' +
+			name.substring(0, 1) +
+			"</span>";
+		} else {
+		  output += '<img class="" src="' + image + '" alt="photo">';
+		}
+  
+		output += "</div>";
+		return output;
+	  };
 
 	return {
 		// public functions

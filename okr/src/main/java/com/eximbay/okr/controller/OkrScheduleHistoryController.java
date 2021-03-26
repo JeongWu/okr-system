@@ -1,6 +1,5 @@
 package com.eximbay.okr.controller;
 
-import com.eximbay.okr.model.DivisionsModel;
 import com.eximbay.okr.model.okrScheduleHistory.OkrScheduleHistoriesModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

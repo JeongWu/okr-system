@@ -79,7 +79,10 @@ var KTDatatableJsonRemoteDemo = function() {
                 title: 'Justification',
 				textAlign: 'center',
                 template: function(row) {
-				return '<span >' + row.justification +'</span>';
+                    var output = ''
+                    output = '<span data-toggle="tooltip" data-placement="top" data-trigger="focus"\
+                    title="'+row.justification+'"><span class="d-inline-block text-truncate" style="max-width: 150px;">'+row.justification+'</span></span>';
+                    return output;
 			},
             }
 			]

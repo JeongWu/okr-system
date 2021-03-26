@@ -1,16 +1,16 @@
 package com.eximbay.okr.dto;
 
+import com.eximbay.okr.listener.AbstractAuditableDto;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class MemberDto {
+public class MemberDto extends AbstractAuditableDto {
 
     private Integer memberSeq;
     private String name;
@@ -34,7 +34,7 @@ public class MemberDto {
     private List<TeamMemberDto> teamMembers = new ArrayList<>();
 
     public void createMemberDto(String joiningDate ,String retirementDate, String editCompanyOkrFlag,
-    String useFlag, String adminFlag, String eamil, MultipartFile files) {
+    String useFlag, String adminFlag, String eamil) {
         
         String joining = joiningDate.replace("-", "");
         this.setJoiningDate(joining);
@@ -57,11 +57,6 @@ public class MemberDto {
 
         String Edit = (editCompanyOkrFlag == null) ? "N" : "Y";
         this.setEditCompanyOkrFlag(Edit);
-        
-        if (!files.isEmpty()) {
-			String imageName = "static/assets/"+files.getOriginalFilename();
-	    	this.setImage(imageName);
-		} 
             
     }
 }

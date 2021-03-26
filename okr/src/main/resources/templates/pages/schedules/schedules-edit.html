@@ -18,6 +18,7 @@
 	<div layout:fragment="content" class="container">
 		<input id="base-url" hidden th:value="okr" />
 		<div>
+
 			<!-- begin::1st part -->
 			<div class="card card-custom">
 				<!--begin::Card header-->
@@ -32,10 +33,11 @@
 				<!--end::Card header-->
 				<!--begin::Form-->
 
-				<form name="quarterly_form" class="form" id="quarterly_form" th:action="@{~/okr-schedule-edit/save}"
-					method="post" th:object="${dataQuarterlyModel}">
+				<form name="quarterly_form" class="form" id="quarterly_form" 
+				method="post" th:object="${dataQuarterlyModel}">
 					<input type="text" th:field="*{scheduleSeq}" hidden />
 					<input type="text" th:field="*{scheduleType}" hidden />
+			
 					<div class="card-body">
 						<div class="form-group row">
 							<label class="col-lg-2 col-form-label text-right">Begin day</label>
@@ -165,6 +167,7 @@
 									<option value="13">13</option>
 									<option value="14">14</option>
 								</select>
+								<span class="px-3">days</span>
 							</div>
 						</div>
 
@@ -188,7 +191,6 @@
 							<div class="col-lg-4"></div>
 							<div class="col-lg-8 text-right">
 								<button form="quarterly_form" type="submit" class="btn btn-primary mr-2">Submit</button>
-								<button type="reset" class="btn btn-secondary">Cancel</button>
 							</div>
 						</div>
 					</div>
@@ -211,7 +213,7 @@
 				</div>
 				<!--end::Card header-->
 				<!--begin::Form-->
-				<form class="form" id="monthly_form" th:action="@{~/okr-schedule-edit/save}" method="post"
+				<form class="form" id="monthly_form"  method="post"
 					th:object="${dataMonthlyModel}">
 					<input type="text" th:field="*{scheduleSeq}" hidden />
 					<input type="text" th:field="*{scheduleType}" hidden />
@@ -343,6 +345,7 @@
 									<option value="13">13</option>
 									<option value="14">14</option>
 								</select>
+								<span class="px-3">days</span>
 							</div>
 						</div>
 
@@ -366,7 +369,6 @@
 							<div class="col-lg-4"></div>
 							<div class="col-lg-8 text-right">
 								<button form="monthly_form" type="submit" class="btn btn-primary mr-2">Submit</button>
-								<button type="reset" class="btn btn-secondary">Cancel</button>
 							</div>
 						</div>
 					</div>
@@ -390,7 +392,7 @@
 				</div>
 				<!--end::Card header-->
 				<!--begin::Form-->
-				<form class="form" id="weekly_form" th:action="@{~/okr-schedule-edit/save}" method="post"
+				<form class="form" id="weekly_form"  method="post"
 					th:object="${dataWeeklyModel}">
 					<input type="text" th:field="*{scheduleSeq}" hidden />
 					<input type="text" th:field="*{scheduleType}" hidden />
@@ -430,7 +432,7 @@
 						<div class="form-group row">
 							<label class="col-lg-2 col-form-label text-right">Close after</label>
 							<div class="col-lg-2">
-								<select class="form-control form-control-solid" th:field="*{closeAfterDays}">
+								<select id="weekly_closeAfterDays" class="form-control form-control-solid" th:field="*{closeAfterDays}">
 									<option value="">Select..</option>
 									<option value="0">0</option>
 									<option value="1">1</option>
@@ -454,6 +456,7 @@
 									<option value="5">5</option>
 									<option value="6">6</option>
 								</select>
+								<span class="px-3">days</span>
 							</div>
 						</div>
 
@@ -477,7 +480,6 @@
 							<div class="col-lg-4"></div>
 							<div class="col-lg-8 text-right">
 								<button form="weekly_form" type="submit" class="btn btn-primary mr-2">Submit</button>
-								<button type="reset" class="btn btn-secondary">Cancel</button>
 							</div>
 						</div>
 					</div>
@@ -494,8 +496,9 @@
 
 <th:block layout:fragment="script">
 	<script th:src="@{/assets/js/pages/crud/forms/widgets/bootstrap-timepicker.js}"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script th:src="@{/assets/js/pages/custom/schedules/schedule-edit.js}"></script>
+	<script src="/assets/js/jquery.validate.js"></script>
 </th:block>
-
 
 </html>

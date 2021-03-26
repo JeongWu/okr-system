@@ -42,8 +42,10 @@
         <!--begin::Aside Top-->
         <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
             <!--begin::Aside header-->
-            <a href="#" class="login-logo text-center pt-lg-25 pb-10">
-				<img src="assets/media/logos/logo-1.png" class="max-h-70px" alt=""/>
+            <a href="/" class="login-logo text-center pt-lg-25 pb-10">
+                <img th:if="${wireframeModel.company}" alt="Logo" th:src="${wireframeModel.company.logo}" class="max-h-70px max-w-400px" />
+                <img th:if="!${wireframeModel.company}" alt="Logo" th:src="'/avatar/default-logo.png'" class="max-h-70px max-w-400px" />
+                <!--Company logo here-->
             </a>
             <!--end::Aside header-->
 
@@ -85,7 +87,7 @@
                         <h3 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Sign In</h3>
                         <div class="text-muted font-weight-bold font-size-h4">
                             New Here?
-                            <a href="#" class="text-primary font-weight-bolder">Create Account</a>
+                            <span class="text-primary font-weight-bolder">Create Account</span>
                         </div>
                     </div>
                     <!--begin::Title-->
@@ -102,9 +104,9 @@
                         <div class="d-flex justify-content-between mt-n5">
                             <label class="font-size-h6 font-weight-bolder text-dark pt-5">Your Name</label>
 
-                            <a href="#" class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5">
+                            <span class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5">
         						Forgot Password ?
-        					</a>
+        					</span>
                         </div>
                         <input class="form-control h-auto py-7 px-6 rounded-lg border-0" type="password" name="password" autocomplete="off" disabled style="background-color: white"/>
                     </div>

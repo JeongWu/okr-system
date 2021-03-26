@@ -69,3 +69,7 @@ form label.error {
 .w11-12 {
     width: 91.67% !important;
 }
+.line-through{
+    text-decoration-line: line-through;
+    color: gray
+}

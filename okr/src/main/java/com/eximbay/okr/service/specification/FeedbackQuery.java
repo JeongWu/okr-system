@@ -2,6 +2,7 @@ package com.eximbay.okr.service.specification;
 
 import com.eximbay.okr.entity.Feedback;
 import com.eximbay.okr.entity.Feedback_;
+import com.eximbay.okr.entity.Member;
 import com.eximbay.okr.enumeration.SourceTable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,10 @@ public class FeedbackQuery {
 
     public Specification<Feedback> findKeyResultFeedback(){
         return findFeedbackFor(SourceTable.KEY_RESULT);
+    }
+
+    public Specification<Feedback> findByMember(Member member){
+        return (root, query, cb) -> root.get(Feedback_.MEMBER).in(member);
     }
 
     public Specification<Feedback> findObjectiveOrKeyResultFeedback(){

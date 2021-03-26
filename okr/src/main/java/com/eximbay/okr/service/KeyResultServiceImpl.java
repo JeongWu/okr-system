@@ -1,11 +1,13 @@
 package com.eximbay.okr.service;
 
+import com.eximbay.okr.constant.AppConst;
 import com.eximbay.okr.dto.keyResult.KeyResultDto;
 import com.eximbay.okr.entity.KeyResult;
-import com.eximbay.okr.model.keyResult.KeyResultCompanyOkrModel;
+import com.eximbay.okr.model.keyResult.KeyResultViewOkrModel;
 import com.eximbay.okr.repository.KeyResultRepository;
 import com.eximbay.okr.service.Interface.IKeyResultService;
 import com.eximbay.okr.service.specification.KeyResultQuery;
+import com.eximbay.okr.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
@@ -46,10 +48,24 @@ public class KeyResultServiceImpl implements IKeyResultService {
     }
 
     @Override
-    public List<KeyResultCompanyOkrModel> findByObjectiveSeqIn(List<Integer> in) {
+    public List<KeyResultViewOkrModel> findByObjectiveSeqIn(List<Integer> in) {
         List<KeyResult> keyResults = keyResultRepository.findAll(
                 keyResultQuery.findByObjectiveSeqIn(in)
         );
-        return mapper.mapAsList(keyResults, KeyResultCompanyOkrModel.class);
+        List<KeyResultViewOkrModel> result = mapper.mapAsList(keyResults, KeyResultViewOkrModel.class);
+        formatKeyResultViewOkrModel(result);
+        return result;
+    }
+
+    private void formatKeyResultViewOkrModel(List<KeyResultViewOkrModel> keyResults){
+        keyResults.forEach(e -> e.setShortenKeyResult(StringUtils.shortenString(e.getKeyResult(), AppConst.KR_MAX_LENGTH)));
+    }
+
+    @Override
+    public List<KeyResultDto> findByObjectSeq(List<Integer> in) {
+        List<KeyResult> keyResults = keyResultRepository.findAll(
+            keyResultQuery.findByObjectiveSeqIn(in)
+    );
+    return mapper.mapAsList(keyResults, KeyResultDto.class);
     }
 }

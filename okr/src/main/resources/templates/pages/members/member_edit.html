@@ -10,7 +10,6 @@
 <head>
     <title>Member Edit</title>
 	<link href="/assets/css/pages/members/member-wizard.css?v=7.0.6" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
 </head>
 
 <body>
@@ -19,14 +18,14 @@
 <div layout:fragment="right-floating-toolbar">
     <div class="d-flex align-items-center">
         <!--begin::Button-->
-        <a href="/members" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">
+        <a href="/members/list" class="btn btn-primary button-color btn-fixed-height font-weight-bold px-6 px-lg-7 mr-2 justify-content-center">
         Back
         </a>
         <!--begin::Dropdown-->
         <div class="btn-group ml-2">
             <button type="submit" data-wizard-type="action-next" form="kt_form"
             th:action="@{'/members/edit/'+${member.memberSeq}}"
-            class="btn btn-primary font-weight-bold btn-sm px-4 font-size-base ml-2" 
+            class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 justify-content-center"
             >Submit</button>
             <!--onclick="document.getElementById('kt_form').submit();"-->
         </div>
@@ -104,13 +103,13 @@
                                         <span class="form-text text-muted">Enter valid KR phone number(e.g: 01012345678).</span>
                                     </div>
                                 </div>
-
+ 
                                 <div class="form-group row">
                                     <label class="col-xl-3 col-lg-3 col-form-label">Introduction</label>
                                         
                                         <div class="col-lg-3 col-xl-9">
                                             <div class="image-input image-input-outline" id="kt_image_4">
-                                                <div th:if="${member.image} != null" class="image-input-wrapper" th:style="'background-image:url('+ @{${member.image}} +');'"></div>
+                                                <div th:if="${member.image} != null" class="image-input-wrapper" th:style="'background-image:url('+ ${member.image} +');'"></div>
                                                 <div th:if="${member.image} == null" class="image-input-wrapper" style="background-image:url(/assets/media/image/default.jpg)">
                                                 </div>
         
@@ -281,9 +280,7 @@
 </div>
 </body>
 <th:block layout:fragment="script">
-    <script src="/assets/js/pages/custom/members/datepicker.js?v=7.0.6"></script>
-    <script src="/assets/js/pages/custom/members/image-input.js?v=7.0.6"></script>
-    <script src="/assets/js/pages/custom/members/member-details-edit.js?v=7.0.6"></script>
-    <script src="/assets/js/pages/custom/members/datatables.bundle.js?v=7.0.6"></script>
+    <script src="/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6"></script>
+    <script src="/assets/js/pages/custom/members/member-edit.js?v=7.0.6"></script>
 </th:block>
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <body>
 <!--begin::Aside-->
@@ -9,8 +10,9 @@
         <!--begin::Brand-->
         <div class="aside-brand d-flex flex-column align-items-center flex-column-auto py-5 py-lg-12">
             <!--begin::Logo-->
-            <a href="index.html">
-                <img alt="Logo" th:src="@{~/assets/media/logos/logo-1.png}" class="logo-default max-h-30px max-w-90px" />
+            <a href="/">
+                <img th:if="${wireframeModel.company}" alt="Logo" th:src="${wireframeModel.company.logo}" class="logo-default w-90px" />
+                <img th:if="!${wireframeModel.company}" alt="Logo" th:src="'/avatar/default-logo.png'" class="logo-default w-90px" />
                 <!--Company logo here-->
             </a>
             <!--end::Logo-->
@@ -58,8 +60,8 @@
                 <!--Quarterly OKRs-->
                 <li class="nav-item mb-3" data-toggle="tooltip" data-placement="right" data-container="body"
                     data-boundary="window" title="Quarterly OKRs">
-                    <a href="#" class="nav-link btn btn-icon btn-clean btn-lg main-menu-item" data-toggle="tab"
-                       data-target="#kt_aside_tab_team" role="tab">
+                    <a href="/okrs/quarterly" class="nav-link btn btn-icon btn-clean btn-lg main-menu-item"
+                       data-target="#kt_aside_tab_team" role="tab" id="quarterly_tab">
                         <i class="flaticon2-calendar-9"></i>
                     </a>
                 </li>
@@ -134,7 +136,7 @@
         <!--begin::Workspace-->
         <div class="aside-workspace scroll scroll-push my-2">
             <!--begin::Tab Content-->
-            <div class="tab-content">
+            <div layout:fragment="team-aside" class="tab-content">
                 <div th:replace="pages/fragments/team::team">
 
                 </div>

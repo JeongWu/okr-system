@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,42 +12,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eximbay.okr.config.security.MyUserDetails;
+import com.eximbay.okr.constant.ErrorMessages;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.dto.DivisionDto;
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.TeamDto;
+import com.eximbay.okr.dto.*;
+import com.eximbay.okr.dto.keyResultCollaborator.KeyResultCollaboratorDto;
 import com.eximbay.okr.dto.TeamHistoryDto;
-import com.eximbay.okr.dto.TeamMemberDto;
+import com.eximbay.okr.dto.like.LikeDto;
+import com.eximbay.okr.dto.objectiveRelation.ObjectiveRelationDto;
 import com.eximbay.okr.dto.team.TeamWithMembersAndLeaderDto;
 import com.eximbay.okr.entity.*;
-import com.eximbay.okr.exception.RestUserException;
-import com.eximbay.okr.exception.UserException;
-import com.eximbay.okr.model.AllDetailsTeamModel;
-import com.eximbay.okr.model.AllTeamUpdateModel;
-import com.eximbay.okr.model.EditForViewAllTeamsModel;
-import com.eximbay.okr.model.EditTeamModel;
-import com.eximbay.okr.model.TeamForAllDetailsTeamModel;
-import com.eximbay.okr.model.TeamForWireframeModel;
-import com.eximbay.okr.model.TeamListTableModel;
-import com.eximbay.okr.model.TeamUpdateFormModel;
-import com.eximbay.okr.model.WireframeModel;
-import com.eximbay.okr.model.team.TeamAddModel;
-import com.eximbay.okr.repository.DivisionRepository;
-import com.eximbay.okr.repository.TeamRepository;
-import com.eximbay.okr.service.Interface.ITeamHistoryService;
-import com.eximbay.okr.service.Interface.ITeamMemberService;
-import com.eximbay.okr.service.Interface.ITeamService;
-import com.eximbay.okr.service.specification.TeamQuery;
-import com.eximbay.okr.utils.PagingUtils;
-
-import javassist.NotFoundException;
-import lombok.*;
-import ma.glasnost.orika.MapperFacade;
-import com.eximbay.okr.entity.Division;
-import com.eximbay.okr.entity.Team;
 import com.eximbay.okr.enumeration.EntityType;
 import com.eximbay.okr.enumeration.FileContentType;
 import com.eximbay.okr.enumeration.FileType;
+import com.eximbay.okr.exception.RestUserException;
+import com.eximbay.okr.exception.UserException;
+import com.eximbay.okr.model.*;
+import com.eximbay.okr.model.EditTeamModel;
+import com.eximbay.okr.model.feedback.FeedbackForViewOkrModel;
+import com.eximbay.okr.model.TeamUpdateFormModel;
+import com.eximbay.okr.model.keyResult.KeyResultViewOkrModel;
+import com.eximbay.okr.model.objective.ObjectiveViewOkrModel;
+import com.eximbay.okr.model.team.TeamAddModel;
+import com.eximbay.okr.model.team.TeamViewOkrModel;
+import com.eximbay.okr.repository.DivisionRepository;
+import com.eximbay.okr.repository.TeamRepository;
+import com.eximbay.okr.service.Interface.*;
+import com.eximbay.okr.service.specification.TeamQuery;
+import com.eximbay.okr.utils.PagingUtils;
+import javassist.NotFoundException;
+import lombok.*;
+import ma.glasnost.orika.MapperFacade;
 
 @Service
 @AllArgsConstructor
@@ -58,9 +51,13 @@ public class TeamServiceImpl implements ITeamService {
     private final TeamRepository teamRepository;
     private final MapperFacade mapper;
     private final ITeamMemberService teamMemberService;
+    private final IObjectiveService objectiveService;
+    private final IKeyResultService keyResultService;
     private final TeamQuery teamQuery;
-    private final Environment environment;
-    private final DivisionRepository divisionRepository;
+    private final IFeedbackService feedbackService;
+    private final ILikeService likeService;
+    private final IObjectiveRelationService objectiveRelationService;
+    private final IKeyResultCollaboratorService keyResultCollaboratorService;
     private final ITeamHistoryService teamHistoryService;
     private final FileUploadService fileUploadService;
 
@@ -93,17 +90,6 @@ public class TeamServiceImpl implements ITeamService {
     public List<TeamDto> findAllInUse() {
         List<Team> teams = teamRepository.findByUseFlag(FlagOption.Y);
         return mapper.mapAsList(teams, TeamDto.class);
-    }
-
-    @Override
-    public WireframeModel buildWireframeModel() {
-        WireframeModel wireframeModel = new WireframeModel();
-        List<TeamDto> teams = findAllInUse();
-        List<TeamDto> teamsWithLeaderOrManager = teamMemberService.addLeaderToTeamList(teams);
-        List<TeamForWireframeModel> teamForWireframeModels = mapper.mapAsList(teamsWithLeaderOrManager,
-                TeamForWireframeModel.class);
-        wireframeModel.setTeams(teamForWireframeModels);
-        return wireframeModel;
     }
 
     @Override
@@ -154,8 +140,8 @@ public class TeamServiceImpl implements ITeamService {
     @Override
     public List<TeamListTableModel> buildListTableModel() {
         List<Team> teams = teamRepository.findAll();
+
         List<TeamListTableModel> teamListModels = mapper.mapAsList(teams, TeamListTableModel.class);
-        // List<TeamDto> teamDtos = mapper.mapAsList(teams, TeamDto.class);
 
         for (int i = 0; i < teamListModels.size(); i++) {
             List<TeamMemberDto> teamMemberDtos = mapper.mapAsList(teams.get(i).getTeamMembers(), TeamMemberDto.class);
@@ -166,10 +152,6 @@ public class TeamServiceImpl implements ITeamService {
             List<Member> members = teamMemberService.findCurrentlyValid(teamMemberDtos).stream()
                     .map(m -> m.getTeamMemberId().getMember()).distinct().collect(Collectors.toList());
             teamListModels.get(i).setMembers(mapper.mapAsList(members, MemberDto.class));
-
-            // List<MemberDto> memberDtos =
-            // teamMemberService.findActiveMembersOfTeam(teamDtos.get(i));
-            // teamListModels.get(i).setMembers(memberDtos);
 
             DivisionDto divisionDto = mapper.map(teamListModels.get(i).getDivision(), DivisionDto.class);
             teamListModels.get(i).setDivisionName(divisionDto.getLocalName());
@@ -184,10 +166,51 @@ public class TeamServiceImpl implements ITeamService {
     }
 
     @Override
+    public TeamViewOkrModel buildTeamOkrModel(Integer teamSeq, String quarter) {
+        TeamViewOkrModel model = new TeamViewOkrModel();
+        TeamDto team = mapper.map(teamRepository.findById(teamSeq)
+                .orElseThrow(() -> new UserException(ErrorMessages.resourceNotFound + teamSeq)), TeamDto.class);
+        model.setTeam(team);
+        model.setMutedHeader(team.getLocalName());
+        model.setQuarter(quarter);
+        model.setEditable(teamMemberService.isCurrentMemberCanEditTeamOkr(teamSeq));
+
+        List<ObjectiveViewOkrModel> objectives = objectiveService.findTeamObjectivesOkrInQuarterByTeamSeq(teamSeq,
+                quarter);
+        List<Integer> objectivesSeq = objectives.stream().map(ObjectiveViewOkrModel::getObjectiveSeq)
+                .collect(Collectors.toList());
+
+        List<KeyResultViewOkrModel> keyResults = keyResultService.findByObjectiveSeqIn(objectivesSeq);
+        List<Integer> keyResultsSeq = keyResults.stream().map(KeyResultViewOkrModel::getKeyResultSeq)
+                .collect(Collectors.toList());
+
+        List<FeedbackForViewOkrModel> feedbacks = feedbackService.getFeedbackForViewOkr(objectivesSeq, keyResultsSeq);
+        List<ObjectiveRelationDto> objectiveRelations = objectiveRelationService
+                .findByObjectiveSeqInAndRelatedObjectiveNotNull(objectivesSeq);
+        List<KeyResultCollaboratorDto> keyResultCollaborators = keyResultCollaboratorService
+                .findByKeyResultSeqIn(keyResultsSeq);
+        List<LikeDto> likes = likeService.getLikeForViewOkr(objectivesSeq, keyResultsSeq);
+
+        objectives.forEach(m -> {
+            m.setKeyResults(
+                    keyResults.stream().filter(k -> m.getObjectiveSeq().equals(k.getObjective().getObjectiveSeq()))
+                            .collect(Collectors.toList()));
+        });
+
+        objectiveService.mapFeedbackIntoObjectiveModel(objectives, feedbacks);
+        objectiveService.mapLikesIntoObjectiveModel(objectives, likes);
+        objectiveService.mapObjectiveRelationsIntoObjectiveModel(objectives, objectiveRelations);
+        objectiveService.mapKeyResultCollaborators(objectives, keyResultCollaborators);
+
+        model.setObjectives(objectives);
+        return model;
+    }
+
+    @Override
     public EditTeamModel buildEditTeamModel(Integer id) {
         EditTeamModel dataModel = new EditTeamModel();
         dataModel.setSubheader("Edit ");
-        // Optional<Team> team = teamRepository.findById(id);
+        Optional<Team> team = teamRepository.findById(id);
         Optional<TeamDto> teamDto = findById(id);
         Optional<TeamUpdateFormModel> model = teamDto.map(m -> mapper.map(m, TeamUpdateFormModel.class));
         if (model.isEmpty())
@@ -197,6 +220,7 @@ public class TeamServiceImpl implements ITeamService {
         model.get().setUseFlag(teamDto.get().getUseFlag().equals(FlagOption.Y));
         model.get().setDivisionDto(teamDto.get().getDivision());
         dataModel.setModel(model.get());
+        System.out.println("dataModel!!!: " + dataModel);
         return dataModel;
     }
 
@@ -216,7 +240,6 @@ public class TeamServiceImpl implements ITeamService {
 
         teamDto.get().getDivision().setDivisionSeq(updateFormModel.getDivisionDto().getDivisionSeq());
 
-
         if (updateFormModel.getImageFile() != null && !updateFormModel.getImageFile().isEmpty()) {
             String imageSrc;
             try {
@@ -229,32 +252,23 @@ public class TeamServiceImpl implements ITeamService {
             teamDto.get().setImage(imageSrc);
         }
 
-
-
         TeamHistoryDto teamHistoryDto = mapper.map(teamDto.get(), TeamHistoryDto.class);
         teamHistoryDto.setJustification(updateFormModel.getJustification());
         teamHistoryDto.setTeam(mapper.map(teamDto.get(), TeamDto.class));
         teamHistoryService.save(teamHistoryDto);
         save(teamDto.get());
-        updateFormModel.setImageFile(null);
     }
-
-    // @Override
-    // public TeamAddModel buildDefaultTeamAddModel() {
-    // TeamAddModel teamAddModel = new TeamAddModel();
-    // Division division = new Division();
-    // teamAddModel.setDivision(divisionRepository.findById(2).orElse(null));
-    // return teamAddModel;
-    // }
 
     @Override
     public Team addTeam(TeamAddModel teamAddModel) {
         Team team = mapper.map(teamAddModel, Team.class);
+
         if (teamAddModel.isUseFlag()) {
             team.setUseFlag("Y");
         } else {
             team.setUseFlag("N");
         }
+
         if (teamAddModel.getImageFile() != null && !teamAddModel.getImageFile().isEmpty()) {
             String imageSrc;
             try {
@@ -266,7 +280,7 @@ public class TeamServiceImpl implements ITeamService {
             }
             team.setImage(imageSrc);
         }
-        
+
         team = teamRepository.save(team);
         // insert new history when adding a team
         TeamHistoryDto teamHistoryDto = mapper.map(team, TeamHistoryDto.class);
@@ -314,11 +328,5 @@ public class TeamServiceImpl implements ITeamService {
         teamRepository.save(team.get());
         allTeamUpdateModel.setImageFile(null);
 
-        // team.get().setIntroduction(allTeamUpdateModel.getIntroduction());
-        // team.get().setImage(allTeamUpdateModel.getImage());
-
-        // teamRepository.save(team.get());
-
     }
-
 }

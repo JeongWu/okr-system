@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 @Data
 @Embeddable
-@ToString(exclude = { "division", "member"})
 @EqualsAndHashCode(exclude = { "division", "member"})
 public class DivisionMemberId implements Serializable {
     @ManyToOne

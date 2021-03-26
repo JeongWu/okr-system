@@ -3,6 +3,7 @@ package com.eximbay.okr.entity;
 import com.eximbay.okr.constant.CareerLevel;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.constant.MemberLevel;
+import com.eximbay.okr.constant.MemberPosition;
 import com.eximbay.okr.listener.AbstractAuditable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +24,7 @@ import java.util.Set;
 public class Member extends AbstractAuditable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "MEMBER_SEQ", length = 11)
     private Integer memberSeq;
 
@@ -42,6 +43,9 @@ public class Member extends AbstractAuditable {
     @Column(name = "CONTACT_PHONE", length = 20)
     private String contactPhone;
 
+    // @Column(name = "PASSWORD", nullable = false)
+    // private String password;
+
     @Column(name = "INTRODUCTION", length = 1000)
     private String introduction;
 
@@ -49,7 +53,7 @@ public class Member extends AbstractAuditable {
     private String image;
 
     @Column(name = "POSITION", length = 20)
-    private String position;
+    private String position = MemberPosition.NONE;
 
     @Column(name = "LEVEL", length = 11, nullable = false)
     private int level = MemberLevel.One;
@@ -69,9 +73,8 @@ public class Member extends AbstractAuditable {
     @Column(name = "ADMIN_ACCESS_IP", length = 15)
     private String adminAccessIp;
 
-
-     @Column(name = "EDIT_COMPANY_OKR_FLAG", length = 1, nullable = false)
-     private String editCompanyOkrFlag = FlagOption.N;
+    @Column(name = "EDIT_COMPANY_OKR_FLAG", length = 1, nullable = false)
+    private String editCompanyOkrFlag = FlagOption.N;
 
     @Column(name = "USE_FLAG", length = 1, nullable = false)
     private String useFlag = FlagOption.Y;

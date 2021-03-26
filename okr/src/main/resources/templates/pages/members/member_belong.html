@@ -39,17 +39,18 @@
                     <div class="wizard-step" >
                         <div class="wizard-label">
                             <h3 class="wizard-title">
-                                <a th:href="@{/memberhistorys/} + ${memberSeq}">
-                                <span>1.</span> Member Details
-                                </a>
-                            </h3>
+                                <a th:href="@{/memberhistorys/} + ${memberSeq}" style="a:link {
+                                    text-decoration: none;
+                                  }">
+                                <span>1.</span> Member Details        
+                            </h3></a>
                             <div class="wizard-bar"></div>
                         </div>
                     </div>
                     <!--end::Wizard Step 1 Nav-->
     
                     <!--begin::Wizard Step 2 Nav-->
-                    <div class="wizard-step" data-wizard-type="step">
+                    <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
                         <div class="wizard-label">
                             <h3 class="wizard-title">
                                 <span>2.</span> Belong To
@@ -72,13 +73,12 @@
         
             <div class="col-md-4 my-2 my-md-0">
                 <label>Team Name</label>
-                    <input type="text" class="form-control datatable-input" placeholder="Search..." id="kt_datatable_search_query" />					
+                    <input type="text" class="form-control datatable-input" placeholder="Search..." id="kt_datatable_search_team" />					
             </div>
                     
             <div class="col-md-4 my-2 my-md-0">
                     <label>Justification</label>
-                    
-                    <input type="text" class="form-control datatable-input" placeholder="Search..." id="kt_datatable_search_query" />					
+                    <input type="text" class="form-control datatable-input" placeholder="Search..." id="kt_datatable_search_justification" />					
             </div>
             
             <div class="col-md-2 my-2 my-md-0">
@@ -114,8 +114,9 @@
             </a>
         </span>
     
-        <span class="col-lg-2 col-xl-4 mt-5 mt-lg-0">
-            <a href="" id="reset" class="btn button-color btn-secondary px-6 font-weight-bold">
+        <span class="col-lg-2 col-xl-4 mt-5 mt-lg-0">           
+            <a href="" id="reset" class="btn button-color btn-secondary px-5 font-weight-bold">
+            <i class="la la-close"></i>
             Reset  
             </a>
         </span>
