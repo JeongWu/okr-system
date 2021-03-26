@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout.html}">
+<head>
+    <title>Company OKR</title>
+</head>
+<body>
+<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+    <a th:href="'/companies/dashboard?quarter=' + ${model.quarter}"
+       class="btn btn-secondary btn-sm button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">
+        Back</a>
+</div>
+<div layout:fragment="content" class="container">
+    <div class="col draggable-zone">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b draggable"
+             th:each="objective:${model.objectives}"
+             th:data-seq="${objective.objectiveSeq}" th:data-priority="${objective.priority}" >
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label" th:text="'Objective #' + ${objective.priority}"> </h3>
+                </div>
+                <div class="card-toolbar">
+                    <a th:if="${model.editable}" href="#" class="btn btn-secondary btn-sm mr-5">
+                        Edit OKR
+                    </a>
+                    <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary draggable-handle">
+                        <i class="ki ki-menu "></i>
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--begin::Item-->
+                <div th:replace="~{pages/fragments/custom/card :: objective-okr}"
+                th:with="objective=${objective}"></div>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <div th:each="keyResult:${objective.keyResults}"
+                th:insert="~{pages/fragments/custom/card :: company-keyresult-okr}"
+                th:with="keyResult=${keyResult}">
+
+                </div>
+                <!--end::Item-->
+            </div>
+        </div>
+        <!--end::Card-->
+
+    </div>
+</div>
+</div>
+</body>
+<th:block layout:fragment="script">
+    <script src="/assets/js/pages/draggable.bundle.js"></script>
+    <script src="/assets/js/pages/companies/company-okr.js"></script>
+</th:block>
+</html>

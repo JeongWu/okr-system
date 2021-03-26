@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+	<title>Dictionary List</title>
+</head>
+
+<body>
+	<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+		<!--begin::Button-->
+		<button
+			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 justify-content-center"
+			id="btnExport">
+			Download </button>
+		<a href="/dictionary/add" class="btn btn-primary font-weight-bold">
+			Add Dictionary </a>
+		<!--end::Button-->
+	</div>
+	<div layout:fragment="content" class="container">
+		<input id="base-url" hidden th:value="dictionary" />
+		<!--begin::Card-->
+		<div class="card card-custom gutter-b">
+			<div class="card-body">
+			<!--begin::Search Form-->
+            <div class="mb-1">
+                <div class="row align-items-center">
+                    <div class="col-lg-10 col-xl-10">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 my-2 my-md-0">
+                                <h8 class="font-weight-bold mb-3">Type</h8>
+                            </div>
+
+                            <div class="col-md-2 my-2 my-md-0">
+                                <h8 class="font-weight-bold mb-3">Job</h8>
+                            </div>
+
+                            <div class="col-md-3 my-2 my-md-0">
+                                <h8 class="font-weight-bold mb-3">Category Group</h8>
+                            </div>
+                            <div class="col-md-3 my-2 my-md-0">
+                                <h8 class="font-weight-bold mb-3">Category</h8>
+                            </div>
+                            <div class="col-md-2 my-2 my-md-0">
+                                <h8 class="font-weight-bold mb-3">Active</h8>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-xl-2 mt-5 mt-lg-0">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 my-2 my-md-0"></div>
+                            <div class="col-md-8 my-2 my-md-0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-7">
+                <div class="row align-items-center">
+                    <div class="col-lg-10 col-xl-10">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <select class="form-control datatable-input"
+                                        id="kt_datatable_search_type">
+                                        <option value="">All</option>
+                                        <th:block
+                                            th:each="codeList: ${TypeModel.dictionaryType}">
+                                            <option th:value="${codeList.codeListId.code}"
+                                                th:text="${codeList.codeName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <select class="form-control datatable-input"
+                                        id="kt_datatable_search_job">
+                                        <option value="">All</option>
+                                        <th:block th:each="codeList: ${TypeModel.jobType}">
+                                            <option th:value="${codeList.codeListId.code}"
+                                                th:text="${codeList.codeName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <select class="form-control datatable-input"
+                                        id="kt_datatable_search_categorygroup">
+                                        <option value="">All</option>
+                                        <th:block
+                                            th:each="codeList: ${TypeModel.categoryGroup}">
+                                            <option th:value="${codeList.codeListId.code}"
+                                                th:text="${codeList.codeName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <select class="form-control datatable-input"
+                                        id="kt_datatable_search_category">
+                                        <option value="">All</option>
+                                        <th:block th:each="codeList: ${TypeModel.category}">
+                                            <option th:value="${codeList.codeListId.code}"
+                                                th:text="${codeList.codeName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 my-2 my-md-0">
+                                <div class="d-flex align-items-center">
+                                    <select class="form-control datatable-input"
+                                        id="kt_datatable_search_active">
+                                        <option value="">All</option>
+                                        <option value="Y">Y</option>
+                                        <option value="N">N</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-xl-2 mt-5 mt-lg-0">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 my-2 my-md-0">
+                                <button class="btn btn-primary btn-primary--icon" id="kt_search">
+                                        <span>Search</span>
+                                </button>
+                            </div>
+                            <div class="col-md-6 my-2 my-md-0">
+                                <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+                                        <span>Reset</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Search Form-->
+
+            <!--begin: Datatable-->
+            <div class="datatable dataTables_wrapper datatable-bordered datatable-head-custom"
+                id="kt_datatable">
+            </div>
+            <!--end: Datatable-->
+			</div>
+		</div>
+		<!--end::Card-->
+	</div>
+</body>
+<th:block layout:fragment="script">
+	<script th:src="@{/assets/plugins/custom/table2excel/jquery.table2excel.js?v=7.0.6}"></script>
+	<script th:src="@{/assets/js/pages/custom/dictionary/dictionary-list.js?v=7.0.6}"></script>
+</th:block>
+
+</html>

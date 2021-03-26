@@ -4,6 +4,9 @@ import com.eximbay.okr.constant.CareerLevel;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.constant.MemberLevel;
 import com.eximbay.okr.listener.AbstractAuditable;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -20,7 +23,7 @@ import java.util.Set;
 public class Member extends AbstractAuditable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_SEQ", length = 11)
     private Integer memberSeq;
 
@@ -39,9 +42,6 @@ public class Member extends AbstractAuditable {
     @Column(name = "CONTACT_PHONE", length = 20)
     private String contactPhone;
 
-    @Column(name = "PASSWORD", nullable = false)
-    private String password;
-
     @Column(name = "INTRODUCTION", length = 1000)
     private String introduction;
 
@@ -54,26 +54,14 @@ public class Member extends AbstractAuditable {
     @Column(name = "LEVEL", length = 11, nullable = false)
     private int level = MemberLevel.One;
 
-    @Column(name = "JOINING_DATE", length = 8, nullable = false)
+    @Column(name = "JOINING_DATE", length = 12, nullable = false)
     private String joiningDate;
 
     @Column(name = "CAREER", length = 11, nullable = false)
     private int career = CareerLevel.Zero;
 
-    @Column(name = "RETIREMENT_DATE", length = 8)
+    @Column(name = "RETIREMENT_DATE", length = 12)
     private String retirementDate;
-
-    @Column(name = "PASSWORD_MOD_DT", nullable = false)
-    private Instant lastPasswordChange;
-
-    @Column(name = "PASSWORD_TEMP_FLAG",length = 1, nullable = false)
-    private String passwordTempFlag = FlagOption.N;
-
-    @Column(name = "PASSWORD_ERROR_COUNT", length = 11, nullable = false)
-    private int passwordErrorCount = 0;
-
-    @Column(name = "LATEST_LOGIN_DT")
-    private Instant lassLoginDate;
 
     @Column(name = "ADMIN_FLAG",length = 1, nullable = false)
     private String adminFlag = FlagOption.N;
@@ -81,12 +69,18 @@ public class Member extends AbstractAuditable {
     @Column(name = "ADMIN_ACCESS_IP", length = 15)
     private String adminAccessIp;
 
+
+     @Column(name = "EDIT_COMPANY_OKR_FLAG", length = 1, nullable = false)
+     private String editCompanyOkrFlag = FlagOption.N;
+
     @Column(name = "USE_FLAG", length = 1, nullable = false)
-    private String useFlag = FlagOption.N;
+    private String useFlag = FlagOption.Y;
 
     @OneToMany(mappedBy = "teamMemberId.member")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnore
     private List<TeamMember> teamMembers;
+
 }
 

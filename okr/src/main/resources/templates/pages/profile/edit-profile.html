@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+    <title>Edit Profile</title>
+</head>
+
+<body>
+    <div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+        <!--begin::Button-->
+        <a href="/"
+            class="btn btn-primary button-color btn-fixed-height font-weight-bold w-120px px-2 px-lg-5 mr-2 justify-content-center"
+            id="cancelBtn">
+            Back </a>
+        <button class="btn btn-primary font-weight-bold w-120px" id="submitBtn">
+            Submit </button>
+        <!--end::Button-->
+    </div>
+    <div layout:fragment="content" class="container">
+        <input id="base-url" hidden th:value="members" />
+        <div>
+            <div class="card card-custom gutter-b">
+                <div class="card-body px-0">
+                    <form class="form" id="kt_form" method="post" enctype="multipart/form-data" th:action="@{/profile/save}"
+                        th:object="${dataModel}">
+                        <input type="text" id="memberSeq" th:field="*{memberSeq}" hidden />
+                        <div class="tab-content">
+                            <!--begin::Tab-->
+                            <div class="tab-pane show active px-7" id="kt_user_edit_tab_1" role="tabpanel">
+                                <!--begin::Row-->
+                                <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
+                                    <div class="col-10">
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label style="padding-right: 0" class="col-form-label col-3 text-left">Member
+                                                Name
+                                                (English)*</label>
+                                            <div class="col-9">
+                                                <input class="form-control form-control-lg form-control-solid"
+                                                    type="text" required th:field="*{name}" disabled />
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-3 text-left">Member
+                                                Name (Korean)*</label>
+                                            <div class="col-9">
+                                                <input class="form-control form-control-lg form-control-solid"
+                                                    type="text" required th:field="*{localName}" disabled />
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label for="email" class="col-3 col-form-label">Email
+                                                *</label>
+                                            <div class="col-9">
+                                                <input class="form-control form-control-lg form-control-solid"
+                                                    type="text" required th:field="*{email}" disabled>
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <div class="form-group row">
+                                            <label for="contactPhone" class="col-3 col-form-label">Contact Phone
+                                                *</label>
+                                            <div class="col-9">
+                                                <input class="form-control form-control-lg form-control-solid"
+                                                    type="text" required th:field="*{contactPhone}" disabled>
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                        <!-- begin::Group -->
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Introduction</label>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="image-input image-input-empty image-input-outline"
+                                                    id="kt_user_edit_avatar"
+                                                    style="background-image: url(/assets/media/image/default.jpg)">
+
+                                                    <div class="image-input-wrapper"
+                                                        th:style="'background-image: url('+${image} +');'"></div>
+
+                                                    <label
+                                                        class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                        data-action="change" data-toggle="tooltip" title=""
+                                                        data-original-title="Change avatar">
+                                                        <i class="fa fa-pen icon-sm text-muted"></i>
+                                                        <input type="file" name="imageFile"
+                                                            accept=".png, .jpg, .jpeg" th:field="*{imageFile}"/>
+                                                        <input type="hidden" name="profile_avatar_remove" />
+                                                    </label>
+
+                                                    <span
+                                                        class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+                                                        data-action="cancel" data-toggle="tooltip"
+                                                        title="Cancel avatar">
+                                                        <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-7 col-lg-7"> <textarea
+                                                    class="form-control form-control-lg form-control-solid"
+                                                    id="introduction" rows="5" placeholder="Type notes"
+                                                    th:field="*{introduction}"></textarea> </div>
+                                        </div>
+                                        <!-- end::Group -->
+                                        <!--begin::Group-->
+                                        <div class="form-group row">
+                                            <label for="position" class="col-3  col-form-label">Position
+                                                </label>
+                                            <div class="col-9">
+                                                <input class="form-control form-control-lg form-control-solid"
+                                                    type="text" required th:field="*{position}" disabled>
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                          <!--begin::Group-->
+                                          <div class="form-group row">
+                                            <label for="level" class="col-3  col-form-label">Level
+                                                </label>
+                                            <div class="col-9">
+                                                <input class="form-control form-control-lg form-control-solid"
+                                                    type="text" required th:field="*{level}" disabled>
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                          <!--begin::Group-->
+                                          <div class="form-group row">
+                                            <label for="joiningDate" class="col-3  col-form-label">Joining Date
+                                                </label>
+                                            <div class="col-9">
+                                                <input class="form-control form-control-lg form-control-solid"
+                                                    type="text" required th:field="*{joiningDate}" disabled>
+                                            </div>
+                                        </div>
+                                        <!--end::Group-->
+                                    </div>
+                                </div>
+                                <!--end::Row-->
+                            </div>
+                            <!--end::Tab-->
+                    </form>
+                </div>
+            </div>
+            <!--end::Card-->
+        </div>
+    </div>
+</body>
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        $().ready(function () {
+            $("#submitBtn").click(function (e) {
+                e.preventDefault();
+                console.log("submit event!!");
+                $("#kt_form").submit();
+            });
+            inputImage("kt_user_edit_avatar");
+        })
+    </script>
+</th:block>
+
+</html>

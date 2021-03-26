@@ -1,218 +1,135 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{pages/layout/main_layout.html}" th:with="title='Member History', subHeader='View '+ ${name}+' History', mutedHeaderText=null">
-      <!--muted text is blurred text after the subheader text-->
-<!--Specify header here-->
+      layout:decorate="~{pages/layout/main_layout.html}"
+      th:with="subHeader='Dashboard', mutedHeaderText=''">
+      
+<head>
+    <meta charset="utf-8"/>
+    <title>Member History</title>
+    <meta name="description" content="Page with empty content"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <style>
+        table tr td{
+            padding: 5px;
+        }
+        .pagination {
+            justify-content: start !important;
+        }
+        .dataTables_length{
+            text-align: right !important;
+        }
+    </style>
+    <link rel="stylesheet" href="/assets/css/pages/datatables.bundle.css">
+    <link href="/assets/css/pages/members/member-wizard.css?v=7.0.6" rel="stylesheet" type="text/css"/>
+</head>
 
-<head></head>
+<body id="kt_body"
+      class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
 
-<body>
-
-<!--Create right-floating toolbar if any, remember to use layout:fragment="right-floating-toolbar"-->
-<div layout:fragment="right-floating-toolbar">
-
-</div>
-
-<!--Main content of every page-->
-
-<div layout:fragment="content">
-    <div class="card card-custom">
-    	    <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="step-first" data-wizard-clickable="true">
-	        <!--begin: Wizard Nav-->
-	        <div class="wizard-nav">
-	            <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
-	
-	                <!--begin::Wizard Step 1 Nav-->
-	                <div class="wizard-step" data-wizard-type="step">
-	                    <div class="wizard-label">
-	                        <h3 class="wizard-title">
-								<span>1.</span> Member Details
-							</h3>
-	                        <div class="wizard-bar"></div>
-	                    </div>
-	                </div>
-	                <!--end::Wizard Step 1 Nav-->
-	
-	                <!--begin::Wizard Step 2 Nav-->
-	                <div class="wizard-step" data-wizard-type="step">             
-	                    <div class="wizard-label">
-	                        <h3 class="wizard-title">
-	                         <a  th:href="@{/member/belong/1}">
-								<span>2.</span> Belong To
-								</a>
-							</h3>
-	                        <div class="wizard-bar"></div>
-	                    </div>
-					</div>
-	            </div>
-	        </div>
-	</div>
-
-	<div class="card-body">
-		<!--begin: Search Form-->
-	<div class="mb-7">
-	<form action="/memberhistory/search" method="POST">
-	<div class="row align-items-center mb-4">
-		<div class="col-lg-12 col-xl-12">
-			<div class="row align-items-center">
-			 <div class="col-md-3 my-2 my-md-0">
-			 <label>Edit Period</label>
-					<div class="d-flex align-items-center">						
-					<div class="input-group date">
-    					<input type="text" class="form-control form-control-sm datatable-input" placeholder="From" id="kt_datepicker_3" 					 
-    					data-col-index="5" name="from" th:value="${#temporals.format(from, 'MM/dd/yyyy')}">
-    						<div class="input-group-append">
-    							<span class="input-group-text"><i class="la la-calendar-o glyphicon-th"></i></span>
-    						</div>
-    					</div>				
-					</div>
-				</div>
-
-							
-				<div class="col-md-3 my-2 my-md-0">
-				<label>&nbsp;</label>
-					<div class="d-flex align-items-center">
-    					<div class="input-group date d-flex align-content-center">
-    					<!--  -->
-    						<input type="text" class="form-control form-control-sm datatable-input" placeholder="To" id="kt_datepicker_3"
-    							data-col-index="5" name="to" th:value="${#temporals.format(to, 'MM/dd/yyyy')}">
-    						<div class="input-group-append">
-    						<span class="input-group-text"><i class="la la-calendar-o glyphicon-th"></i></span>
-    					</div>
-    				</div>
-					</div>
-				</div>
-				
-			<div class="col-md-3 my-2 my-md-0 ">	
-						<label>Justification</label>
-						<input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" name="justification"/>
-			</div>
-			
-			<div class="col-md-1 my-2 my-md-0 mr-6">	
-			<input type="hidden" name="memberSeq" value="1">
-						<label>&nbsp;</label>
-			<div>			<button type="submit" id="hisotry_date" class="btn btn-light-primary px-8 font-weight-bold">
-				Search
-			</button></div>
-			</div>
-			
-			<div class="col-md-1 my-2 my-md-0 mr-2">	
-						<label>&nbsp;</label>
-						<!-- 넘어오는 값 변경하기 -->
-			<div><a href="/memberhistory/1" id="hisotry_date" class="btn btn-light-primary px-10 font-weight-bold">
-				Reset
-			</a></div>
-			</div>
+      <div layout:fragment="content" class="container">
+        <div class="card card-custom">
+            <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="step-second" data-wizard-clickable="true">
+            <!--begin: Wizard Nav-->
+            <div class="wizard-nav">
+                <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
+    
+                    <!--begin::Wizard Step 1 Nav-->
+                    <div class="wizard-step" data-wizard-type="step">
+                        <div class="wizard-label">
+                            <h3 class="wizard-title">
+                                <span>1.</span> Member Details
+                                </a>
+                            </h3>
+                            <div class="wizard-bar"></div>
+                        </div>
+                    </div>
+                    <!--end::Wizard Step 1 Nav-->
+    
+                    <!--begin::Wizard Step 2 Nav-->
+                    <div class="wizard-step" >
+                        <div class="wizard-label">
+                            <h3 class="wizard-title">
+                                <a th:href="@{/members/belong/} + ${memberSeq}">
+                                <span>2.</span> Belong To
+                            </a>
+                            </h3>
+                            <div class="wizard-bar"></div>
+                        </div>
+                    </div>
+                     <!--end::Wizard Step 2 Nav-->
+                </div>
+            </div>
+    </div>
+        <!--end::Card header-->
+        <div class="card-body">
+            <!--begin: Filter-->
+            <table>
+                <tr>
+                    <td class="col-form-label">Edit Period</td>
+                    <td></td>
+                    <td></td>
+                    <td class="col-form-label">Justification</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="input-group date" >
+                            <input type="text" class="form-control" readonly value="" id="begin-date"/>
+                            <span class="input-group-text">
+                                <i class="la la-calendar"></i>
+                            </span>
+                        </div>
+                    </td>
+                    <td style="vertical-align: center; text-align:center;">~</td>
+                    <td>
+                        <div class="input-group date" >
+                            <input type="text" class="form-control" readonly value="" id="end-date"/>
+                            <span class="input-group-text">
+                                <i class="la la-calendar"></i>
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group" >
+                            <input type="text" class="form-control" placeholder="Search" id="justification-search"/>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="submit" class=" col-sm-12 form-control btn button-color btn-primary
+                                btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" id="search-button">
+                            Search
+                        </button>
+                    </td>
+                    <td>
+                        <button type="submit" class=" col-sm-12 form-control btn button-color btn-secondary
+                                btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" id="reset-button">
+                            Reset
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <!--end: Filter-->
+            <!--begin: Datatable-->
+            <div class="">
+                <table class="table table-hover" id="kt_datatable">
+                </table>
+            </div>
+            <input type="hidden" th:value="${memberSeq}" id="memberSeq">
+            <!--end: Datatable-->
         </div>
-		</div>
-	
-</div>
-</form>
-</div>
-
-<!--end::Search Form-->
-		<!--end: Search Form-->
-		
-		<!--begin: Datatable-->
-					<div class="datatable datatable-bordered datatable-head-custom datatable-default datatable-primary datatable-loaded">
-				<table class="datatable-table" id="kt_datatable">
-					<thead class="datatable-head">
-					<tr class="datatable-row d-flex">
-						<th class="col-1 align-middle datatable-cell datatable-cell-left"><span>#</span></th>
-						<th class="col-1 align-middle datatable-cell datatable-cell-left"><span>NAME</span></th>
-						<th class="col-1 align-middle datatable-cell datatable-cell-center"><span>POSITION</span></th>
-						<th class="col-2 align-middle datatable-cell datatable-cell-center"><span>JOININGDATE</span></th>
-						<th class="col-1 align-middle datatable-cell datatable-cell-center"><span>CAREER</span></th>
-						<th class="col-1 align-middle datatable-cell datatable-cell-center"><span>LEVEL</span></th>
-						<th class="col-2 align-middle datatable-cell datatable-cell-center"><span>EDIT COMAPNY OKR</span></th>
-						<th class="col-1 align-middle datatable-cell datatable-cell-right"><span>ACTIVE</span></th>
-						<th class="col-2 align-middle datatable-cell datatable-cell-center"><span>JUSTIFICATION</span></th>
-					</tr>
-					</thead>
-					<tbody class="datatable-body">
-					<tr class="datatable-row d-flex" th:each="memberHistory, diviStat :${model}">
-						<td class="col-1 align-middle datatable-cell datatable-cell-left"><span th:text="${memberHistory.historySeq}"></span></td>
-						<td class="col-1 align-middle datatable-cell datatable-cell-left" ><span th:text="${memberHistory.localName}"></span></td>
-						<td class="col-1 align-middle datatable-cell datatable-cell-center"><span th:text="${memberHistory.position}"></span></td>
-						<td class="col-2 align-middle datatable-cell datatable-cell-center"><span th:text="${memberHistory.joiningDate}"></span></td>
-						<td class="col-1 align-middle datatable-cell datatable-cell-center"><span th:text="${memberHistory.career}"></span></td>
-						<td class="col-1 align-middle datatable-cell datatable-cell-center"><span th:text="${memberHistory.level}"></span></td>
-						<td class="col-2 align-middle datatable-cell datatable-cell-center">
-						    	<span class="switch switch-icon"> <label> 
-									<!-- <input type="checkbox" th:checked="${(member.adminFlag.equals('Y'))}" name="adminFlag"/> -->
-									<span class="switch switch-icon"><input name="adminFlag" type="checkbox" th:checked="${(memberHistory.adminFlag.equals('Y'))}" />
-    								<span></span>
-    							</label>
-    							</span>
-						</td>
-						<td class="col-1 align-middle datatable-cell datatable-cell-right"><span class="font-weight-bolder" th:text="${memberHistory.useFlag.equals('Y') ? 'Active' : 'Inactive' }"></span></td>
-						<td class="col-2 align-middle datatable-cell datatable-cell-center"><span th:text="${memberHistory.justification}"></span></td>	
-					</tr>
-					</tbody>
-				</table>
-			</div>
-		<input th:value="${name}" id="history_name" type="hidden">
-		<!--end: Datatable-->
-		<div class="d-flex justify-content-between align-items-center flex-wrap">
-    	<div class="d-flex flex-wrap py-2 mr-3 paging"
-    	        th:with="
-                pageNumber = ${model.pageable.pageNumber},
-                pageSize = ${model.pageable.pageSize},
-                totalPages = ${model.totalPages},
-                startPage = ${T(Math).floor(pageNumber / pageSize) * pageSize + 1},
-                tempEndPage = ${startPage + pageSize - 1},
-                endPage = (${tempEndPage > totalPages ? totalPages : tempEndPage})"
-    	>
-        <a href="#" 
-        th:classappend="${pageNumber + 1 <= pageSize + 1} ? 'disabled'"
-       	th:href="@{'/memberhistory/1?page=0&size=' + ${model.size}}" 
-        class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i class="ki ki-bold-double-arrow-back icon-xs"></i></a>
-        <a  th:classappend="${model.first} ? 'disabled'"
-        th:href="@{'/memberhistory?page=' + ${model.number - 1} + '&size=' + ${model.size}}"       
-        class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i class="ki ki-bold-arrow-back icon-xs"></i></a>
-
-        <a th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber + 1} ? 'active'"
-         th:href="@{'/memberhistory/search?page=' + ${page} + '&size=' + ${model.size}}"
-        th:text="${page}"
-        th:onclick="fn_paging();"
-        class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</a>
-
-        <a th:classappend="${model.last} ? 'disabled'"
-        th:href="@{'/memberhistory/1?page=' + ${model.number + 1} + '&size=' + ${model.size} }" 
-        class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i class="ki ki-bold-arrow-next icon-xs"></i></a>
-        
-        <a th:classappend=" ${T(Math).floor(totalPages/10)*10 <= startPage} ? 'disabled'"
-		th:href="@{'memberhistory/1?page=' + ${model.totalPages -1} + '&size=' + ${model.size}}"
-        class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i class="ki ki-bold-double-arrow-next icon-xs"></i></a>
-    	</div>
-
-    	<div class="d-flex align-items-center py-3">
-
-        <select class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary" style="width: 75px;">
-            <option th:selected="${model.size == 10}" value="10">10</option>
-                        <option th:selected="${model.size == 20}" value="20">20</option>
-                        <option th:selected="${model.size == 30}" value="30">30</option>
-                        <option th:selected="${model.size == 50}" value="50">50</option>
-                        <option th:selected="${model.size == 100}" value="100">100</option>
-        </select>
-         <span class="text-muted" th:text="${'Displaying ' + model.numberOfElements + ' of ' + model.totalElements + ' records'}"></span>
     </div>
 </div>
-	</div>
-</div>
-</div>
-<script type="text/javascript">
- $(document).ready(function(){
- 
- 	
- });
- function fn_paging(){
- 	location.href = ""
- }
-</script>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/js/datatables.bundle.js}"></script>
+    <script src="/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6"></script>
+    <script th:src="@{/assets/js/pages/custom/members/member-history.js}"></script>
+    <script src="/assets/js/pages/custom/members/member-wizard.js?v=7.0.6"></script>
+</th:block>
+
 </body>
+<!--end::Body-->
 
 </html>

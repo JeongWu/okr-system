@@ -32,7 +32,7 @@ public interface ITeamService extends ISerivce<TeamDto, Integer> {
     EditTeamModel buildEditTeamModel(Integer id);
     void updateFormModel(TeamUpdateFormModel updateFormModel); 
     Team addTeam(TeamAddModel teamAddModel);
-	TeamAddModel buildDefaultTeamAddModel();
+	// TeamAddModel buildDefaultTeamAddModel();
 
     EditForViewAllTeamsModel buildEditAllTeamsModel(Integer id);
     void updateForViewAllTeamModel(AllTeamUpdateModel allTeamUpdateModel); 

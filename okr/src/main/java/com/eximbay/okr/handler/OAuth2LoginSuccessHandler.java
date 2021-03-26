@@ -3,6 +3,8 @@ package com.eximbay.okr.handler;
 import com.eximbay.okr.config.security.MyUserDetails;
 import com.eximbay.okr.config.security.MyUserDetailsService;
 import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.enumeration.LogType;
+import com.eximbay.okr.service.Interface.IAuditLogService;
 import com.eximbay.okr.service.Interface.IMemberService;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final IMemberService memberService;
     private final MyUserDetailsService myUserDetailsService;
+    private final IAuditLogService auditLogService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -33,12 +36,14 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         Optional<MemberDto> memberDto = memberService.findByEmail(oAuth2User.getAttribute("email"));
         if (memberDto.isEmpty()){
             SecurityContextHolder.getContext().setAuthentication(null);
+            response.sendRedirect("/login");
         } else {
             MyUserDetails userDetails = new MyUserDetails(memberDto.get());
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            auditLogService.log(LogType.SIGNIN, request, usernamePasswordAuthenticationToken, null, false);
+            response.sendRedirect("/");
         }
-        response.sendRedirect("/login");
     }
 }

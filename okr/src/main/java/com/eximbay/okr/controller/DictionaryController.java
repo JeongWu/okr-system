@@ -2,12 +2,9 @@ package com.eximbay.okr.controller;
 
 import java.util.List;
 
-
+import com.eximbay.okr.constant.Subheader;
 import com.eximbay.okr.entity.Dictionary;
-import com.eximbay.okr.model.dictionary.AllCategoryGroupModel;
-import com.eximbay.okr.model.dictionary.AllCategoryModel;
-import com.eximbay.okr.model.dictionary.AllDictionaryTypeModel;
-import com.eximbay.okr.model.dictionary.AllJobTypeModel;
+import com.eximbay.okr.model.PageModel;
 import com.eximbay.okr.model.dictionary.DictionaryAddModel;
 import com.eximbay.okr.model.dictionary.DictionaryUpdateModel;
 import com.eximbay.okr.model.dictionary.SelectTypeModel;
@@ -26,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.eximbay.okr.utils.MapperUtil;
+
 import lombok.AllArgsConstructor;
 
 @Controller
@@ -36,26 +33,12 @@ public class DictionaryController {
 
     private final IDictionaryService dictionaryService;
 
-    @Autowired
-    private DictionaryRepository dictionaryRepository;
-
     @GetMapping
     public String viewAllDictionary(Model model) {
-
-         //To get Dictionary data for search option
-         List<Dictionary> dictionaries = dictionaryRepository.findAll();
-         List<AllDictionaryTypeModel> dictionaryTypes = MapperUtil.mapList(dictionaries, AllDictionaryTypeModel.class);
-         List<AllJobTypeModel> jobTypeModels = MapperUtil.mapList(dictionaries, AllJobTypeModel.class);
-         List<AllCategoryGroupModel> categoryGroupModels = MapperUtil.mapList(dictionaries, AllCategoryGroupModel.class);
-         List<AllCategoryModel> categoryModels = MapperUtil.mapList(dictionaries, AllCategoryModel.class);
- 
-         model.addAttribute("dictionaryTypes", dictionaryTypes);
-         model.addAttribute("jobTypeModels", jobTypeModels);
-         model.addAttribute("categoryGroupModels", categoryGroupModels);
-         model.addAttribute("categoryModels", categoryModels);
- 
-
-        return "pages/dictionary/dictionary_list";
+        SelectTypeModel selectTypeModel = dictionaryService.buildSelectTypeModel();
+        model.addAttribute("subheader", Subheader.DICTIONARY);
+        model.addAttribute("TypeModel", selectTypeModel);
+        return "pages/dictionary/dictionary";
     }
 
     @GetMapping("/keyresult")
@@ -65,8 +48,9 @@ public class DictionaryController {
 
         model.addAttribute("TypeModel", selectTypeModel);
      
-        return "pages/dictionary/keyresult_list";
+        return "pages/dictionary/keyresult";
     }
+
 
     @GetMapping("/add")
     public String addDictionary(Model model) {

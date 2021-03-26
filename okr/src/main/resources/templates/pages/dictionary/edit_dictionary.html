@@ -50,7 +50,7 @@
                         th:field="*{dictionaryType}">
                         <option value="">Choose...</option>
                         <th:block th:each="codeList: ${TypeModel.dictionaryType}">
-                          <option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+                          <option th:value="${codeList.codeListId.code}" th:text="${codeList.codeName}"></option>
                         </th:block>
                       </select>
                     </div>
@@ -60,7 +60,7 @@
                       <select name="jobType" class="form-control" id="jobType" required th:field="*{jobType}">
                         <option value="">Choose...</option>
                         <th:block th:each="codeList: ${TypeModel.jobType}">
-                          <option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+                          <option th:value="${codeList.codeListId.code}" th:text="${codeList.codeName}"></option>
                         </th:block>
                       </select>
                     </div>
@@ -89,7 +89,7 @@
                       <select name="taskType" class="form-control" id="taskType" required th:field="*{taskType}">
                         <option value="">Choose...</option>
                         <th:block th:each="codeList: ${TypeModel.taskType}">
-                          <option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+                          <option th:value="${codeList.codeListId.code}" th:text="${codeList.codeName}"></option>
                         </th:block>
                       </select>
                     </div>
@@ -99,7 +99,7 @@
                       <select name="taskMetric" class="form-control" id="taskMetric" required th:field="*{taskMetric}">
                         <option value="">Choose...</option>
                         <th:block th:each="codeList: ${TypeModel.taskMetric}">
-                          <option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+                          <option th:value="${codeList.codeListId.code}" th:text="${codeList.codeName}"></option>
                         </th:block>
                       </select>
                     </div>
@@ -116,7 +116,7 @@
                         th:field="*{categoryGroup}">
                         <option value="">Choose...</option>
                         <th:block th:each="codeList: ${TypeModel.categoryGroup}">
-                          <option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+                          <option th:value="${codeList.codeListId.code}" th:text="${codeList.codeName}"></option>
                         </th:block>
 
                       </select>
@@ -126,7 +126,7 @@
                       <select name="category" class="form-control" id="category" required th:field="*{category}">
                         <option value="">Choose...</option>
                         <th:block th:each="codeList: ${TypeModel.category}">
-                          <option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+                          <option th:value="${codeList.codeListId.code}" th:text="${codeList.codeName}"></option>
                         </th:block>
                       </select>
                     </div>
@@ -143,7 +143,7 @@
                         th:field="*{taskIndicator}">
                         <option value="">Choose...</option>
                         <th:block th:each="codeList: ${TypeModel.taskIndicator}">
-                          <option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+                          <option th:value="${codeList.codeListId.code}" th:text="${codeList.codeName}"></option>
                         </th:block>
 
                       </select>
@@ -192,14 +192,16 @@
   <script type="text/javascript">
     $().ready(function () {
       $("#dictionary_form").validate();
+      $('#dictionaryType, #jobType, #taskType, #categoryGroup, #category, #taskIndicator, #taskMetric').selectpicker();
+				
       var type = $("#dictionaryType option:selected").val();
-      if (type == "핵심결과") {
+      if (type == "KEY_RESULT") {
         $(".form2").attr("hidden", true);
         $(".general,.form1").attr("hidden", false);
         // $(".form2").hide();
         // $(".general").show();
         // $(".form1").show();
-      } else if (type == "역량") {
+      } else if (type == "COMPETENCE") {
         $(".form1").attr("hidden", true);
         $(".general,.form2").attr("hidden", false);
         // $(".form1").hide();

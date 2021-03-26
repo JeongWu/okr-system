@@ -2,6 +2,8 @@ package com.eximbay.okr.entity;
 
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.listener.AbstractAuditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -24,6 +26,7 @@ public class Division extends AbstractAuditable {
     private Integer divisionSeq;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "COMPANY_SEQ", nullable = false)
     private Company company;
 
@@ -37,8 +40,10 @@ public class Division extends AbstractAuditable {
     private String useFlag = FlagOption.Y;
 
     @OneToMany(mappedBy = "division")
+    @JsonIgnore
     private List<Team> teams;
 
     @OneToMany(mappedBy = "divisionMemberId.division")
+    @JsonIgnore
     private List<DivisionMember> divisionMembers;
 }

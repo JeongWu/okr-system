@@ -1,9 +1,5 @@
 package com.eximbay.okr.dto;
 
-import com.eximbay.okr.entity.Company;
-import com.eximbay.okr.entity.Division;
-import com.eximbay.okr.entity.Member;
-import com.eximbay.okr.entity.Team;
 import lombok.Data;
 
 import java.time.Instant;
@@ -16,9 +12,8 @@ public class ObjectiveDto {
     private int quarter;
     private String beginDate;
     private String endDate;
-    private String objectiveLevel;
+    private String objectiveType;
     private CompanyDto company;
-    private DivisionDto division;
     private TeamDto team;
     private MemberDto member;
     private String objective;
@@ -28,4 +23,5 @@ public class ObjectiveDto {
     private String closeFlag;
     private String closeJustification;
     private Instant closeDate;
+    private Integer likes;
 }

@@ -1,269 +1,148 @@
 "use strict";
-// Class definition
 
-	
-var KTDatatableJsonRemoteDemo = function() {
-	
-    // basic demo 
-    var belong = function() {
-        var datatable = $('#member_belong').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'remote',
-                source: {
-                    read: {
-                        url: '/member/get-member-data1',
-						params: {
-						}
-                    },
+let KTDatatablesDataSourceAjaxServer = function() {
+
+    let initTable1 = function() {
+        let searchBox = $("#justification-search");
+        let beginDate = $("#begin-date");
+        let endDate = $("#end-date");
+        endDate.val(getCurrentDateInISOFormat());
+        beginDate.val(getOffsetDateInISOFormat(-6));
+        let table = $('#kt_datatable').DataTable({
+            dom: `
+            <'row'
+                <'col-sm-12'tr>
+            >
+            <'row' 
+                <'col-sm-12 col-md-7'p>
+                <'col-sm-12 col-md-2 pl-15 pt-2'l>
+                <'col-sm-12 col-md-3'i>
+            >`,
+            responsive: true,
+            searchDelay: 500,
+            processing: true,
+            serverSide: true,
+            autoWidth: false,
+            language: {
+                lengthMenu: "_MENU_",
+                info: "Showing _START_ - _END_ of _TOTAL_",
+                infoFiltered: "",
+                loadingRecords: '&nbsp;',
+                processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+            },
+            ajax: {
+                url: '/api/memberhistory/datatables/' + $('#memberSeq').val(),
+                type: 'POST',
+                contentType: 'application/json',
+                dataSrc: "data",
+                data: function(d) {
+                    d.beginDate = beginDate.val();
+                    d.endDate = endDate.val();
+                    return JSON.stringify(d);
                 },
-                pageSize: 10,
             },
-
-            // layout definition
-            layout: {
-                scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
-                footer: false // display/hide footer
-            },
-
-            // column sorting
-            sortable: false,
-
-            pagination: true,
-
-            search: {
-                input: $('#kt_datatable_search_query'),
-                key: 'generalSearch'
-            },
-
-            // columns definition
-            columns: [{
-                field: 'team.teamSeq',
-                title: '#',
-                width: 20,
-                textAlign: 'left',
-            }, {
-                field: 'team.localName',
-                title: 'TEAM',
-				textAlign: 'center',
-            },  {
-                field: 'applyBeginDate',
-                title: 'START',
- 				type: 'String',
-				textAlign: 'right',
-            },  {
-                field: 'applyBeginDate',
-				title: 'END',
-				type: 'String',
-				textAlign: 'left',
-            }, 
-			{
-                field: 'teamManagerFlag',
-                title: 'TEAM MANAGER',
-				textAlign: 'center',
-				template: function(row) {
-					var status = {
-					'Y': {'title': 'YES', 'class': 'label-light-primary'},
-					'N': {'title': 'NO', 'class': ' label-light-danger'},
-				};
-				return '<span class="label label-inline font-weight-bold label-lg">' + status[row.teamManagerFlag].title + '</span>';
-			},
-				
-				
-            },
-			{
-                field: 'teamLeadFlag',
-                title: ' TEAM LEAD ',
-				textAlign: 'center',
-				template: function(row) {
-					var status = {
-					'Y': {'title': 'YES', 'class': 'label-light-primary'},
-					'N': {'title': 'NO', 'class': ' label-light-danger'},
-				};
-				return '<span class="label label-inline font-weight-bold label-lg">' + status[row.teamLeadFlag].title + '</span>';
-			},
-            },
-			{
-                field: 'applyBeginDate',
-                title: 'EDIT DATE',
-                type: 'date',
-                format: 'MM  /DD / YYYY',
-				textAlign: 'center',
-            }, 
-			{
-                field: 'team.justification',
-                title: 'Justification',
-				textAlign: 'center',
-            }
-
-			]
-
-        });
-
-        $('#kt_datatable_search_teamManager').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'teamManagerFlag');
-
-			datatable.table().draw();
-        });
-
-        $('#kt_datatable_search_teamLead').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'teamLeadFlag');
-			datatable.table().draw();
-        });
-
-        $('#kt_datatable_search_teamManager, #kt_datatable_search_teamLead').selectpicker();
-
-
-	$('#reset').on('click', function(e) {
-			e.preventDefault();
-			$('.datatable-input').each(function() {
-				$(this).val('');
-				$(this).prop("checked", false);
-			});
-			location.href = "/member/belong/" + $("#memberSeq").val();
-		});
-		
-    };
-
-	    var history = function() {
-		
-        var datatable = $('#member_history').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'remote',
-                source: {
-                    read: {
-                        url: '/memberhistory/datatable/' + $("#history_name").val(),
-						params: {
-						}
-                    },
+            columnDefs: [
+                {
+                    targets: [5, 6, 7],
+                    sortable: false
                 },
-                pageSize: 10,
-            },
+                {
+                    targets: [ 4, 5],
+                    width: 120,
+                },
+                {
+                    targets: '_all',
+                    className: 'text-center',
+                }
+            ],
+            columns: [
+                {
+                    target: 0,
+                    title: "#",
+                    data: 'historySeq',
+                }, 
+                {
+                    target: 1,
+                    title: "NAME",
+                    data: 'name'
+                },
+                {
+                    target: 2,
+                    title: "POSITION",
+                    data: 'position'
+                },
+                {
+                    target: 3,
+                    title: "CAREER",
+                    data: 'career'
+                },
+                {
+                    target: 4,
+                    title: "JOININGDATE",
+                    data: 'joiningDate',
+                    render: function (data){
+                    var output = '';
+                    output =
+                    '<div class="align-items-center">\
+                            <h7> '+ data.substring(0,4) + '-'+ data.substring(4,6) + '-'+ data.substring(6,8) + '</h7> </div>\
+                    </div>';
+                        
+                        return output;
+                    }
+                },
+                {
+                    target: 5,
+                    title: "CAREER",
+                    data: 'career',
+                },
+                {
+                    target:6,
+                    title: "LEVEL",
+                    data: 'level',
 
-            // layout definition
-            layout: {
-                scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
-                footer: false // display/hide footer
-            },
-
-            // column sorting
-            sortable: true,
-
-            pagination: true,
-
-            search: {
-                input: $('#kt_datatable_search_query'),
-                key: 'generalSearch'
-            },
-
-            // columns definition
-            columns: [{
-                field: 'historySeq',
-                title: '#',
-                width: 20,
-                textAlign: 'left',
-            }, {
-                field: 'name',
-                title: 'NAME',
-				width: 20,
-				textAlign: 'left',
-            },  {
-                field: 'position',
-                title: 'POSITION',
-				textAlign: 'center',
-            }, {
-                field: 'joiningDate',
-                title: 'JOININGDATE',
-                type: 'date',
-                format: 'MM  /DD / YYYY',
-				textAlign: 'center',
-            }, 
-			{
-                field: 'career',
-                title: 'CAREER',
-				textAlign: 'center',
-            },
-			{
-                field: 'level',
-                title: 'LEVEL',
-				textAlign: 'center',
-            },
-			{
-                field: 'useFlag',
-                title: 'EDIT COMAPNY OKR',
-				textAlign: 'center',
-            },
-			{
-                field: 'useFlag',
-                title: 'ACTIVE',
-				textAlign: 'center',
-				template: function(row) {
-					var status = {
-					'Y': {'title': 'Active', 'class': 'label-light-primary'},
-					'N': {'title': 'Inactive', 'class': ' label-light-danger'},
-				};
-				return '<span class="label ' + status[row.useFlag].class + ' label-inline font-weight-bold label-lg">' + status[row.useFlag].title + '</span>';
-			},
-            },
-			{
-                field: 'justification',
-                title: 'Justification',
-				textAlign: 'center',
-            }
-
-			]
-
+                },
+                {
+                    target: 7,
+                    title: "JUSTIFICATION",
+                    data: 'justification',
+                 },
+            ],
         });
-    };
 
+        $("#search-button").on('click', function (){
+            let searchValue = searchBox.val();
+            table.columns(7).search(searchValue).draw();
+        });
+        $("#reset-button").on('click', function (){
+            searchBox.val("");
+            table.columns(7).search("");
+            endDate.val(getCurrentDateInISOFormat());
+            beginDate.val(getOffsetDateInISOFormat(-6));
+            table.ajax.reload();
+        })
+    };
     return {
-        // public functions
         init: function() {
-            history();
-			belong();
-
-        }
+            initTable1();
+        },
     };
 }();
 
-
-
-jQuery(document).ready(function() {
-    KTDatatableJsonRemoteDemo.init();
-
-	if ($('input[name=kt_datatable_search_teamManager]').is(":checked")) {
-    $('input[name=kt_datatable_search_teamManager]').val('Y');
-	} else {
-    $('input[name=kt_datatable_search_teamManager]').val('N');
-	}
-
-
-	/*
-	$('#hisotry_date').click(function(){
-	var from = $("input[name=from]").val();
-	var to = $("input[name=to]").val();
-	var justification = $("input[name=justification]").val();
-	var dateDto = {
-		'from' : from,
-		'to' : to,
-		'justification' : justification
-	};
-	alert("from : "+dateDto.from+" to : "+ dateDto.to + " js : " + dateDto.justification);
-
-
-	$.ajax({
-	url: '/member/date',
-	type: "GET",
-	dataType: "json",
-	data: dateDto,
-	success: function(data) {
-		console.log(data);
-	}, error: function(request,status,error) {
-		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	}
-	});
-
-});*/	
-
+$(document).ready(function() {
+    KTDatatablesDataSourceAjaxServer.init();
+    $("#begin-date, #end-date").datepicker({
+        rtl: KTUtil.isRTL(),
+        todayBtn: "linked",
+        clearBtn: true,
+        todayHighlight: true,
+        templates: "arrows",
+    });
 });
+
+function formatStringtoDate(instant){
+    if (instant === null) return "";
+    let year = instant.subString(0,4);
+    let month = instant.subString(4,6);
+    let day = instant.subString(6,8);
+    return year + "/" + month + "/" + day;
+}

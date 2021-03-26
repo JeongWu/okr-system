@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Team History</title>
+    <meta name="description" content="Page with empty content"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <style>
+        table tr td{
+            padding: 5px;
+        }
+        .pagination {
+            justify-content: start !important;
+        }
+        .dataTables_length{
+            text-align: right !important;
+        }
+    </style>
+    <link rel="stylesheet" href="assets/css/pages/datatables.bundle.css">
+    <link href="/assets/css/pages/teams/wizard-3.css?v=7.0.6" rel="stylesheet" type="text/css"/>
+    
+</head>
+
+<body id="kt_body"
+      class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+
+<div layout:fragment="content" class="container">
+    <div class="card card-custom">
+   		<input type="text" id="param" th:value="${id}" hidden/>
+        <!--begin::Card header-->
+         <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="step-second" data-wizard-clickable="true">
+            <!--begin: Wizard Nav-->
+            <div class="wizard-nav">
+                <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
+    
+                    <!--begin::Wizard Step 1 Nav-->
+                    <div class="wizard-step" data-wizard-type="step">
+                        <div class="wizard-label">
+                            <h3 class="wizard-title">
+                                <span>1.</span> Team Details
+                            </h3>
+                            <div class="wizard-bar"></div>
+                        </div>
+                    </div>
+                    <!--end::Wizard Step 1 Nav-->
+    
+                    <!--begin::Wizard Step 2 Nav-->
+                    <div class="wizard-step" >
+                        <div class="wizard-label">
+                            <h3 class="wizard-title">
+                                <a th:href="@{/team-histories/team-members/} + ${id}">
+                                <span>2.</span> Team Member
+                            </a>
+                            </h3>
+                            <div class="wizard-bar"></div>
+                        </div>
+                    </div>
+                     <!--end::Wizard Step 2 Nav-->
+                </div>
+            </div>
+    </div>
+        
+        <!--end::Card header-->
+        <div class="card-body">
+            <!--begin: Filter-->
+            <table>
+                <tr>
+                    <td class="col-form-label">Edit Period</td>
+                    <td></td>
+                    <td></td>
+                    <td class="col-form-label">Justification</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="input-group date" >
+                            <input type="text" class="form-control" readonly value="" id="begin-date"/>
+                            <span class="input-group-text">
+                                <i class="la la-calendar"></i>
+                            </span>
+                        </div>
+                    </td>
+                    <td style="vertical-align: center; text-align:center;">~</td>
+                    <td>
+                        <div class="input-group date" >
+                            <input type="text" class="form-control" readonly value="" id="end-date"/>
+                            <span class="input-group-text">
+                                <i class="la la-calendar"></i>
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group" >
+                            <input type="text" class="form-control" placeholder="Search" id="justification-search"/>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="submit" class=" col-sm-12 form-control btn button-color btn-primary
+                                btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" id="search-button">
+                            Search
+                        </button>
+                    </td>
+                    <td>
+                        <button type="submit" class=" col-sm-12 form-control btn button-color btn-secondary
+                                btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" id="reset-button">
+                            Reset
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <!--end: Filter-->
+            <!--begin: Datatable-->
+            <div class="">
+                <table class="table table-hover" id="kt_datatable">
+                </table>
+            </div>
+            <!--end: Datatable-->
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/js/datatables.bundle.js}"></script>
+    <script src="/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6"></script>
+    <script src="/assets/js/pages/custom/teams/wizard-3.js?v=7.0.6"></script>
+    <script th:src="@{/assets/js/pages/custom/teams/team-histories.js}"></script>
+</th:block>
+
+</body>
+<!--end::Body-->
+
+</html>

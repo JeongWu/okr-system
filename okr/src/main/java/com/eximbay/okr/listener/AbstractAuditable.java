@@ -18,15 +18,15 @@ import java.time.Instant;
 public class AbstractAuditable {
     @CreatedBy
     @Column(name = "REG_USER_ID")
-    protected String createdBy = "system";
+    protected String createdBy;
 
     @LastModifiedBy
     @Column(name = "MOD_USER_ID")
-    protected String updatedBy = "system";
+    protected String updatedBy;
 
     @CreatedDate
     @Column(name = "REG_DT")
-    protected Instant createdDate;
+    protected Instant createdDate = Instant.now();
 
     @LastModifiedDate
     @Column(name = "MOD_DT")

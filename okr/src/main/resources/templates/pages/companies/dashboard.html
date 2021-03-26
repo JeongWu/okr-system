@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout.html}">
+<head>
+    <title>Company Dashboard</title>
+<!--    <style>-->
+<!--        .apexcharts-menu-icon{-->
+<!--            margin-top: 40px;-->
+<!--        }-->
+<!--    </style>-->
+</head>
+<body>
+<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+    <!--begin::Dropdown-->
+    <div class="btn-group ml-2 pl-0 py-4 w-120px mr-5">
+        <select class="form-control datatable-input"
+                id="quarter-select" data-col-index="1" name="quarter-select">
+            <option th:each="quarter:${model.quarters}" th:value="${quarter}" th:text="${quarter}"
+                    th:selected="${quarter.equals(model.currentQuarter)}"></option>
+        </select>
+    </div>
+    <!--end::Dropdown-->
+    <a href="#" th:if="${model.addable}"
+       class="btn btn-primary btn-sm button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">Add
+        OKR</a>
+</div>
+<div layout:fragment="content" class="container">
+    <div class="company-chart row">
+        <div class="card card-custom col-12">
+            <!--begin::Card header-->
+            <div th:fragment="card-header" class="card-header card-header-tabs-line nav-tabs-line-3x">
+                <!--begin::Toolbar-->
+                <div class="card-toolbar">
+                    <ul class="nav nav-tabs nav-bold nav-tabs-line nav-tabs-line-3x">
+                        <!--begin::Item-->
+                        <li class="nav-item mr-3">
+                            <a class="nav-link active" style="padding: 10px 10px">
+                                <span class="nav-text font-size-h3-sm" th:text="Company"></span>
+                            </a>
+                        </li>
+                        <!--end::Item-->
+                    </ul>
+                </div>
+                <!--end::Toolbar-->
+                <a th:href="'/companies/okr?quarter='+ ${model.currentQuarter}" class="btn btn-light btn-sm button-color btn-fixed-height font-weight-bold px-2 mr-2 w-120px justify-content-center align-self-center"
+                    >View OKR</a>
+            </div>
+            <!--end::Card header-->
+            <div class="card-body px-0" style="padding-top: 5px">
+                <div id="company-chart"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="card card-custom mr-6" style="width: 49%">
+            <!--begin::Card header-->
+            <div th:replace="~{pages/fragments/custom/card :: card-header(content='Teams')}"></div>
+            <!--end::Card header-->
+            <div class="card-body px-0">
+                <div class="px-5 aside-secondary d-flex flex-row-fluid">
+                    <div class="flex-row-fluid mb-7 mt-5 align-content-center justify-content-center max-h-300px scroll scroll-push " data-scroll="true">
+                        <div th:each="team:${model.teams}"
+                             th:insert="~{pages/fragments/custom/card ::progress-bar}"
+                             th:with="name=${team.name}, progress=${team.progress}, thisWeekProgress=${team.thisWeekProgress}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card card-custom" style="width: 49%">
+            <!--begin::Card header-->
+            <div th:replace="~{pages/fragments/custom/card :: card-header(content='Members Top 20')}"></div>
+            <!--end::Card header-->
+            <div class="card-body px-0">
+                <div class="px-5 aside-secondary d-flex flex-row-fluid">
+                    <div class="flex-row-fluid mb-7 mt-5 align-content-center justify-content-center max-h-300px scroll scroll-push " data-scroll="true">
+                        <div th:each="member:${model.members}"
+                             th:insert="~{pages/fragments/custom/card ::progress-bar}"
+                             th:with="name=${member.name}, progress=${member.progress}, thisWeekProgress=${member.thisWeekProgress}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="card card-custom col-12">
+            <!--begin::Card header-->
+            <div th:replace="~{pages/fragments/custom/card :: card-header(content='Recent Feedback')}"></div>
+            <!--end::Card header-->
+            <div class="card-body px-0">
+                <div class="px-5 aside-secondary d-flex flex-row-fluid">
+                    <div class="flex-row-fluid mb-7 mt-5 align-content-center justify-content-center max-h-300px scroll scroll-push " data-scroll="true">
+                        <div th:each="feedback:${model.feedbacks}"
+                             th:insert="~{pages/fragments/custom/card ::feedback}"
+                             th:with="feedback=${feedback}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+<th:block layout:fragment="script">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/assets/js/pages/companies/company-dashboard.js"></script>
+</th:block>
+</html>

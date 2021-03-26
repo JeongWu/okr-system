@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+    <title>Edit Schedule</title>
+</head>
+
+<body>
+	<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+		<a th:href="@{~/okr-schedule-histories}"
+			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">View
+			History</a>
+		<!--begin::Dropdown-->
+
+		<!--end::Dropdown-->
+	</div>
+	<div layout:fragment="content" class="container">
+		<input id="base-url" hidden th:value="okr" />
+		<div>
+			<!-- begin::1st part -->
+			<div class="card card-custom">
+				<!--begin::Card header-->
+				<div class="card-header card-header-tabs-line nav-tabs-line-3x">
+					<!--begin::Toolbar-->
+					<div class="w-50 pt-20 pl-20">
+						<h3 class="text-primary">Quarterly Schedule Details</h3>
+						<div class="w-200px h-4px bg-primary"></div>
+					</div>
+					<!--end::Toolbar-->
+				</div>
+				<!--end::Card header-->
+				<!--begin::Form-->
+
+				<form name="quarterly_form" class="form" id="quarterly_form" th:action="@{~/okr-schedule-edit/save}"
+					method="post" th:object="${dataQuarterlyModel}">
+					<input type="text" th:field="*{scheduleSeq}" hidden />
+					<input type="text" th:field="*{scheduleType}" hidden />
+					<div class="card-body">
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Begin day</label>
+							<div class="col-lg-2">
+								<select name="quarterly_beginDay" class="form-control form-control-solid "
+									id="quarterly_beginDay" th:field="*{beginDay}">
+									<!-- <th:block th:each="d : ${#numbers.sequence(1,31)}" th:field="*{beginDay}"> 
+   								 <option th:value th:text="${d}" ></option>-->
+									<option value="">Select..</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+									<option value="25">25</option>
+									<option value="26">26</option>
+									<option value="27">27</option>
+									<option value="28">28</option>
+									<option value="29">29</option>
+									<option value="30">30</option>
+									<option value="31">31</option>
+								</select>
+								<input type="text" id="selectedQbeginDay" hidden></input>
+							</div>
+							<div class="col-lg-1"></div>
+							<label class="col-lg-2 col-form-label text-right">End day</label>
+							<div class="col-lg-2">
+								<select name="quarterly_endDay" class="form-control form-control-solid"
+									id="quarterly_endDay" th:field="*{endDay}">
+									<option value="">Select..</option>
+									<option value="31">The end of the quarter</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+									<option value="25">25</option>
+									<option value="26">26</option>
+									<option value="27">27</option>
+									<option value="28">28</option>
+									<option value="29">29</option>
+									<option value="30">30</option>
+									<option value="31">31</option>
+								</select>
+								<input type="text" id="selectedQendDay" hidden></input>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Close after</label>
+							<div class="col-lg-2">
+								<select id="quarterly_closeAfterDays" class="form-control form-control-solid"
+									th:field="*{closeAfterDays}">
+									<option value="">Select..</option>
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+								</select>
+								<span class="form-text text-muted">ex)2021.04.05</span>
+							</div>
+							<div class="col-lg-1 pt-3">days</div>
+							<label class="col-lg-2 col-form-label text-right">Remind before</label>
+							<div class="col-lg-4">
+								<select class="form-control select2" name='quarterly_select' id="quarterly_select"
+									multiple style="width:50%;" th:field="*{remindBeforeDaysList}">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Remind time</label>
+							<div class="col-lg-2">
+								<div class="input-group timepicker">
+									<input class="form-control" id="kt_timepicker_2" readonly placeholder="Select time"
+										type="text" th:field="*{remindTime}" />
+									<div class="input-group-append">
+										<span class="input-group-text">
+											<i class="la la-clock-o"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						<div class="row">
+							<div class="col-lg-4"></div>
+							<div class="col-lg-8 text-right">
+								<button form="quarterly_form" type="submit" class="btn btn-primary mr-2">Submit</button>
+								<button type="reset" class="btn btn-secondary">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!--end::Form-->
+			</div>
+			<!-- end::1st part -->
+			<div class="separator separator-dashed my-5"></div>
+
+			<!-- begin::2nd part -->
+			<div class="card card-custom">
+				<!--begin::Card header-->
+				<div class="card-header card-header-tabs-line nav-tabs-line-3x">
+					<!--begin::Toolbar-->
+					<div class="w-50 pt-20 pl-20">
+						<h3 class="text-primary">Monthly Schedule Details</h3>
+						<div class="w-200px h-4px bg-primary"></div>
+					</div>
+					<!--end::Toolbar-->
+				</div>
+				<!--end::Card header-->
+				<!--begin::Form-->
+				<form class="form" id="monthly_form" th:action="@{~/okr-schedule-edit/save}" method="post"
+					th:object="${dataMonthlyModel}">
+					<input type="text" th:field="*{scheduleSeq}" hidden />
+					<input type="text" th:field="*{scheduleType}" hidden />
+					<div class="card-body">
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Begin day</label>
+							<div class="col-lg-2">
+								<select class="form-control form-control-solid" id="monthly_beginDay"
+									th:field="*{beginDay}">
+									<!-- <th:block th:each="d : ${#numbers.sequence(1,31)}" th:field="*{beginDay}"> 
+   								 <option th:value th:text="${d}" ></option>-->
+									<option value="">Select..</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+									<option value="25">25</option>
+									<option value="26">26</option>
+									<option value="27">27</option>
+									<option value="28">28</option>
+									<option value="29">29</option>
+									<option value="30">30</option>
+									<option value="31">31</option>
+								</select>
+							</div>
+							<div class="col-lg-1"></div>
+							<label class="col-lg-2 col-form-label text-right">End day</label>
+							<div class="col-lg-2">
+								<select class="form-control form-control-solid
+								" id="monthly_endDay"
+									th:field="*{endDay}">
+									<option value="">Select..</option>
+									<option value="31">The end of the month</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+									<option value="15">15</option>
+									<option value="16">16</option>
+									<option value="17">17</option>
+									<option value="18">18</option>
+									<option value="19">19</option>
+									<option value="20">20</option>
+									<option value="21">21</option>
+									<option value="22">22</option>
+									<option value="23">23</option>
+									<option value="24">24</option>
+									<option value="25">25</option>
+									<option value="26">26</option>
+									<option value="27">27</option>
+									<option value="28">28</option>
+									<option value="29">29</option>
+									<option value="30">30</option>
+									<option value="31">31</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Close after</label>
+							<div class="col-lg-2">
+								<select id="monthly_closeAfterDays" class="form-control form-control-solid"
+									th:field="*{closeAfterDays}">
+									<option value="">Select..</option>
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+								</select>
+								<span class="form-text text-muted">ex)2021.04.05</span>
+							</div>
+							<div class="col-lg-1 pt-3">days</div>
+							<label class="col-lg-2 col-form-label text-right">Remind before</label>
+							<div class="col-lg-4">
+								<select class="form-control select2" name='monthly_select' id="monthly_select" multiple
+									style="width:50%;" th:field="*{remindBeforeDaysList}">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+									<option value="12">12</option>
+									<option value="13">13</option>
+									<option value="14">14</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Remind time</label>
+							<div class="col-lg-2">
+								<div class="input-group timepicker">
+									<input class="form-control" id="kt_timepicker_2" readonly placeholder="Select time"
+										type="text" th:field="*{remindTime}" />
+									<div class="input-group-append">
+										<span class="input-group-text">
+											<i class="la la-clock-o"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						<div class="row">
+							<div class="col-lg-4"></div>
+							<div class="col-lg-8 text-right">
+								<button form="monthly_form" type="submit" class="btn btn-primary mr-2">Submit</button>
+								<button type="reset" class="btn btn-secondary">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<!--end::Form-->
+			</div>
+			<!-- end::2dn part -->
+			<div class="separator separator-dashed my-5"></div>
+
+			<!-- begin::3rd part -->
+			<div class="card card-custom">
+				<!--begin::Card header-->
+				<div class="card-header card-header-tabs-line nav-tabs-line-3x">
+					<!--begin::Toolbar-->
+					<div class="w-50 pt-20 pl-20">
+						<h3 class="text-primary">Weekly Schedule Details</h3>
+						<div class="w-200px h-4px bg-primary"></div>
+					</div>
+					<!--end::Toolbar-->
+				</div>
+				<!--end::Card header-->
+				<!--begin::Form-->
+				<form class="form" id="weekly_form" th:action="@{~/okr-schedule-edit/save}" method="post"
+					th:object="${dataWeeklyModel}">
+					<input type="text" th:field="*{scheduleSeq}" hidden />
+					<input type="text" th:field="*{scheduleType}" hidden />
+					<div class="card-body">
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Begin day of the week</label>
+							<div class="col-lg-2">
+								<select class="form-control form-control-solid" id="weekly_beginDay"
+									th:field="*{beginDay}">
+									<!-- <th:block th:each="d : ${#numbers.sequence(1,31)}" th:field="*{beginDay}"> 
+   								 <option th:value th:text="${d}" ></option>-->
+									<option value="">Select..</option>
+									<option value="1">Sun</option>
+									<option value="2">Mon</option>
+									<option value="3">Tue</option>
+									<option value="4">Wed</option>
+									<option value="5">Thurs</option>
+									<option value="6">Fri</option>
+									<option value="7">Sat</option>
+								</select>
+							</div>
+							<div class="col-lg-1"></div>
+							<label class="col-lg-2 col-form-label text-right">End day of the week</label>
+							<div class="col-lg-2">
+								<select class="form-control form-control-solid" id="weekly_endDay" th:field="*{endDay}">
+									<option value="">Select..</option>
+									<option value="1">Sun</option>
+									<option value="2">Mon</option>
+									<option value="3">Tue</option>
+									<option value="4">Wed</option>
+									<option value="5">Thurs</option>
+									<option value="6">Fri</option>
+									<option value="7">Sat</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Close after</label>
+							<div class="col-lg-2">
+								<select class="form-control form-control-solid" th:field="*{closeAfterDays}">
+									<option value="">Select..</option>
+									<option value="0">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+								</select>
+								<span class="form-text text-muted">ex)2021.04.05</span>
+							</div>
+							<div class="col-lg-1 pt-3">days</div>
+							<label class="col-lg-2 col-form-label text-right">Remind before</label>
+							<div class="col-lg-4">
+								<select class="form-control select2" name='weekly_select' id="weekly_select" multiple
+									style="width:50%;" th:field="*{remindBeforeDaysList}">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-lg-2 col-form-label text-right">Remind time</label>
+							<div class="col-lg-2">
+								<div class="input-group timepicker">
+									<input class="form-control" id="kt_timepicker_2" readonly placeholder="Select time"
+										type="text" th:field="*{remindTime}" />
+									<div class="input-group-append">
+										<span class="input-group-text">
+											<i class="la la-clock-o"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						<div class="row">
+							<div class="col-lg-4"></div>
+							<div class="col-lg-8 text-right">
+								<button form="weekly_form" type="submit" class="btn btn-primary mr-2">Submit</button>
+								<button type="reset" class="btn btn-secondary">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!--end::Form-->
+			</div>
+			<!-- end::3nd part -->
+			<div class="separator separator-dashed my-5"></div>
+
+		</div>
+	</div>
+
+</body>
+
+<th:block layout:fragment="script">
+	<script th:src="@{/assets/js/pages/crud/forms/widgets/bootstrap-timepicker.js}"></script>
+	<script th:src="@{/assets/js/pages/custom/schedules/schedule-edit.js}"></script>
+</th:block>
+
+
+</html>

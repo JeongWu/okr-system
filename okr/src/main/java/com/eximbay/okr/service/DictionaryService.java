@@ -2,19 +2,22 @@ package com.eximbay.okr.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.eximbay.okr.constant.FlagOption;
-import com.eximbay.okr.dto.CodeGroupDto;
+import com.eximbay.okr.constant.GroupCode;
 import com.eximbay.okr.dto.dictionary.DictionaryDto;
+import com.eximbay.okr.entity.CodeList;
 import com.eximbay.okr.entity.Dictionary;
 import com.eximbay.okr.exception.UserException;
 import com.eximbay.okr.model.dictionary.DictionaryAddModel;
 import com.eximbay.okr.model.dictionary.DictionaryUpdateModel;
 import com.eximbay.okr.model.dictionary.SelectTypeModel;
+import com.eximbay.okr.repository.CodeListRepository;
 import com.eximbay.okr.repository.DictionaryRepository;
 import com.eximbay.okr.service.Interface.ICodeGroupService;
 import com.eximbay.okr.service.Interface.IDictionaryService;
+import com.eximbay.okr.service.specification.CodeListQuery;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import javassist.NotFoundException;
@@ -29,8 +32,9 @@ import ma.glasnost.orika.MapperFacade;
 @AllArgsConstructor
 public class DictionaryService implements IDictionaryService {
     private final DictionaryRepository dictionaryRepository;
+    private final CodeListRepository codeListRepository;
+    private final CodeListQuery codeListQuery;
     private final MapperFacade mapper;
-    private final ICodeGroupService codeGroupService;
 
     @Override
     public List<DictionaryDto> findAll() {
@@ -61,39 +65,30 @@ public class DictionaryService implements IDictionaryService {
     public SelectTypeModel buildSelectTypeModel() {
 
         SelectTypeModel selectTypeModel = new SelectTypeModel();
-
-        Optional<CodeGroupDto> dictionaryTypeDto = codeGroupService.findByGroupCode("DICTIONARY_TYPE");
-        // dictionaryTypeDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList());
-        selectTypeModel.setDictionaryType(dictionaryTypeDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
-
-        Optional<CodeGroupDto> dicCategoryDto = codeGroupService.findByGroupCode("DIC_CATEGORY");
-        selectTypeModel.setCategory(dicCategoryDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
-
-        Optional<CodeGroupDto> dicCategoryGroupDto = codeGroupService.findByGroupCode("DIC_CATEGORY_GROUP");
-        selectTypeModel.setCategoryGroup(dicCategoryGroupDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
-
-        Optional<CodeGroupDto> jobTypeDto = codeGroupService.findByGroupCode("JOB_TYPE");
-    
-        selectTypeModel.setJobType(jobTypeDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
- 
-        // Optional<CodeGroupDto> objectiveLevelDto=
-        // codeGroupService.findByGroupCode("OBJECTIVE_LEVEL");
-        // selectTypeModel.setObjectiveLevel(objectiveLevelDto.get().getCodeLists());
-
-        // Optional<CodeGroupDto> objectiveTypeDto=
-        // codeGroupService.findByGroupCode("OBJECTIVE_TYPE");
-        // selectTypeModel.setObjectiveType(objectiveTypeDto.get().getCodeLists());
-
-        Optional<CodeGroupDto> positionDto = codeGroupService.findByGroupCode("POSITION");
-        selectTypeModel.setPosition(positionDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
-
-        Optional<CodeGroupDto> taskIndicatorDto = codeGroupService.findByGroupCode("TASK_INDICATOR");
-        selectTypeModel.setTaskIndicator(taskIndicatorDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
-        Optional<CodeGroupDto> taskMetricDto = codeGroupService.findByGroupCode("TASK_METRIC");
-        selectTypeModel.setTaskMetric(taskMetricDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
-        Optional<CodeGroupDto> taskTypeDto = codeGroupService.findByGroupCode("TASK_TYPE");
-        selectTypeModel.setTaskType(taskTypeDto.get().getCodeLists().stream().filter(m->m.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
-
+        List<CodeList> availableDictinaryType = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.DICTIONARY_TYPE));
+        selectTypeModel.setDictionaryType(availableDictinaryType);
+       
+        List<CodeList> availableCategory = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.DIC_CATEGORY));
+        selectTypeModel.setCategory(availableCategory);
+       
+        List<CodeList> availableCategoryGroup = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.DIC_CATEGORY_GROUP));
+        selectTypeModel.setCategoryGroup(availableCategoryGroup);
+       
+        List<CodeList> availableJobType = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.JOB_TYPE));
+        selectTypeModel.setJobType(availableJobType);
+        
+        List<CodeList> availablePosition = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.POSITION));
+        selectTypeModel.setPosition(availablePosition);
+        
+        List<CodeList> availableTaskType = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.TASK_TYPE));
+        selectTypeModel.setTaskType(availableTaskType);
+        
+        List<CodeList> availableTaskMetric = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.TASK_METRIC));
+        selectTypeModel.setTaskMetric(availableTaskMetric);
+        
+        List<CodeList> avalableTaskIndicator = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.TASK_INDICATOR));
+        selectTypeModel.setTaskIndicator(avalableTaskIndicator);
+        
         return selectTypeModel;
 
     }

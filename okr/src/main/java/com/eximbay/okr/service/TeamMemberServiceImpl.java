@@ -127,4 +127,24 @@ public class TeamMemberServiceImpl implements ITeamMemberService {
         return currentMembers;
     }
 
+    
+    @Override
+    public List<TeamMemberDto> findSearchBelong(MemberDto memberDto) {
+        Member member = mapper.map(memberDto, Member.class);
+        List<TeamMember> teamMembers = teamMemberRepository.findAll();
+        List<TeamMember> teams = teamMembers.stream().filter(m->m.getTeamMemberId().getMember().getMemberSeq().equals(member.getMemberSeq()))
+        .collect(Collectors.toList());
+        return mapper.mapAsList(teams, TeamMemberDto.class);
+    }
+
+      
+    @Override
+    public List<TeamMemberDto> findSearchBelongTeam(TeamDto teamDto) {
+    	Team team = mapper.map(teamDto, Team.class);
+        List<TeamMember> teamMembers = teamMemberRepository.findAll();
+        List<TeamMember> teams = teamMembers.stream().filter(m->m.getTeamMemberId().getTeam().getTeamSeq().equals(team.getTeamSeq()))
+        								.collect(Collectors.toList());
+        return mapper.mapAsList(teams, TeamMemberDto.class);
+    }
+
 }

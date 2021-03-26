@@ -8,13 +8,19 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @Table(name = "objective")
 @Entity
-@ToString(exclude = { "company", "division", "team", "member"})
-@EqualsAndHashCode(callSuper = true, exclude = { "company", "division", "team", "member"})
+@ToString(exclude = {"company", "division", "team", "member"})
+@EqualsAndHashCode(callSuper = true, exclude = {"company", "division", "team", "member"})
 public class Objective extends AbstractAuditable {
+
+    public static final String OBJECTIVE_TYPE_COMPANY = "COMPANY";
+    public static final String OBJECTIVE_TYPE_DIVISON = "DIVISION";
+    public static final String OBJECTIVE_TYPE_TEAM = "TEAM";
+    public static final String OBJECTIVE_TYPE_MEMBER = "MEMBER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,16 +39,12 @@ public class Objective extends AbstractAuditable {
     @Column(name = "END_DATE", length = 8, nullable = false)
     private String endDate;
 
-    @Column(name = "OBJECTIVE_LEVEL", length = 10, nullable = false)
-    private String objectiveLevel;
+    @Column(name = "OBJECTIVE_TYPE", length = 10, nullable = false)
+    private String objectiveType;
 
     @ManyToOne
     @JoinColumn(name = "COMPANY_SEQ")
     private Company company;
-
-    @ManyToOne
-    @JoinColumn(name = "DIVISION_SEQ")
-    private Division division;
 
     @ManyToOne
     @JoinColumn(name = "TEAM_SEQ")
@@ -61,9 +63,6 @@ public class Objective extends AbstractAuditable {
     @Column(name = "PROGRESS", length = 11, nullable = false)
     private int progress = 0;
 
-    @Column(name = "LATEST_UPDATE_DT", nullable = false)
-    private Instant lastUpdateDate;
-
     @Column(name = "CLOSE_FLAG", length = 1, nullable = false)
     private String closeFlag = FlagOption.N;
 
@@ -72,4 +71,10 @@ public class Objective extends AbstractAuditable {
 
     @Column(name = "CLOSE_DATE")
     private Instant closeDate;
+
+    @Column(name = "LIKES", length = 11, nullable = false)
+    private Integer likes = 0;
+
+    @OneToMany(mappedBy = "objective")
+    private List<KeyResult> keyResults;
 }

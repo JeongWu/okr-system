@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Add OKRs</title>
+    <style>
+        table thead th, table tr td {
+            border-bottom: none !important;
+            border-top: none !important;
+        }
+        table tr td {
+            text-align: center !important;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+    <a th:href="@{~/}"
+       class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">Back</a>
+    <!--begin::Dropdown-->
+    <div class="btn-group ml-2 pl-0 py-4 w-120px">
+
+        <button type="button" class="btn btn-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Submit</button>
+
+        <div class="dropdown-menu w-200px p-0 m-0 dropdown-menu-right">
+            <ul class="navi py-5">
+                <li class="navi-item">
+                    <button form="formOKRs" type="submit" name="action" value="saveAndAddNew" class="navi-button w-100 submit-option">
+                            <span class="navi-icon">
+                                <i class="flaticon2-medical-records"></i>
+                            </span>
+                        <span class="navi-text">Save &amp; add new</span>
+                    </button>
+                </li>
+                <li class="navi-item">
+                    <button form="formOKRs" type="submit" name="action" value="saveAndRelation" class="navi-button w-100 submit-option">
+                            <span class="navi-icon">
+                                <i class="flaticon-share"></i>
+                            </span>
+                        <span class="navi-text">Save &amp; relation</span>
+                    </button>
+                </li>
+                <li class="navi-item">
+                    <button form="formOKRs" type="submit" name="action" value="saveAndExit" class="navi-button w-100 submit-option">
+                            <span class="navi-icon">
+                                <i class="flaticon2-hourglass-1"></i>
+                            </span>
+                        <span class="navi-text">Save &amp; exit</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <!--end::Dropdown-->
+</div>
+
+<div layout:fragment="content" class="container">
+    <div>
+        <!--begin::Card-->
+        <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
+            <div class="card-body container">
+                <div class="w-50 pl-5 pb-10">
+                    <h3 class="text-primary">OKR Level Guideline</h3>
+                    <div class="w-200px h-4px bg-primary"></div>
+                </div>
+                <div th:each="objLevel : ${model.objectiveLevels}" class="row no-gutters align-items-center mb-5">
+                    <div class="col col-1 symbol symbol-70" style="margin-left: 4.1667%">
+                        <div class="symbol-label" style="background-color: #5fc9b1" th:text="${'LEVEL ' + objLevel.sortOrder}"></div>
+                    </div>
+                    <div class="col col-10 my-lg-0 my-2">
+                        <span class="text-dark-75 font-weight-bolder text-hover-primary font-size-h4" th:text="${objLevel.codeName}">codeName</span>
+                        <div class="font-size-h6" th:text="${objLevel.description}">description</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--end::Card-->
+        <form id="formOKRs" class="form">
+            <!--begin::Card-->
+            <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label" style="font-size: larger">Objective</small></h3>
+                    </div>
+                </div>
+                <div class="card-body container-fluid">
+                    <div class="row ml-10">
+                        <div class="col col-2 col-form-label d-flex align-items-center">
+                            <span class="font-size-lg">Quarter</span>
+                        </div>
+                        <div class="col col-2">
+                            <input type="text" hidden th:value="${model.year}" id="year">
+                            <input type="text" hidden th:value="${model.quarter}" id="quarter">
+                            <input type="text" class="quarter form-control form-control-lg form-control-solid pl-5 input disabled" disabled th:value="${model.year + '-' + model.quarter + 'Q'}">
+                        </div>
+                        <div class="col col-3">
+                            <input type="text" class="form-control form-control-lg form-control-solid text-center" disabled th:value="${model.quarterBeginDate + ' ~ ' + model.quarterEndDate}">
+                        </div>
+                    </div>
+                    <div class="row ml-10 pt-10">
+                        <div class="col col-2 col-form-label d-flex align-items-center">
+                            <span class="font-size-lg">Objective *</span>
+                        </div>
+                        <div class="col col-8 form-group">
+                            <input type="text" name="objective" id="objective" class="form-control form-control-lg w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Card-->
+
+            <!--begin::Card-->
+            <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label" style="font-size: larger">Key Results</small></h3>
+                    </div>
+                </div>
+                <div class="card-body container-fluid">
+                    <div class="datatable datatable-head-custom datatable-default datatable-primary datatable-loaded h-100">
+                        <table id="keyResultTable" class="table datatable-table">
+                            <thead>
+                                <tr class="datatable-head">
+                                    <th class="text-center w3-24">LEVEL*</th>
+                                    <th class="text-center w6-12">KEY RESULT*</th>
+                                    <th class="text-center w4-12">PROPERTIES</th>
+                                    <th class="text-center w1-24">ACTION</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <button type="button" id="btnAddKeyResult" class="btn btn-primary btn-icon flaticon2-plus"></button>
+                    </div>
+                </div>
+            </div>
+            <!--end::Card-->
+        </form>
+    </div>
+
+    <!--begin::Modal-->
+    <div th:replace="pages/common/modal::dictionary-keyresult">
+    </div>
+    <!--end::Modal-->
+</div>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+            localStorage.setItem('objLevels', JSON.stringify([[${model.objectiveLevels}]]));
+            localStorage.setItem('taskTypes', JSON.stringify([[${model.taskTypes}]]));
+            localStorage.setItem('taskMetrics', JSON.stringify([[${model.taskMetrics}]]));
+            localStorage.setItem('taskIndicators', JSON.stringify([[${model.taskIndicators}]]));
+        /*]]*/
+    </script>
+    <!--for using modal-->
+    <script src="/assets/js/pages/custom/common/modal.js"></script>
+    <script src="/assets/js/datatables.bundle.js"></script>
+    <script src="/assets/js/pages/companies/okrs/company-add-okr.js"></script>
+</th:block>
+
+</body>
+</html>
