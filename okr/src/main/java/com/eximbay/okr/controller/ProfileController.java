@@ -56,8 +56,6 @@ public class ProfileController {
 
         Optional<MemberDto> member = memberService.findById(profileUpdateModel.getMemberSeq());
 
-        mapper.map(profileUpdateModel, member.get());
-
         if (member.isEmpty())
             throw new UserException(
                     new NotFoundException("Not found Object with Id = " + profileUpdateModel.getMemberSeq()));
