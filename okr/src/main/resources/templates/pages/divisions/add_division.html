@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout}">
+<head>
+	<title>Add Division</title>
+</head>
+<body th:object="${dataModel}">
+
+<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+	<a th:href="@{~/divisions}"
+	   class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">Back</a>
+	<!--begin::Dropdown-->
+	<div class="btn-group ml-2 pl-0 py-4 w-120px">
+
+		<button type="button" class="btn btn-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Submit</button>
+
+		<div class="dropdown-menu w-200px p-0 m-0 dropdown-menu-right">
+			<ul class="navi py-5">
+				<li class="navi-item">
+					<button form="divisionForm" type="submit" name="action" value="saveAndAddNew" th:field="*{action}"
+					        class="navi-button w-100">
+                            <span class="navi-icon">
+                                <i class="flaticon2-medical-records"></i>
+                            </span>
+						<span class="navi-text">Save &amp; add new</span>
+					</button>
+				</li>
+				<li class="navi-item">
+					<button form="divisionForm" type="submit" name="action" value="saveAndAddMember" th:field="*{action}"
+					        class="navi-button w-100">
+                            <span class="navi-icon">
+                                <i class="flaticon-user-add"></i>
+                            </span>
+						<span class="navi-text">Save &amp; add member</span>
+					</button>
+				</li>
+				<li class="navi-item">
+					<button form="divisionForm" type="submit" name="action" value="saveAndExit" th:field="*{action}"
+					        class="navi-button w-100">
+                            <span class="navi-icon">
+                                <i class="flaticon2-hourglass-1"></i>
+                            </span>
+						<span class="navi-text">Save &amp; exit</span>
+					</button>
+				</li>
+			</ul>
+		</div>
+
+	</div>
+	<!--end::Dropdown-->
+</div>
+<div layout:fragment="content" class="container">
+	<div class="card card-custom">
+		<div class="card-body p-0">
+			<div class="w-50 pt-20 pl-20">
+				<h3 class="text-primary">Division Details</h3>
+				<div class="w-200px h-4px bg-primary"></div>
+			</div>
+			<div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
+				<div class="col-10">
+					<form class="form fv-plugins-bootstrap fv-plugins-framework" id="divisionForm"
+					      th:action="@{~/divisions/add}" method="post">
+						<!--begin::Row-->
+						<div class="row">
+							<div class="col-xl-12 my-2">
+								<input type="hidden" th:field="*{company}" name="company">
+								<!--begin::Group-->
+								<div class="form-group row">
+									<label style="padding-right: 0" class="col-3 col-form-label text-left">Company</label>
+									<div class="col-8">
+										<input name="name" id="companyName" disabled th:value="${dataModel.company.localName}"
+										       class="form-control form-control-lg form-control-solid" type="text" required
+										       th:field="*{company.localName}">
+									</div>
+								</div>
+								<!--end::Group-->
+								<!--begin::Group-->
+								<div class="form-group row">
+									<label style="padding-right: 0" class="col-3 col-form-label text-left">Division
+										Name
+										(English)*</label>
+									<div class="col-8">
+										<input name="name" id="division_name_english_"
+										       class="form-control form-control-lg form-control-solid" type="text" required
+										       th:field="*{name}">
+									</div>
+								</div>
+								<!--end::Group-->
+								<!--begin::Group-->
+								<div class="form-group row">
+									<label class="col-3 col-form-label text-left">Division
+										Name (Korean)*</label>
+									<div class="col-8">
+										<input name="localName" id="division_name_korean"
+										       class="form-control form-control-lg form-control-solid" type="text" required
+										       value="" th:field="*{localName}">
+									</div>
+								</div>
+								<!--end::Group-->
+								<!--begin::Group-->
+								<div class="form-group row mb-2">
+									<label class="col-3 col-form-label text-left">Active</label>
+									<div class="col-8">
+                                            <span class="switch switch-icon">
+                                                <label>
+                                                    <input type="checkbox" checked="checked" name="select"
+                                                           th:field="*{useFlag}">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+									</div>
+								</div>
+								<!--end::Group-->
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<th:block layout:fragment="script">
+	<script src="/assets/js/jquery.validate.js"></script>
+	<script type="text/javascript">
+        $().ready(function() {
+            $("#divisionForm").validate();
+        })
+	</script>
+</th:block>
+</body>
+
+</html>

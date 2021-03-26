@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout.html}">
+<head>
+    <title>Teams</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <input id="base-url" hidden th:value="teams" />
+    <!--begin::Row-->
+    <div class="row">
+        <div class="col-xl-6" th:each="team, iterStart: ${model.teamsPage}">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b card-stretch">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <!--begin::Section-->
+                    <div class="d-flex align-items-center">
+                        <!--begin::Pic-->
+                        <div class="flex-shrink-0 mr-4 symbol symbol-65 symbol-circle">
+                            <img th:src="@{/assets/media/image/1.jpg}" alt="No image">
+                        </div>
+                        <!--end::Pic-->
+                        <!--begin::Info-->
+                        <div class="d-flex flex-column mr-auto">
+                            <!--begin: Title-->
+                            <span
+                                    class="card-title text-hover-primary font-weight-bolder font-size-h5 text-dark mb-1"
+                                    th:text="${team.localName}">
+
+                                </span>
+                            <span th:if="${team.leaderOrManager}" class="text-muted font-weight-bold"
+                                  th:text="${team.leaderOrManager.localName}">
+                                </span>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Info-->
+                        <!--begin::Toolbar-->
+                        <div class="card-toolbar mb-auto">
+                            <div class="dropdown dropdown-inline" data-toggle="tooltip" title=""
+                                 data-placement="left" data-original-title="Quick actions">
+                                <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="ki ki-bold-more-hor"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <!--begin::Navigation-->
+                                    <ul class="navi navi-hover">
+                                        <li class="navi-item" th:if="${team.isEditable}">
+                                            <a th:href="@{~/teams/view/edit/{teamSeq}(teamSeq=${team.teamSeq})}"  class="navi-link">
+                                                
+                                                <span class="navi-text">Edit Team</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!--end::Navigation-->
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Toolbar-->
+                    </div>
+                    <!--end::Section-->
+                    <!--begin::introduction and member-->
+                    <div class="d-flex flex-wrap mt-5">
+                        <div class="col-7 d-flex flex-column pl-0">
+                            <p th:text="${team.introduction}" class="limit-5-lines" th:title="${team.introduction}"
+                               data-toggle="tooltip" data-placement="right"></p>
+                        </div>
+                        <!--begin: member -->
+                        <div class="col-5 flex-column">
+                            <!--begin::Item-->
+                            <span class="font-weight-bolder mb-4 d-block text-center">Members</span>
+                            <div class="symbol-group symbol-hover align-items-center justify-content-center">
+                                <div th:each="member, memStat: ${team.members}" th:if="${memStat.index < 5}"
+                                     class="symbol symbol-30 symbol-circle" data-toggle="tooltip"
+                                     th:title="${member.localName}" data-original-title="">
+                                    <img alt="Pic" th:src="@{~/{imgUrl}(imgUrl=${member.image})}">
+                                </div>
+                                <div th:if="${#lists.size(team.members) > 5}"
+                                     class="symbol symbol-30 symbol-circle symbol-light">
+                                        <span class="symbol-label font-weight-bold"
+                                              th:text="${#lists.size(team.members) - 5} + '+'"></span>
+                                </div>
+                            </div>
+                            <!--                                </div>-->
+                            <!--end::Item-->
+                        </div>
+                        <!--end: member -->
+                    </div>
+                    <!--end::introduction and member-->
+
+                    <div class="mt-10 px-5 objective">
+                        <!--begin::Objective 1-->
+                        <div th:each="objective , obStat: ${team.objectives}" th:if="${obStat.index < 3}"
+                             class="flex-row-fluid mb-7 mt-5 align-content-center justify-content-center">
+                                <span class="d-block font-weight-bold mb-2 text-center"
+                                      th:text="${objective.objective}">objective name</span>
+                            <div class="d-flex align-items-center pt-0">
+                                <div class="progress progress-xs mt-2 mb-2 w-100">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                         th:style="${'width: ' + objective.progress + '%;'}" aria-valuenow="50"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="ml-3 font-weight-bolder" th:text="${objective.progress} + '%'"></span>
+                            </div>
+                        </div>
+                        <!--end::Objective 1-->
+
+                        <span class="text-center d-block" th:if="${#lists.size(team.objectives) > 3}"
+                              th:text="${#lists.size(team.objectives) - 3 + ' more objective'}">... more
+                                objective</span>
+                    </div>
+
+
+                </div>
+                <!--end::Body-->
+
+                <!-- begin::Footer -->
+                <div class="card-footer d-flex align-items-sm-center flex-wrap flex-column flex-sm-row">
+                    <div class="d-flex">
+                        <div class="d-flex mr-7">
+                                <span class="font-weight-boldest text-primary ml-2"
+                                      th:text="${123 + ' Key Results'}">... Key Results</span>
+                        </div>
+                        <div class="d-flex mr-7">
+                                <span class="font-weight-boldest text-primary ml-2" th:text="${456 + ' Feedbacks'}">...
+                                    Feedbacks</span>
+                        </div>
+                    </div>
+                    <button type="button"
+                            class="btn btn-primary btn-sm text-uppercase font-weight-bolder mt-5 mt-sm-0 mr-auto mr-sm-0 ml-sm-auto">
+                        details
+                    </button>
+                </div>
+                <!--end::Footer -->
+
+            </div>
+            <!--end::Card-->
+        </div>
+    </div>
+    <!--begin::Pagination-->
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex flex-wrap mr-3">
+            <th:block th:if="${model.teamsPage.hasPrevious()}">
+                <a th:href="@{'/teams?page=0&size=' + ${model.teamsPage.size}}"
+                   class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i
+                        class="ki ki-bold-double-arrow-back icon-xs"></i></a>
+                <a th:href="@{'/teams?page=' + ${model.teamsPage.number - 1} + '&size=' + ${model.teamsPage.size}}"
+                   class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i
+                        class="ki ki-bold-arrow-back icon-xs"></i></a>
+            </th:block>
+            <span th:if="${model.teamsPage.totalPages > 10 && model.teamsPage.number > 5}"
+                  class="btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</span>
+            <a th:each="navItem : ${model.navigationPageNumbers}" th:text="${navItem + 1}"
+               th:href="@{'/teams?page=' + ${navItem} + '&size=' + ${model.teamsPage.size}}"
+               th:class="${'btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1 ' + (navItem == model.teamsPage.number ? 'active' : '')}">#</a>
+
+            <span
+                    th:if="${model.teamsPage.totalPages > 10 && model.teamsPage.number < (model.teamsPage.totalPages -5)}"
+                    class="btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</span>
+
+            <th:block th:if="${model.teamsPage.hasNext()}">
+                <a th:href="@{'/teams?page=' + ${model.teamsPage.number + 1} + '&size=' + ${model.teamsPage.size} }"
+                   class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i
+                        class="ki ki-bold-arrow-next icon-xs"></i></a>
+                <a th:href="@{'teams?page=' + ${model.teamsPage.totalPages -1} + '&size=' + ${model.teamsPage.size} }"
+                   class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i
+                        class="ki ki-bold-double-arrow-next icon-xs"></i></a>
+            </th:block>
+
+        </div>
+        <div class="d-flex align-items-center">
+            <select id="page-size-selection"
+                    class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary"
+                    style="width: 75px;">
+                <option th:selected="${model.teamsPage.size == 10}" value="10">10</option>
+                <option th:selected="${model.teamsPage.size == 20}" value="20">20</option>
+                <option th:selected="${model.teamsPage.size == 30}" value="30">30</option>
+                <option th:selected="${model.teamsPage.size == 50}" value="50">50</option>
+                <option th:selected="${model.teamsPage.size == 100}" value="100">100</option>
+            </select>
+            <span class="text-muted"
+                  th:text="${'Displaying ' + model.teamsPage.numberOfElements + ' of ' + model.teamsPage.totalElements + ' records'}"></span>
+        </div>
+    </div>
+    <!--end::Pagination-->
+</div>
+</body>
+
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        buildPageSizeSelection();
+    </script>
+</th:block>
+
+</html>

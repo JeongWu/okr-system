@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout.html}">
+<head>
+    <title>Division Update</title>
+</head>
+<body>
+<div layout:fragment="right-floating-toolbar">
+    <button type="submit" form="divisionEditForm" class="btn button-color btn-primary btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2">
+        Submit
+    </button>
+</div>
+<div layout:fragment="content" class="container">
+    <input id="base-url" hidden th:value="divisions"/>
+    <div>
+      <div class="card card-custom">
+        <!--begin::Card header-->
+        <div class="card-header card-header-tabs-line nav-tabs-line-3x">
+          <!--begin::Toolbar-->
+          <div class="card-toolbar">
+            <ul class="nav nav-tabs nav-bold nav-tabs-line nav-tabs-line-3x">
+              <!--begin::Item-->
+              <li class="nav-item mr-3">
+                <a class="nav-link active" data-toggle="tab" href="#kt_user_edit_tab_1">
+                  <span class="nav-text font-size-lg">Division Details</span>
+                </a>
+              </li>
+              <!--end::Item-->
+            </ul>
+          </div>
+          <!--end::Toolbar-->
+        </div>
+        <!--end::Card header-->
+        <div class="card-body px-0">
+            <form class="form" id="divisionEditForm" th:action="@{~/divisions/save}" method="post" th:object="${dataModel}">
+                <input type="text" th:field="*{divisionSeq}" hidden/>
+                <div class="tab-content">
+                    <!--begin::Tab-->
+                    <div class="tab-pane show active px-7" id="kt_user_edit_tab_1" role="tabpanel">
+                        <!--begin::Row-->
+                        <div class="row">
+                            <div class="col-xl-2"></div>
+                            <div class="col-xl-7 my-2">
+                                <!--begin::Group-->
+                                <div class="form-group row" >
+                                    <label style="padding-right: 0" class="col-form-label col-3 text-left">Division Name (English)*</label>
+                                    <div class="col-9">
+                                        <input class="form-control form-control-lg form-control-solid" type="text"
+                                               value="" required th:field="*{name}"/>
+                                    </div>
+                                </div>
+                                <!--end::Group-->
+                                <!--begin::Group-->
+                                <div class="form-group row">
+                                    <label class="col-form-label col-3 text-left">Division Name (Korean)*</label>
+                                    <div class="col-9">
+                                        <input class="form-control form-control-lg form-control-solid" type="text"
+                                               value="" required th:field="*{localName}"/>
+                                    </div>
+                                </div>
+                                <!--end::Group-->
+                                <!--begin::Group-->
+                                <div class="form-group row mb-2">
+                                <label class="col-form-label col-3 text-left">Active</label>
+                                <div class="col-9">
+                                        <span class="switch switch-icon">
+                                        <label>
+                                        <input type="checkbox" checked="checked" name="select" th:field="*{useFlag}"/>
+                                        <span></span>
+                                        </label>
+                                        </span>
+                                </div>
+                              </div>
+                                <!--end::Group-->
+                              <!--begin::Group-->
+                              <div class="form-group row">
+                                <label class="col-form-label col-3 text-left">Justification *</label>
+                                <div class="col-9">
+                                  <textarea class="form-control form-control-lg form-control-solid" required th:field="*{justification}"></textarea>
+                                </div>
+                              </div>
+                              <!--end::Group-->
+                            </div>
+                        </div>
+                        <!--end::Row-->
+                    </div>
+                    <!--end::Tab-->
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+</body>
+<th:block layout:fragment="script">
+    <script src="/assets/js/jquery.validate.js"></script>
+    <script type="text/javascript">
+        $().ready(function() {
+            $("#divisionEditForm").validate();
+        })
+    </script>
+</th:block>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+    <title>Dictionary Key Result</title>
+</head>
+
+<body>
+
+    <div layout:fragment="content" class="container">
+        <input id="base-url" hidden th:value="dictionary" />
+        <!--begin::Card-->
+        <div class="card card-custom">
+            <div class="w-50 pt-20 pl-20">
+                <h3 class="text-primary">Dictionary - Key Result</h3>
+                <div class="w-250px h-4px bg-primary"></div>
+
+            </div>
+            <div class="card-body pt-20 pl-20">
+                <!--begin::Search Form-->
+                <div class="mb-7">
+                    <div class="row align-items-center">
+                        <div class="col-lg-9 col-xl-9">
+                            <div class="row align-items-center">
+                                <div class="col-lg-3 mb-lg-0 mb-6">
+                                    <label>Job</label>
+                                    <select class="form-control datatable-input" id="kt_datatable_search_jobType" name="jobType">
+                                        <option value="">Choose...</option>
+                                        <th:block th:each="codeList: ${TypeModel.jobType}">
+                                            <option th:value="${codeList.codeName}"
+                                                th:text="${codeList.codeName}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6  mb-lg-0 mb-6">
+                                    <label>Key Result</label>
+
+                                    <input type="text" class="form-control datatable-input" placeholder="Search..."
+                                        id="kt_datatable_search_sentence" data-col-index="0" name="sentence" />
+
+                                </div>
+                                <div class="col-lg-3 mb-lg-0 mb-6 mt-5 pt-8 mt-lg-0 ">
+                                    <button class="btn btn-primary btn-primary--icon" id="kt_search">
+                                        <span>
+                                            <i class="la la-search"></i>
+                                            <span>Search</span>
+                                        </span>
+                                    </button>
+                                    &nbsp;&nbsp;
+                                    <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+                                        <span>
+                                            <i class="la la-close"></i>
+                                            <span>Reset</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Search Form-->
+                <div class="py-10 py-lg-12 p">
+
+                    <!--begin: Datatable-->
+                    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
+                    </div>
+                    <!--end: Datatable-->
+                </div>
+
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+</body>
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/js/pages/custom/dictionary/keyresult-list.js?v=7.0.6}"></script>
+</th:block>
+
+</html>

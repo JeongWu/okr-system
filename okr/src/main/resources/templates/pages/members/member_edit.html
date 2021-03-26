@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{pages/layout/main_layout.html}" th:with="title='Edit Member', subHeader='Edit Member', mutedHeaderText=null">
+      <!--muted text is blurred text after the subheader text-->
+<!--Specify header here-->
+
+
+<head>
+
+
+</head>
+
+<body>
+
+<!--Create right-floating toolbar if any, remember to use layout:fragment="right-floating-toolbar"-->
+
+<div layout:fragment="right-floating-toolbar">
+        <div class="d-flex align-items-center">
+			<!--begin::Button-->
+			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">
+			Back
+			</a>
+			<!--begin::Dropdown-->
+			<div class="btn-group ml-2">
+				<button type="button" class="btn btn-primary font-weight-bold" onclick="document.getElementById('kt_form').submit();">Submit</button>
+			</div>
+			<!--end::Dropdown-->
+        </div>
+    </div>
+
+
+<!--Main content of every page-->
+
+<div layout:fragment="content">
+    <div class="card card-custom">
+	<div class="card-body p-0">
+        <!--begin: Wizard-->
+        <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="step-first" data-wizard-clickable="true">
+            <!--begin: Wizard Nav-->
+            <div class="wizard-nav">
+                <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
+
+
+                    <!--begin::Wizard Step 1 Nav-->
+                    <div class="wizard-step" data-wizard-type="step">
+                        <div class="wizard-label">
+                            <h3 class="wizard-title">
+    							<span>1.</span> Member Details
+    						</h3>
+                            <div class="wizard-bar"></div>
+                        </div>
+                    </div>
+                    <!--end::Wizard Step 1 Nav-->
+                </div>
+            </div>
+            <!--end: Wizard Nav-->
+    
+            <!--begin: Wizard Body-->
+            <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
+                <div class="col-xl-12 col-xxl-7">
+                    <!--begin: Wizard Form-->
+                    <!-- <a th:href="@{'/order/details/' + ${id} + '/' + ${action}}">  -->
+                    <form class="form" id="kt_form" th:action="@{'/member/update/'+${member.memberSeq}}" method="POST" enctype="multipart/form-data" th:object=${member}>
+                        <!--begin: Wizard Step 1-->
+                       <div class="pb-5" data-wizard-type="step-content">
+                            <!--begin::Input-->
+                              <div class="form-group row">
+                                 <label class="col-xl-3 col-lg-3 col-form-label">Member Name (English) <span class="text-danger">*</span></label>
+                                     <div class="col-lg-9 col-xl-9">
+                                        <input class="form-control form-control-solid form-control-lg" name="name" type="text" th:value="${member.name}"/>
+                                    </div>
+                                </div>
+                            <!--end::Input-->
+    
+                            <!--begin::Input-->
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Member Name (Korean) <span class="text-danger">*</span></label>
+                                <div class="col-lg-9 col-xl-9">
+                                    <input class="form-control form-control-solid form-control-lg" name="localName" type="text" th:value="${member.localName}"/>
+                                </div>
+                            </div>
+                            <!--end::Input-->
+    
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Email Address <span class="text-danger">*</span></label>
+                                <div class="col-lg-9 col-xl-9">
+                                    <div class="input-group input-group-solid input-group-lg">
+                                        <input type="text" class="form-control form-control-solid form-control-lg" name="email" th:value="${member.email}"/>
+                                    </div>
+                                </div>
+                            </div>       
+    
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Contact Phone <span class="text-danger">*</span></label>
+                                <div class="col-lg-9 col-xl-9">
+                                    <div class="input-group input-group-solid input-group-lg">
+    									<input type="text" class="form-control form-control-solid form-control-lg" name="contactPhone" th:value="${member.contactPhone}" placeholder="Phone"/>
+                                    </div>
+                                    <span class="form-text text-muted">Enter valid KR phone number(e.g: 01012345678).</span>
+                                </div>
+                            </div>
+
+
+​							
+
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Introduction</label>
+                            
+                                    <div class="col-lg-3 col-xl-9">
+    									
+                                        <div class="image-input image-input-outline" id="kt_image_4">
+                                            <div class="image-input-wrapper" th:style="'background-image: url('+ ${member.image} +');'"></div>
+    
+                                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                                <i class="fa fa-pen icon-sm text-muted"></i>
+                                                <input type="file" name="picture" accept=".png, .jpg, .jpeg"/>
+                                                <input type="hidden" name="profile_avatar_remove"/>
+                                            </label>
+    
+                                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                                <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                            </span>
+    									</div>                                  
+    									<div class="input-group input-group-solid input-group-lg mt-3">
+    										<textarea class="form-control" th:text="${member.introduction}" name="introduction" rows="3"></textarea>
+    									</div>
+    
+    						</div>          
+    						</div>
+    
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Active</label>
+                                <div class="col-lg-9 col-xl-9">
+                                    <div class="col-3">
+    							<span class="switch switch-icon"> <label> 
+									<span class="switch switch-icon"> <label> <input type="checkbox" th:checked="${(member.useFlag.equals('Y'))}" name="useFlag"/>
+    										<span></span>
+                                        </label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+    					</div>
+    					
+    					<div class="form-group row">
+    						<label class="col-form-label col-xl-3 col-lg-3">Postion</label>
+    						<div class="col-xl-9 col-lg-9">
+    							<!---->
+    							<select class="form-control form-control-lg form-control-solid" name="position">
+    								<option th:selected="${member.position == null}" value="">Choose..</option>
+    								<option th:selected="${member.position.equals('CEO')}" value="CEO">CEO</option>
+    								<option th:selected="${member.position.equals('CTO')}" value="CTO">CTO</option>
+    								<option th:selected="${member.position.equals('DIRECTOR')}" value="DIRECTOR">DIRECTOR</option>
+    								<option th:selected="${member.position.equals('LEAD')}" value="LEAD">LEAD</option>
+    								<option th:selected="${member.position.equals('NONE')}" value="NONE">NONE</option>
+    
+    							</select>
+    						</div>
+    					</div>
+                        <!--end::Select-->
+    
+                        <!--begin::Select-->
+    					<div class="form-group row">
+    						<label class="col-form-label col-xl-3 col-lg-3">Level</label>
+    						<div class="col-xl-9 col-lg-9">
+    							<select class="form-control form-control-lg form-control-solid" name="level">
+    								
+    								<option th:selected="${member.level == null}" value=0>Choose..</option>
+    								<option th:selected="${member.level == 1}" value=1>1</option>
+    								<option th:selected="${member.level == 2}" value=2>2</option>
+    								<option th:selected="${member.level == 3}" value=3>3</option>
+    								<option th:selected="${member.level == 4}" value=4>4</option>
+    								<option th:selected="${member.level == 5}" value=5>5</option>
+    							</select>
+    						</div>
+    					</div>
+                        <!--end::Select-->
+    
+                        <!--begin::Select-->
+    				 <div class="form-group row">
+    					<label class="col-xl-3 col-lg-3 col-form-label">Joining Date</label>
+    					<div class="col-lg-9 col-xl-9">
+    						<div class="input-group date" >
+    							<input type="text" class="form-control" name="joiningDate" th:value="${member.joiningDate}" id="kt_datepicker_3"/>
+    							<div class="input-group-append">
+    								<span class="input-group-text">
+    									<i class="la la-calendar"></i>
+    								</span>
+    							</div>
+    						</div>
+    					</div>
+    				</div>
+                        <!--end::Select-->
+    
+                       <!--begin::Select-->
+    				   <div class="form-group row">
+    					<label class="col-xl-3 col-lg-3 col-form-label">Career</label>
+    					<div class="col-lg-9 col-xl-9">
+    						<!--  <input class="form-control form-control-solid form-control-lg" 
+    						name="career" type="text" th:value="${member.career}"/> -->
+    						<div class="input-group">
+     						<input class="form-control" name="career" aria-describedby="basic-addon2" value=0>
+    						 <div class="input-group-append" name="career" type="text" th:value="${member.career}">
+    						 <span class="input-group-text">Months</span></div>
+    						</div>
+    					</div>
+    				</div>
+    				 <!--end::Select-->
+    
+    				 <div class="form-group row">
+    					<label class="col-xl-3 col-lg-3 col-form-label">Retirement Date</label>
+    					<div class="col-lg-9 col-xl-9">
+    						<div class="input-group date" >
+    							<input type="text" class="form-control" name="retirementDate" th:value="${member.retirementDate}" id="kt_datepicker_3"/>
+    							<div class="input-group-append">
+    								<span class="input-group-text">
+    									<i class="la la-calendar"></i>
+    								</span>
+    							</div>
+    						</div>
+    					</div>
+    				</div>
+    
+    				<div class="form-group row">
+    					<label class="col-xl-3 col-lg-3 col-form-label">Admin</label>
+    					<div class="col-lg-9 col-xl-9">
+    						<div class="col-3">
+    							<span class="switch switch-icon"> <label> 
+									<!-- <input type="checkbox" th:checked="${(member.adminFlag.equals('Y'))}" name="adminFlag"/> -->
+									<span class="switch switch-icon"><input name="adminFlag" type="checkbox" th:checked="${(member.adminFlag.equals('Y'))}" />
+    								<span></span>
+    							</label>
+    							</span>
+    						</div>
+    					</div>
+    				</div>
+    				
+    				<!--begin::Select-->
+    				   <div class="form-group row">
+    					<label class="col-xl-3 col-lg-3 col-form-label">Admin IP</label>
+    					<div class="col-lg-9 col-xl-9">
+    						<input class="form-control form-control-solid form-control-lg" type="text" name="adminAccessIp" th:value="${member.adminAccessIp}"/>
+    					</div>
+    				</div>
+    					<!--end: Wizard Step 1-->
+    					<div class="form-group row">
+    						<label class="col-xl-3 col-lg-3 col-form-label">Justification <span class="text-danger">*</span></label>
+    						<div class="col-lg-9 col-xl-9">
+    							<div class="input-group input-group-solid input-group-lg mt-3">
+    								<textarea class="form-control" name="justification" rows="3" th:value="${member.justification}" required="required"></textarea>
+    							</div>
+    						</div>
+    					</div>
+    					
+                    </form>
+                    <!--end: Wizard Form-->
+                </div>
+            </div>
+            <!--end: Wizard Body-->
+        </div>
+        <!--end: Wizard-->
+    </div>
+    </div>
+
+</div>
+
+</body>
+</html>

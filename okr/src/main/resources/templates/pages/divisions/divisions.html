@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+	<meta charset="utf-8"/>
+	<title>Divisions List</title>
+	<meta name="description" content="Page with empty content"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+</head>
+
+<body id="kt_body"
+	  class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
+
+<div layout:fragment="right-floating-toolbar">
+	<a th:href="@{~/divisions/add}"
+	   class="btn button-color btn-primary btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2">
+		Add Division
+	</a>
+</div>
+
+<div layout:fragment="content" class="container test-class">
+	<div class="card card-custom container">
+		<div class="card-body">
+			<!--begin: Datatable-->
+			<div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
+			</div>
+			<!--end: Datatable-->
+		</div>
+	</div>
+</div>
+
+<th:block layout:fragment="script">
+	<script th:src="@{/assets/js/pages/custom/divisions/divisions.js}">
+	</script>
+</th:block>
+
+</body>
+<!--end::Body-->
+
+</html>
