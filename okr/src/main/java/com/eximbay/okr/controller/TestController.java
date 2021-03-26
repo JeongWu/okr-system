@@ -1,22 +1,23 @@
 package com.eximbay.okr.controller;
 
-import com.eximbay.okr.service.Interface.IObjectiveService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import com.eximbay.okr.service.TemplateService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.Map;
+
+@RestController
 @RequestMapping("/test")
+@AllArgsConstructor
 public class TestController {
+    private final TemplateService templateService;
 
-    @Autowired
-    IObjectiveService objectiveService;
-
-    @GetMapping()
-    @ResponseBody
-    public Object test1(){
-        return objectiveService.findAllInUse().toString();
+    @GetMapping
+    public String getTest(){
+        Map<String, Object> variables = Map.of("name","Peter", "position", "Java Developer");
+        return templateService.buildTemplate(variables, "test");
     }
+
 }

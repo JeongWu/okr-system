@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout.html}">
+<head>
+    <title>Quarterly OKR</title>
+</head>
+<body>
+<div layout:fragment="team-aside" class="container">
+    <input type="text" th:value="${model.currentQuarter}" id="current_quarter" hidden>
+    <input type="text" th:value="${model.type}" id="okr_type" hidden>
+    <input type="text" th:value="${model.seq}" id="okr_seq" hidden>
+    <div th:insert="~{pages/fragments/custom/team-aside::quarterly_okr}"
+         th:with="currentMember=${wireframeModel.currentMember}, teams=${model.teams}"></div>
+</div>
+<div layout:fragment="wrapper" class="d-flex flex-column flex-row-fluid wrapper" id="content">
+
+</div>
+</body>
+<th:block layout:fragment="script">
+    <script src="/assets/js/pages/okrs/okrs-quarterly.js"></script>
+</th:block>
+</html>

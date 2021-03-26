@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout.html}">
+<head>
+    <title>Company Update</title>
+    <style>
+        .image-input-outline, .image-input-wrapper {
+            background-position: center !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="right-floating-toolbar">
+    <button type="submit" id="button-submit" form="companyEditForm" class="btn button-color btn-primary btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2">
+        Submit
+    </button>
+</div>
+<div layout:fragment="content" class="container">
+    <div>
+        <div class="card card-custom">
+            <!--begin::Card header-->
+            <div class="card-header card-header-tabs-line nav-tabs-line-3x">
+                <!--begin::Toolbar-->
+                <div class="card-toolbar">
+                    <ul class="nav nav-tabs nav-bold nav-tabs-line nav-tabs-line-3x">
+                        <!--begin::Item-->
+                        <li class="nav-item mr-3">
+                            <a class="nav-link active" data-toggle="tab">
+                                <span class="nav-text font-size-lg">Company Details</span>
+                            </a>
+                        </li>
+                        <!--end::Item-->
+                    </ul>
+                </div>
+                <!--end::Toolbar-->
+            </div>
+            <!--end::Card header-->
+            <div class="card-body px-0">
+                <form class="form" id="companyEditForm" method="post" th:object="${dataModel}">
+                    <div class="tab-content">
+                        <!--begin::Tab-->
+                        <div class="tab-pane show active px-7" id="kt_user_edit_tab_1" role="tabpanel">
+                            <!--begin::Row-->
+                            <div class="row">
+                                <div class="col-xl-2"></div>
+                                <div class="col-xl-7 my-2">
+                                    <!--begin::Group-->
+                                    <div class="form-group row" >
+                                        <label style="padding-right: 0" class="col-form-label col-3 text-left">Company Name (English)*</label>
+                                        <div class="col-9">
+                                            <input class="form-control form-control-lg form-control-solid" type="text"
+                                                   id="name" th:field="*{name}"/>
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-3 text-left">Company Name (Korean)*</label>
+                                        <div class="col-9">
+                                            <input class="form-control form-control-lg form-control-solid" type="text"
+                                                   id="localName" required th:field="*{localName}"/>
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-3 text-left">Company Logo</label>
+                                        <div class="ml-5 image-input image-input-outline" id="kt_image_1"
+                                             th:style="*{logo}?'background: url(' + *{logo} + ')': 'background-image: url(/avatar/default-logo.png'">
+                                            <div class="image-input-wrapper"></div>
+
+                                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                                <i class="fa fa-pen icon-sm text-muted"></i>
+                                                <input type="file" name="imageFile" accept=".png, .jpg, .jpeg"/>
+                                                <input type="hidden"/>
+                                            </label>
+
+                                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                            <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-3 text-left">Sign in with Google</label>
+                                        <div class="col-9">
+                                       <span class="switch switch-icon">
+                                        <label>
+                                         <input type="checkbox" checked="checked" th:field="*{googleSignIn}"/>
+                                         <span></span>
+                                        </label>
+                                       </span>
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+
+                                    <!--begin::Group-->
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-3 text-left">Company Domain</label>
+                                        <div class="col-9">
+                                            <input class="form-control form-control-lg form-control-solid" type="text"
+                                                   id="domain" th:field="*{domain}"/>
+                                        </div>
+                                    </div>
+                                    <!--end::Group-->
+                                </div>
+                            </div>
+                            <!--end::Row-->
+                        </div>
+                        <!--end::Tab-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<th:block layout:fragment="script">
+    <script src="/assets/js/jquery.validate.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/assets/js/pages/crud/forms/widgets/jquery.bootstrap-growl.js"></script>
+    <script src="/assets/js/pages/companies/company-edit.js"></script>
+</th:block>
+</html>

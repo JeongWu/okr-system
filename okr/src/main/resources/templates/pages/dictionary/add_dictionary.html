@@ -14,27 +14,27 @@
 			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">Back</a>
 
 		<div class="btn-group ml-2 pl-0 py-4 w-120px">
-			<button form="dictionary_form" type="submit" class="btn btn-primary font-weight-bold" name="action"
+			<button form="dictionary_form" type="button" class="btn btn-primary font-weight-bold" name="action"
 				value="submit">Submit</button>
 			<button type="button" class="btn btn-primary font-weight-bold dropdown-toggle dropdown-toggle-split"
 				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 			<div class="dropdown-menu dropdown-menu-sm p-0 m-0 dropdown-menu-right">
 				<ul class="navi py-5">
 					<li class="navi-item">
-						<button form="dictionary_form" type="submit" name="action" value="saveAndAddNew" th:field="*{action}"
-								class="navi-button w-100">
-								<span class="navi-icon">
-									<i class="flaticon2-medical-records"></i>
-								</span>
+						<button form="dictionary_form" type="submit" name="action" value="saveAndAddNew"
+							th:field="*{action}" class="navi-button w-100">
+							<span class="navi-icon">
+								<i class="flaticon2-medical-records"></i>
+							</span>
 							<span class="navi-text">Save &amp; add new</span>
 						</button>
 					</li>
 					<li class="navi-item">
-						<button form="dictionary_form" type="submit" name="action" value="saveAndExit" th:field="*{action}"
-								class="navi-button w-100">
-								<span class="navi-icon">
-									<i class="flaticon2-hourglass-1"></i>
-								</span>
+						<button form="dictionary_form" type="submit" name="action" value="saveAndExit"
+							th:field="*{action}" class="navi-button w-100">
+							<span class="navi-icon">
+								<i class="flaticon2-hourglass-1"></i>
+							</span>
 							<span class="navi-text">Save &amp; exit</span>
 						</button>
 					</li>
@@ -53,8 +53,8 @@
 				</div>
 				<div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
 					<div class="col-10">
-						<form class="form fv-plugins-bootstrap fv-plugins-framework"
-						id="dictionary_form" th:action="@{~/dictionary/add}" method="post">
+						<form class="form fv-plugins-bootstrap fv-plugins-framework" id="dictionary_form"
+							th:action="@{~/dictionary/add}" method="post">
 
 							<!--begin::Row-->
 							<div class="row">
@@ -67,17 +67,12 @@
 										<label for="dictionaryType" class="col-xl-2 col-lg-2 col-form-label">사전 구분
 											*</label>
 										<div class="col-lg-4 col-xl-4">
-											<!-- <select name="dictionaryType" class="form-control" id="dictionaryType"
-												required th:field="*{dictionaryType}">
-												<option value="">Choose...</option>
-												<option value="KEY_RESULT">핵심 결과</option>
-												<option value="COMPETENCE">역량</option>
-											</select> -->
 											<select name="dictionaryType" class="form-control" id="dictionaryType"
 												required th:field="*{dictionaryType}">
 												<option value="">Choose...</option>
 												<th:block th:each="codeList: ${TypeModel.dictionaryType}">
-													<option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+													<option th:value="${codeList.codeListId.code}"
+														th:text="${codeList.codeName}"></option>
 												</th:block>
 											</select>
 										</div>
@@ -88,9 +83,9 @@
 												th:field="*{jobType}">
 												<option value="">Choose...</option>
 												<th:block th:each="codeList: ${TypeModel.jobType}">
-													<option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+													<option th:value="${codeList.codeListId.code}"
+														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="GENERAL">일반</option> -->
 											</select>
 										</div>
 									</div>
@@ -120,10 +115,9 @@
 												th:field="*{taskType}">
 												<option value="">Choose...</option>
 												<th:block th:each="codeList: ${TypeModel.taskType}">
-													<option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+													<option th:value="${codeList.codeListId.code}"
+														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="QUANTITATIVE">적량적</option>
-												<option value="QUALITATIVE">정성적</option> -->
 											</select>
 										</div>
 										<label for="taskMetric" class="col-xl-2 col-lg-2 col-form-label">측정 기준
@@ -133,10 +127,9 @@
 												th:field="*{taskMetric}">
 												<option value="">Choose...</option>
 												<th:block th:each="codeList: ${TypeModel.taskMetric}">
-													<option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+													<option th:value="${codeList.codeListId.code}"
+														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="UPWARD">상향</option>
-												<option value="DOWNWARD">하향</option> -->
 											</select>
 										</div>
 									</div>
@@ -144,50 +137,48 @@
 									<!--end::Group-->
 
 									<!--begin::Group form2-->
-                                    <!--begin::Select-->
-                                    <div class="form2 form-group row" hidden>
-                                        <label for="categoryGroup" class="col-xl-2 col-lg-2 col-form-label">역량 구분 *</label>
-                                        <div class="col-lg-4 col-xl-4">
-                                            <select name="categoryGroup" class="form-control" id="categoryGroup" required
-                                                th:field="*{categoryGroup}">
-                                                <option value="">Choose...</option>
+									<!--begin::Select-->
+									<div class="form2 form-group row" hidden>
+										<label for="categoryGroup" class="col-xl-2 col-lg-2 col-form-label">역량 구분
+											*</label>
+										<div class="col-lg-4 col-xl-4">
+											<select name="categoryGroup" class="form-control" id="categoryGroup"
+												required th:field="*{categoryGroup}">
+												<option value="">Choose...</option>
 												<th:block th:each="codeList: ${TypeModel.categoryGroup}">
-													<option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+													<option th:value="${codeList.codeListId.code}"
+														th:text="${codeList.codeName}"></option>
 												</th:block>
-                                                <!-- <option value="QUANTITATIVE">적량적</option>
-                                                <option value="QUALITATIVE">정성적</option> -->
-                                            </select>
-                                        </div>
-                                        <label for="category" class="col-xl-2 col-lg-2 col-form-label">역량 항목 *</label>
-                                        <div class="col-lg-4 col-xl-4">
-                                            <select name="category" class="form-control" id="category" required
-                                                th:field="*{category}">
-                                                <option value="">Choose...</option>
+											</select>
+										</div>
+										<label for="category" class="col-xl-2 col-lg-2 col-form-label">역량 항목 *</label>
+										<div class="col-lg-4 col-xl-4">
+											<select name="category" class="form-control" id="category" required
+												th:field="*{category}">
+												<option value="">Choose...</option>
 												<th:block th:each="codeList: ${TypeModel.category}">
-													<option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+													<option th:value="${codeList.codeListId.code}"
+														th:text="${codeList.codeName}"></option>
 												</th:block>
-                                                <!-- <option value="UPWARD">상향</option>
-                                                <option value="DOWNWARD">하향</option> -->
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!--end::Select-->
-                                    <!--end::Group-->
+											</select>
+										</div>
+									</div>
+									<!--end::Select-->
+									<!--end::Group-->
 
 									<!--begin::Group form1-->
 									<!--begin::Select-->
 									<div class="form1 form-group row" hidden>
-										<label for="taskIndicator" class="col-xl-2 col-lg-2 col-form-label">측정 지표 *</label>
+										<label for="taskIndicator" class="col-xl-2 col-lg-2 col-form-label">측정 지표
+											*</label>
 										<div class="col-lg-4 col-xl-4">
-											<select name="taskIndicator" class="form-control" id="taskIndicator" required
-												th:field="*{taskIndicator}">
+											<select name="taskIndicator" class="form-control" id="taskIndicator"
+												required th:field="*{taskIndicator}">
 												<option value="">Choose...</option>
 												<th:block th:each="codeList: ${TypeModel.taskIndicator}">
-													<option th:value="${codeList.codeName}" th:text="${codeList.codeName}"></option>
+													<option th:value="${codeList.codeListId.code}"
+														th:text="${codeList.codeName}"></option>
 												</th:block>
-												<!-- <option value="PERCENTAGE">%</option>
-												<option value="AMOUNT">원</option>
-												<option value="COUNT">건,회</option> -->
 											</select>
 										</div>
 
@@ -233,34 +224,27 @@
 		<script type="text/javascript">
 			$().ready(function () {
 				$("#dictionary_form").validate();
-				// $(".general").hide();
-				// $(".form1").hide();
-				// $(".form2").hide();
+				$('#dictionaryType, #jobType, #taskType, #categoryGroup, #category, #taskIndicator, #taskMetric').selectpicker();
+
+				$("#dictionaryType").change(function () {
+
+					var type = $("#dictionaryType option:selected").val();
+					if (type == "KEY_RESULT") {
+						$(".form2").attr("hidden", true);
+						$(".general,.form1").attr("hidden", false);
+
+					} else if (type == "COMPETENCE") {
+						$(".form1").attr("hidden", true);
+						$(".general,.form2").attr("hidden", false);
+
+					} else {
+						$(".form1,.general,.form2").attr("hidden", true);
+
+					}
+
+				});
 			});
-			$("#dictionaryType").change(function () {
 
-				var type = $("#dictionaryType option:selected").val();
-				if (type == "핵심결과") {
-					$(".form2").attr("hidden", true);
-					$(".general,.form1").attr("hidden", false);
-					// $(".form2").hide();
-					// $(".general").show();
-					// $(".form1").show();
-				} else if (type == "역량") {
-					$(".form1").attr("hidden", true);
-					$(".general,.form2").attr("hidden", false);
-
-					// $(".form1").hide();
-					// $(".general").show();
-					// $(".form2").show();
-				} else {
-					$(".form1,.general,.form2").attr("hidden", true);
-					// $(".general").hide();
-					// $(".form1").hide();
-					// $(".form2").hide();
-				}
-
-			});
 		</script>
 	</th:block>
 </body>

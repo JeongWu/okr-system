@@ -2,312 +2,340 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{pages/layout/main_layout.html}" th:with="title='Add Member', subHeader='Add Member', mutedHeaderText=null">
+      layout:decorate="~{pages/layout/main_layout.html}" 
+      th:with="subHeader='Dashboard', mutedHeaderText=''">
       <!--muted text is blurred text after the subheader text-->
 <!--Specify header here-->
 
-
 <head>
+    <title>Member Add</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
 
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="/assets/js/pages/custom/members/datatables.bundle.css?v=7.0.6" rel="stylesheet" type="text/css"/>
+	<link href="/assets/css/pages/members/member-wizard.css?v=7.0.6" rel="stylesheet" type="text/css"/>
+    <!--begin::Global Theme Styles(used by all pages)-->
+	
 </head>
 
 <body>
 
 <!--Create right-floating toolbar if any, remember to use layout:fragment="right-floating-toolbar"-->
-
 <div layout:fragment="right-floating-toolbar">
-	    <div class="d-flex align-items-center">
-			<!--begin::Button-->
-			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">
-			Back
-			</a>
-			<!--<button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
-			<span> <i class="la la-close"></i> <span>Reset</span>
-			</span>
-			</button>-->
-			<!--end::Button-->
-	
-			<!--begin::Dropdown-->
-			<div class="btn-group ml-2">
-				<button type="button" class="btn btn-primary font-weight-bold">Submit</button>
-				<button type="button"
-					class="btn btn-primary font-weight-bold dropdown-toggle dropdown-toggle-split"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-				<div
-					class="dropdown-menu dropdown-menu-sm p-0 m-0 dropdown-menu-right">
-					<ul class="navi py-5">
-						<li class="navi-item"><a class="navi-link" id="member_save"> <span
-								class="navi-icon"> <i class="flaticon2-medical-records"></i>
-							</span> <span class="navi-text">Save &amp; add new</span>
-						</a></li>
-						<li class="navi-item"><a class="navi-link" onclick="document.getElementById('kt_form').submit();"> <span
-								class="navi-icon"> <i class="flaticon2-hourglass-1"></i>
-							</span> <span class="navi-text">Save &amp; exit</span>
-						</a></li>
-					</ul>
-				</div>
-			</div>
-			<!--end::Dropdown-->
-	    </div>
+    <div class="d-flex align-items-center">
+        <!--begin::Button-->
+        <a href="/members/list" class="btn btn-primary font-weight-bold px-10 font-size-base">
+        Back
+        </a>
+        <!--<button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+        <span> <i class="la la-close"></i> <span>Reset</span>
+        </span>
+        </button>-->
+        <!--end::Button-->
+
+        <!--begin::Dropdown-->
+        <div class="btn-group ml-2">
+            <button type="button" class="btn btn-primary font-weight-bold">Submit</button>
+            <button type="button"
+                class="btn btn-primary font-weight-bold dropdown-toggle dropdown-toggle-split"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <div
+                class="dropdown-menu dropdown-menu-sm p-0 m-0 dropdown-menu-right">
+                <ul class="navi py-5">
+                    <li class="navi-item">
+                        <button form="kt_form" type="submit" name="action" value="new"
+                                class="navi-button w-100">
+                                <span class="navi-icon">
+                                    <i class="flaticon2-medical-records"></i>
+                                </span>
+                            <span class="navi-text">Save &amp; add new</span>
+                        </button>
+                    </li>
+                    <li class="navi-item">
+                        <button form="kt_form" type="submit" name="action" value="exit"
+                                class="navi-button w-100">
+                                <span class="navi-icon">
+                                    <i class="flaticon2-medical-records"></i>
+                                </span>
+                            <span class="navi-text">Save &amp; add exit</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--end::Dropdown-->
+    </div>
 </div>
 
-
 <!--Main content of every page-->
-
-<div layout:fragment="content">
-<div class="card card-custom">
-	<div class="card-body p-0">
-	    <!--begin: Wizard-->
-	    <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="step-first" data-wizard-clickable="true">
-	        <!--begin: Wizard Nav-->
-	        <div class="wizard-nav">
-	            <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
-	
-	                <!--begin::Wizard Step 1 Nav-->
-	                <div class="wizard-step" data-wizard-type="step">
-	                    <div class="wizard-label">
-	                        <h3 class="wizard-title">
-								<span>1.</span> Member Detail
-							</h3>
-	                        <div class="wizard-bar"></div>
-	                    </div>
-	                </div>
-	                <!--end::Wizard Step 1 Nav-->
-	
-	                <!--begin::Wizard Step 2 Nav-->
-	                <div class="wizard-step" data-wizard-type="step">
-	                    <div class="wizard-label">
-	                        <h3 class="wizard-title">
-								<span>2.</span> Additional Detail
-							</h3>
-	                        <div class="wizard-bar"></div>
-	                    </div>
-					</div>
-					 <!--end::Wizard Step 2 Nav-->
-	            </div>
-	        </div>
-	        <!--end: Wizard Nav-->
-	
-	        <!--begin: Wizard Body-->
-	        <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
-	            <div class="col-xl-12 col-xxl-7">
-	                <!--begin: Wizard Form-->
-	                <form class="form" id="kt_form" th:action="@{/member/save}" method="POST" enctype="multipart/form-data">
-	                    <!--begin: Wizard Step 1-->
-	                   <div class="pb-5" data-wizard-type="step-content">
-	                        <!--begin::Input-->
-	                          <div class="form-group row">
-	                             <label class="col-xl-3 col-lg-3 col-form-label">Member Name (English) <span class="text-danger">*</span></label>
-	                                 <div class="col-lg-9 col-xl-9">
-	                                    <input class="form-control form-control-solid form-control-lg" name="name" type="text"required/>
-	                                </div>
-	                            </div>
-	                        <!--end::Input-->
-	
-	                        <!--begin::Input-->
-	                        <div class="form-group row">
-	                            <label class="col-xl-3 col-lg-3 col-form-label">Member Name (Korean) <span class="text-danger">*</span></label>
-	                            <div class="col-lg-9 col-xl-9">
-	                                <input class="form-control form-control-solid form-control-lg "name="localName" type="text" required/>
-	                            </div>
-							</div>
-	                        <!--end::Input-->
-	
-	                        <div class="form-group row">
-	                            <label class="col-xl-3 col-lg-3 col-form-label">Email Address <span class="text-danger">*</span></label>
-	                            <div class="col-lg-9 col-xl-9">
-	                                <div class="input-group input-group-solid input-group-lg">
-	                                    <input type="email" class="form-control is-invalid form-control-solid form-control-lg" name="email" required />
-	                                </div>
-	                            </div>
-	                        </div>       
-	
-	                        <div class="form-group row">
-	                            <label class="col-xl-3 col-lg-3 col-form-label">Contact Phone <span class="text-danger">*</span></label>
-	                            <div class="col-lg-9 col-xl-9">
-	                                <div class="input-group input-group-solid input-group-lg">
-	
-	                                    <input type="text" class="form-control form-control-solid form-control-lg" name="contactPhone" placeholder="Phone" />
-	                                </div>
-	                                <span class="form-text text-muted">Enter valid KR phone number(e.g: 01012345678)</span>
-	                            </div>
-	                        </div>
-
-
-​							
-​                            <div class="form-group row">
-​                                <label class="col-xl-3 col-lg-3 col-form-label">Introduction</label>
-​                            
-
-                                    <div class="col-lg-3 col-xl-9">
-    									
-											<div class="image-input image-input-outline" id="kt_image_4">
-    										<div class="image-input-wrapper" style="background-image: url(/assets/media/users/default.jpg)"></div>
-    									   
-    										<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
-    										 <i class="fa fa-pen icon-sm text-muted"></i>
-    										 <input type="file" name="picture" accept=".png, .jpg, .jpeg"/>
-    										 <input type="hidden" name="profile_avatar_remove"/>
-    										</label>
-    									   
-    										<span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
-    										 <i class="ki ki-bold-close icon-xs text-muted"></i>
-    										</span>
-    									   </div>
+<div layout:fragment="content" class="container">
+    <div class="card card-custom">
+        <div class="card-body p-0">
+            <!--begin: Wizard-->
+            <div class="wizard wizard-3" id="kt_wizard_v3" data-wizard-state="step-first" data-wizard-clickable="true">
+                <!--begin: Wizard Nav-->
+                <div class="wizard-nav">
+                    <div class="wizard-steps px-8 py-8 px-lg-15 py-lg-3">
+        
+                        <!--begin::Wizard Step 1 Nav-->
+                        <div class="wizard-step" data-wizard-type="step">
+                            <div class="wizard-label">
+                                <h3 class="wizard-title">
+                                    <span>1.</span> Member Details
+                                </h3>
+                                <div class="wizard-bar"></div>
+                            </div>
+                        </div>
+                        <!--end::Wizard Step 1 Nav-->
+        
+                        <!--begin::Wizard Step 2 Nav-->
+                        <div class="wizard-step" data-wizard-type="step">
+                            <div class="wizard-label">
+                                <h3 class="wizard-title">
+                                    <span>2.</span> Additional Details
+                                </h3>
+                                <div class="wizard-bar"></div>
+                            </div>
+                        </div>
+                         <!--end::Wizard Step 2 Nav-->
+                    </div>
+                </div>
+                <!--end: Wizard Nav-->
+        
+                <!--begin: Wizard Body-->
+                <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
+                    <div class="col-xl-12 col-xxl-7">
+                        <!--begin: Wizard Form-->
+                        <form class="form" id="kt_form" th:action="@{/members/add}" method="POST" enctype="multipart/form-data">
+                            <!--begin: Wizard Step 1-->
+                           <div class="pb-5" data-wizard-type="step-content">
+                                <!--begin::Input-->
+                                  <div class="form-group row">
+                                     <label class="col-xl-3 col-lg-3 col-form-label">Member Name (English) <span class="text-danger">*</span></label>
+                                         <div class="col-lg-9 col-xl-9">
+                                            <input class="form-control form-control-solid form-control-lg" name="name" type="text"required/>
+                                        </div>
+                                    </div>
+                                <!--end::Input-->
+        
+                                <!--begin::Input-->
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Member Name (Korean) <span class="text-danger">*</span></label>
+                                    <div class="col-lg-9 col-xl-9">
+                                        <input class="form-control form-control-solid form-control-lg "name="localName" type="text" required/>
+                                    </div>
+                                </div>
+                                <!--end::Input-->
+        
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Email Address <span class="text-danger">*</span></label>
+                                    <div class="col-lg-9 col-xl-9">
+                                        <div class="input-group input-group-solid input-group-lg">
+                                            <input type="email" class="form-control is-invalid form-control-solid form-control-lg" name="email" required />
+                                        </div>
+                                    </div>
+                                </div>       
+        
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Contact Phone <span class="text-danger">*</span></label>
+                                    <div class="col-lg-9 col-xl-9">
+                                        <div class="input-group input-group-solid input-group-lg">
+        
+                                            <input type="text" class="form-control form-control-solid form-control-lg" name="contactPhone" placeholder="Phone" />
+                                        </div>
+                                        <span class="form-text text-muted">Enter valid KR phone number(e.g: 01012345678)</span>
+                                    </div>
+                                </div>
     
-    									<div class="input-group input-group-solid input-group-lg mt-3">
-    										<textarea class="form-control" name="introduction" rows="3"></textarea>
-    									</div>
     
-    									</div>          
-    									</div>
+    ​							
+    ​                            <div class="form-group row">
+    ​                                <label class="col-xl-3 col-lg-3 col-form-label">Introduction</label>
+    ​                            
     
+                                        <div class="col-lg-3 col-xl-9">
+                                            
+                                                <div class="image-input image-input-outline" id="kt_image_4">
+                                                <div class="image-input-wrapper" style="background-image:url(/assets/media/image/default.jpg)"></div>
+                            
+                                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                                 <i class="fa fa-pen icon-sm text-muted"></i>
+                                                 <input type="file" name="picture" accept=".png, .jpg, .jpeg"/>
+                                                 <input type="hidden" name="profile_avatar_remove"/>
+                                                </label>
+                                               
+                                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                                 <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                </span>
+                                               </div>
+        
+                                            <div class="input-group input-group-solid input-group-lg mt-3">
+                                                <textarea class="form-control" name="introduction" rows="3"></textarea>
+                                            </div>
+        
+                                            </div>          
+                                            </div>
+        
+                                <div class="form-group row">
+                                    <label class="col-xl-3 col-lg-3 col-form-label">Active</label>
+                                    <div class="col-lg-9 col-xl-9">
+                                        <div class="col-3">
+                                            <span class="switch switch-icon"> <label> <input
+                                                    type="checkbox" checked="checked" name="useFlag" value="Y"/> <span></span>
+                                            </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between border-top mt-5 pt-5">
+                                <div class="mr-2">
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" 
+                                    data-wizard-type="action-next">
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                            <!--end: Wizard Step 1-->
+        
+                            <!--begin: Wizard Step -->
+                        <div class="pb-5" data-wizard-type="step-content"> 
+                            <!--begin::Select-->
                             <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Active</label>
+                                <label class="col-form-label col-xl-3 col-lg-3">Postion</label>
+                                <div class="col-xl-9 col-lg-9">
+                                    <select class="form-control form-control-lg form-control-solid" name="position">
+                                        <option value="">Choose..</option>
+                                        <option value="CEO">CEO</option>
+                                        <option value="CTO">CTO</option>
+                                        <option value="DIRECTOR">DIRECTOR</option>
+                                        <option value="LEAD">LEAD</option>
+                                        <option value="NONE">NONE</option>
+        
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end::Select-->
+        
+                            <!--begin::Select-->
+                            <div class="form-group row">
+                                <label class="col-form-label col-xl-3 col-lg-3">Level</label>
+                                <div class="col-xl-9 col-lg-9">
+                                    <select class="form-control form-control-lg form-control-solid" name="level">
+                                        <option value=0>Choose..</option>
+                                        <option value=1>1</option>
+                                        <option value=2>2</option>
+                                        <option value=3>3</option>
+                                        <option value=4>4</option>
+                                        <option value=5>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end::Select-->
+        
+                            <!--begin::Select-->
+                            <div class="form-group row">
+                                <label class="col-xl-3 col-lg-3 col-form-label">Joining Date</label>
                                 <div class="col-lg-9 col-xl-9">
-                                    <div class="col-3">
-                                        <span class="switch switch-icon"> <label> <input
-                                                type="checkbox" checked="checked" name="useFlag" value="Y"/> <span></span>
-                                        </label>
+                                    <div class="input-group date" >
+                                        <input type="text" class="form-control" name="joiningDate"  id="kt_datepicker_3"/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="la la-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Select-->
+        
+                           <!--begin::Select-->
+                           <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Career</label>
+                            <div class="col-lg-9 col-xl-9">
+                                <!--  <input class="form-control form-control-solid form-control-lg"  type="text"
+                                > -->
+                                <div class="input-group">
+                                 <input type="text" class="form-control" name="career" aria-describedby="basic-addon2" value=0>
+                                 <div class="input-group-append"><span class="input-group-text">Months</span></div>
+                                </div>
+                                <div>  						 
+                            </div>
+                        </div>
+                        </div>
+                         <!--end::Select-->
+    
+        
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Retirement Date</label>
+                            <div class="col-lg-9 col-xl-9">
+                                <div class="input-group date" >
+                                    <input type="text" class="form-control" name="retirementDate" id="kt_datepicker_3"/>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-calendar"></i>
                                         </span>
                                     </div>
                                 </div>
                             </div>
-    					</div>
-    					
-    					<div class="d-flex justify-content-between border-top mt-5 pt-5">
-                            <div class="mr-2">
-                            </div>
-                            <div>
-                                <button type="button" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
-                                    Next
-                                </button>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Admin</label>
+                            <div class="col-lg-9 col-xl-9">
+                                <div class="col-3">
+                                    <span class="switch switch-icon"> <label> <input
+                                            type="checkbox" name="adminFlag" value="Y"/> <span></span>
+                                    </label>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <!--end: Wizard Step 1-->
-    
-                        <!--begin: Wizard Step -->
-                    <div class="pb-5" data-wizard-type="step-content"> 
+                        
                         <!--begin::Select-->
-    					<div class="form-group row">
-    						<label class="col-form-label col-xl-3 col-lg-3">Postion</label>
-    						<div class="col-xl-9 col-lg-9">
-    							<select class="form-control form-control-lg form-control-solid" name="position">
-    								<option value="">Choose..</option>
-    								<option value="CEO">CEO</option>
-    								<option value="CTO">CTO</option>
-    								<option value="DIRECTOR">DIRECTOR</option>
-    								<option value="LEAD">LEAD</option>
-    								<option value="NONE">NONE</option>
-    
-    							</select>
-    						</div>
-    					</div>
-                        <!--end::Select-->
-    
-                        <!--begin::Select-->
-    					<div class="form-group row">
-    						<label class="col-form-label col-xl-3 col-lg-3">Level</label>
-    						<div class="col-xl-9 col-lg-9">
-    							<select class="form-control form-control-lg form-control-solid" name="level">
-    								<option value=0>Choose..</option>
-    								<option value=1>1</option>
-    								<option value=2>2</option>
-    								<option value=3>3</option>
-    								<option value=4>4</option>
-    								<option value=5>5</option>
-    							</select>
-    						</div>
-    					</div>
-                        <!--end::Select-->
-    
-                        <!--begin::Select-->
-    					<div class="form-group row">
-    						<label class="col-xl-3 col-lg-3 col-form-label">Joining Date</label>
-    						<div class="col-lg-9 col-xl-9">
-    							<div class="input-group date" >
-    								<input type="text" class="form-control" name="joiningDate"  id="kt_datepicker_3"/>
-    								<div class="input-group-append">
-    									<span class="input-group-text">
-    										<i class="la la-calendar"></i>
-    									</span>
-    								</div>
-    							</div>
-    						</div>
-    					</div>
-                        <!--end::Select-->
-    
-                       <!--begin::Select-->
-    				   <div class="form-group row">
-    					<label class="col-xl-3 col-lg-3 col-form-label">Career</label>
-    					<div class="col-lg-9 col-xl-9">
-    						<!--  <input class="form-control form-control-solid form-control-lg"  type="text"
-    						> -->
-    						<div class="input-group">
-     						<input type="text" class="form-control" name="career" aria-describedby="basic-addon2" value=0>
-    						 <div class="input-group-append"><span class="input-group-text">Months</span></div>
-    						</div>
-    						<div>  						 
-    					</div>
-    				</div>
-    				</div>
-    				 <!--end::Select-->
+                           <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Admin IP</label>
+                            <div class="col-lg-9 col-xl-9">
+                                <input class="form-control form-control-solid form-control-lg" name="adminAccessIp" type="text"/>
+                            </div>
+                        </div>
 
-    
-    				<div class="form-group row">
-    					<label class="col-xl-3 col-lg-3 col-form-label">Retirement Date</label>
-    					<div class="col-lg-9 col-xl-9">
-    						<div class="input-group date" >
-    							<input type="text" class="form-control" name="retirementDate" id="kt_datepicker_3"/>
-    							<div class="input-group-append">
-    								<span class="input-group-text">
-    									<i class="la la-calendar"></i>
-    								</span>
-    							</div>
-    						</div>
-    					</div>
-    				</div>
-    				
-    				<div class="form-group row">
-    					<label class="col-xl-3 col-lg-3 col-form-label">Admin</label>
-    					<div class="col-lg-9 col-xl-9">
-    						<div class="col-3">
-    							<span class="switch switch-icon"> <label> <input
-    									type="checkbox" name="adminFlag" value="Y"/> <span></span>
-    							</label>
-    							</span>
-    						</div>
-    					</div>
-    				</div>
-    				
-    				<!--begin::Select-->
-    				   <div class="form-group row">
-    					<label class="col-xl-3 col-lg-3 col-form-label">Admin IP</label>
-    					<div class="col-lg-9 col-xl-9">
-    						<input class="form-control form-control-solid form-control-lg" name="adminAccessIp" type="text"/>
-    					</div>
-    				</div>
-    				<div class="d-flex justify-content-between border-top mt-5 pt-10">
-    					<div class="mr-2">
-    						<button type="button" class="btn btn-light-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-prev">Previous</button>
-    					</div>
-    					<div>
-    						<button class="btn btn-success font-weight-bolder text-uppercase px-9 py-4" type="submit">Submit</button>
-    					</div>
-    				</div>
-    				</div>
-                    </form>
-                    <!--end: Wizard Form-->
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-lg-3 col-form-label">Edit Company OKR</label>
+                            <div class="col-lg-9 col-xl-9">
+                                <div class="col-3">
+                                    <span class="switch switch-icon"> <label> <input
+                                            type="checkbox" name="editCompanyOkrFlag" value="Y"/> <span></span>
+                                    </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between border-top mt-5 pt-10">
+                            <div class="mr-2">
+                                <button type="button" class="btn btn-light-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-prev">Previous</button>
+                            </div>
+                        </div>
+                        </div>
+                        </form>
+                        <!--end: Wizard Form-->
+                    </div>
                 </div>
+                <!--end: Wizard Body-->
             </div>
-            <!--end: Wizard Body-->
+            <!--end: Wizard-->
         </div>
-        <!--end: Wizard-->
-    </div>
-    </div>
-    </div>
+        </div>
+</div>
 </body>
-
-
+<!--end::Global Theme Bundle-->
+<th:block layout:fragment="script">
+    <script src="/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.6"></script>
+    <script src="/assets/js/pages/custom/members/member-add.js?v=7.0.6"></script>
+</th:block>
 </html>

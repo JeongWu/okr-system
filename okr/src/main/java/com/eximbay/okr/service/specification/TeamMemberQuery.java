@@ -3,23 +3,20 @@ package com.eximbay.okr.service.specification;
 import com.eximbay.okr.constant.AppConst;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.entity.*;
+import com.eximbay.okr.service.Interface.IGenericQuery;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Service
 @Data
 @AllArgsConstructor
-public class TeamMemberQuery {
+public class TeamMemberQuery implements IGenericQuery<TeamMember> {
 
-    public Specification<TeamMember> findByTeamSeq(Integer teamSeq){
-        return (root, query, cb) -> cb.equal(root.get(TeamMember_.TEAM_MEMBER_ID).get(TeamMemberId_.TEAM).get(Team_.TEAM_SEQ), teamSeq);
-    }
-   
     public Specification<TeamMember> findByMemberSeq(Integer memberSeq){
         return (root, query, cb) -> cb.equal(root.get(TeamMember_.TEAM_MEMBER_ID).get(TeamMemberId_.MEMBER).get(Member_.MEMBER_SEQ), memberSeq);
     }
@@ -50,6 +47,30 @@ public class TeamMemberQuery {
                 (root, query, cb) ->
                         cb.equal(root.get(TeamMember_.TEAM_MANAGER_FLAG), FlagOption.Y)
         );
+        return result;
+    }
+
+    public Specification<TeamMember> findByTeamSeq(Integer teamSeq){
+        return (root, query, cb) -> cb.equal(root.get(TeamMember_.TEAM_MEMBER_ID).get(TeamMemberId_.TEAM).get(Team_.TEAM_SEQ), teamSeq);
+    }
+
+    public Specification<TeamMember> findTeamLeaderOrManager(Integer teamSeq) {
+        Specification<TeamMember> result =
+                findByTeamSeq(teamSeq)
+                .and(hasLeaderOrManager())
+                        .and(findActiveTeamOnly())
+                        .and(findActiveMemberOnly())
+                        .and(findCurrentlyValid());
+        return result;
+    }
+
+    public Specification<TeamMember> isCurrentMemberCanEditTeamOkr(Integer teamSeq, Integer memberSeq) {
+        Specification<TeamMember> result =
+                findByTeamSeq(teamSeq)
+                        .and(findByMemberSeq(memberSeq))
+                        .and(findActiveTeamOnly())
+                        .and(findActiveMemberOnly())
+                        .and(findCurrentlyValid());
         return result;
     }
 }

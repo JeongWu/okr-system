@@ -17,15 +17,15 @@ import java.time.Instant;
 @EntityListeners(AuditingEntityListener.class)
 public class AbstractAuditable {
     @CreatedBy
-    @Column(name = "REG_USER_ID")
-    protected String createdBy = "system";
+    @Column(name = "REG_USER_ID", nullable = false)
+    protected String createdBy;
 
     @LastModifiedBy
     @Column(name = "MOD_USER_ID")
-    protected String updatedBy = "system";
+    protected String updatedBy;
 
     @CreatedDate
-    @Column(name = "REG_DT")
+    @Column(name = "REG_DT", nullable = false)
     protected Instant createdDate;
 
     @LastModifiedDate

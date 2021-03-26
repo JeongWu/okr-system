@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+
+ <!--begin::Modal-->
+ <div th:fragment="dictionary-keyresult" id="kt_datatable_modal_keyresult" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" style="min-height: 590px;">
+            <div class="modal-header py-10">
+                <h3 class="modal-title text-primary">
+                    Dictionary - Key Result
+                    <div class="w-200px h-4px bg-primary"></div>
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--begin::Search Form-->
+                <div class="mb-5">
+                    <div class="row align-items-center">
+                        <div class="col-lg-9 col-xl-8">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 my-2 my-md-0">
+                                    <label>Job</label>
+                                    <select class="form-control datatable-input"
+                                        id="kt_datatable_search_jobType" name="jobType">
+                                        <option value="">Choose...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8 my-2 my-md-0">
+                                    <label>Key Result</label>
+                                    <input type="text" class="form-control datatable-input"
+                                        placeholder="Search..." id="kt_datatable_search_sentence"
+                                        data-col-index="0" name="sentence" />
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-4 mt-5 pt-8 mt-lg-0">
+                            <button class="btn btn-primary btn-primary--icon" id="kt_search">
+                                <span>
+                                    <i class="la la-search"></i>
+                                    <span>Search</span>
+                                </span>
+                            </button>
+                            &nbsp;&nbsp;
+                            <button class="btn btn-secondary btn-secondary--icon" id="kt_reset">
+                                <span>
+                                    <i class="la la-close"></i>
+                                    <span>Reset</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Search Form-->
+
+                <div class="mb-5">
+                <!--begin: Datatable-->
+                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_sub"></div>
+                <!--end: Datatable-->
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+<!--end::Modal-->
+</body>
+
+</html>

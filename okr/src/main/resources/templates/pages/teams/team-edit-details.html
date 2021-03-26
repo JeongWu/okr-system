@@ -1,169 +1,193 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{pages/layout/main_layout.html}"
-	th:with="title='Team Update'">
-<body>
-<div layout:fragment="right-floating-toolbar"
-		class="d-flex align-items-center flex-wrap">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+	<title>Edit Team Details</title>
+</head>
+
+<body th:object="${dataModel}">
+	<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
 		<a th:href="@{~/teams/list}"
 			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">Back</a>
 		<!--begin::Dropdown-->
 		<div class="btn-group ml-2 pl-0 py-4 w-120px">
-			<button form="edit_form" type="submit"
-				class="btn btn-primary font-weight-bold" name="submit"
+			<button form="edit_form" type="submit" class="btn btn-primary font-weight-bold" name="submit"
 				value="submit">Submit</button>
 		</div>
 		<!--end::Dropdown-->
 	</div>
 	<div layout:fragment="content" class="container">
-		<input id="base-url" hidden th:value="teams"/>
-		<div>
-			<div class="card card-custom">
-				<!--begin::Card header-->
-				<div class="card-header card-header-tabs-line nav-tabs-line-3x">
-					<!--begin::Toolbar-->
+		<input id="base-url" hidden th:value="teams" />
+		<div class="card card-custom">
+			<!--begin::Card header-->
+			<div class="card-header card-header-tabs-line nav-tabs-line-3x">
+				<!--begin::Toolbar-->
 				<div class="w-50 pt-20 pl-20">
 					<h3 class="text-primary">Team Details</h3>
 					<div class="w-200px h-4px bg-primary"></div>
 				</div>
-					<!--end::Toolbar-->
-				</div>
-				<!--end::Card header-->
-				<div class="card-body px-0">
-					<form class="form" id="edit_form" th:action="@{~/teams/save}"
-						method="post" th:object="${dataModel}">
-						<input type="text" th:field="*{teamSeq}" hidden />
-						<div class="tab-content">
-							<!--begin::Tab-->
-							<div class="tab-pane show active px-7" id="kt_user_edit_tab_1"
-								role="tabpanel">
-								<!--begin::Row-->
-								<div class="row">
-									<div class="col-xl-2"></div>
-									<div class="col-xl-7 my-2">
-										<!--begin::Group-->
-										<div class="form-group row">
-											<label style="padding-right: 0"
-												class="col-form-label col-3 text-left">Team Name
-												(English)*</label>
-											<div class="col-9">
-												<input
-													class="form-control form-control-lg form-control-solid"
-													type="text" value="" required th:field="*{name}" />
-											</div>
+				<!--end::Toolbar-->
+			</div>
+			<!--end::Card header-->
+			<div class="card-body px-0">
+				<div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
+					<div class="col-10">
+						<form class="form" id="edit_form" method="post" enctype="multipart/form-data"
+							th:action="@{/teams/save}">
+							<input type="text" th:field="*{teamSeq}" hidden />
+
+							<!--begin::Row-->
+							<div class="row">
+								<div class="col-xl-12 my-2">
+									<!--begin::Group-->
+									<div class="form-group row">
+										<label style="padding-right: 0" class="col-form-label col-3 text-left">Team Name
+											(English)*</label>
+										<div class="col-9">
+											<input class="form-control form-control-lg form-control-solid" type="text"
+												value="" required th:field="*{name}" />
 										</div>
-										<!--end::Group-->
-										<!--begin::Group-->
-										<div class="form-group row">
-											<label class="col-form-label col-3 text-left">Team
-												Name (Korea)*</label>
-											<div class="col-9">
-												<input
-													class="form-control form-control-lg form-control-solid"
-													type="text" value="" required th:field="*{localName}" />
-											</div>
-										</div>
-										<!--end::Group-->
-										<!--begin::Select-->
-										<div class="form-group row">
-											<label for="division"
-												class="col-xl-3 col-lg-3 col-form-label">Division *</label>
-											<div class="col-lg-9 col-xl-9">
-											<!-- <input th:field="*{division.localName}"></input>  -->
-												 <select name="division" class="form-control" id="division"
-													required th:field="*{divisionDto.divisionSeq}">
-													<!-- <option value="">Choose...</option> -->
-													<option th:each="divisionList: ${divisionList}" 
-                                                        th:value="${divisionList.divisionSeq}" th:text="${divisionList.name}"></option>
-                                                    
-												</select> 
-											</div>
-										</div>
-										<!--end::Select-->
-										<!--begin::Select-->
-										<div class="form-group row">
-											<label for="teamType"
-												class="col-xl-3 col-lg-3 col-form-label">Team Type *</label>
-											<div class="col-lg-9 col-xl-9">
-												<select name="teamType" class="form-control" id="teamType"
-													required th:field="*{teamType}">
-													<option value="">Choose...</option>
-													<option value="TEAM">TEAM</option>
-													<option value="SQUAD">SQUAD</option>
-													<option value="TFT">TFT</option>
-												</select>
-											</div>
-										</div>
-										<!--end::Select-->
-										<!-- begin::Group -->
-										<div class="form-group row">
-														<label class="col-xl-3 col-lg-3 col-form-label text-left">Introduction</label>
-														<div class="col-lg-9 col-xl-9">
-															<div class="image-input image-input-outline"
-																id="kt_user_add_avatar">
-																<div class="image-input-wrapper"
-																	style="background-image: url(assets/media/users/100_6.jpg)"></div>
-																<label
-																	class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-																	data-action="change" data-toggle="tooltip" title=""
-																	data-original-title="Change avatar"> <i
-																	class="fa fa-pen icon-sm text-muted"></i> <input
-																	type="file" name="profile_avatar"
-																	accept=".png, .jpg, .jpeg" /> <input type="hidden"
-																	name="profile_avatar_remove" id="image"
-																	th:field="*{image}" />
-																</label> <span
-																	class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
-																	data-action="cancel" data-toggle="tooltip"
-																	title="Cancel avatar"> <i
-																	class="ki ki-bold-close icon-xs text-muted"></i>
-																</span>
-															</div>
-															<textarea
-																class="form-control form-control-lg form-control-solid"
-																id="introduction" rows="3" placeholder="Type notes"
-																th:field="*{introduction}"></textarea>
-														</div>
-													</div>
-										<!-- end::Group -->
-										<!--begin::Group-->
-										<div class="form-group row mb-2">
-											<label class="col-form-label col-3 text-left">Active</label>
-											<div class="col-9">
-												<span class="switch"> <label> <input
-														type="checkbox" checked="checked" name="select"
-														th:field="*{useFlag}" /> <span></span>
-												</label>
-												</span>
-											</div>
-										</div>
-										<!--end::Group-->
-										<!--begin::Group-->
-										<div class="form-group row">
-											<label class="col-form-label col-3 text-left">Justification
-												*</label>
-											<div class="col-9">
-												<textarea
-													class="form-control form-control-lg form-control-solid"
-													required th:field="*{justification}"></textarea>
-											</div>
-										</div>
-										<!--end::Group-->
 									</div>
+									<!--end::Group-->
+									<!--begin::Group-->
+									<div class="form-group row">
+										<label class="col-form-label col-3 text-left">Team
+											Name (Korea)*</label>
+										<div class="col-9">
+											<input class="form-control form-control-lg form-control-solid" type="text"
+												value="" required th:field="*{localName}" />
+										</div>
+									</div>
+									<!--end::Group-->
+									<!--begin::Select-->
+									<div class="form-group row">
+										<label for="division" class="col-xl-3 col-lg-3 col-form-label">Division
+											*</label>
+										<div class="col-lg-9 col-xl-9">
+											<!-- <input th:field="*{division.localName}"></input>  -->
+											<select name="division" class="form-control" id="division" required
+												th:field="*{divisionDto.divisionSeq}">
+												<!-- <option value="">Choose...</option> -->
+												<option th:each="divisionList: ${divisionList}"
+													th:value="${divisionList.divisionSeq}"
+													th:text="${divisionList.name}"></option>
+
+											</select>
+										</div>
+									</div>
+									<!--end::Select-->
+									<!--begin::Select-->
+									<div class="form-group row">
+										<label for="teamType" class="col-xl-3 col-lg-3 col-form-label">Team Type
+											*</label>
+										<div class="col-lg-9 col-xl-9">
+											<select name="teamType" class="form-control" id="teamType" required
+												th:field="*{teamType}">
+												<option value="">Choose...</option>
+												<option value="TEAM">TEAM</option>
+												<option value="SQUAD">SQUAD</option>
+												<option value="TFT">TFT</option>
+											</select>
+										</div>
+									</div>
+									<!--end::Select-->
+
+									<!-- begin::Group -->
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Introduction</label>
+										<div class="col-xl-2 col-lg-2">
+											<div class="image-input image-input-empty image-input-outline"
+												id="kt_user_edit_avatar"
+												style="background-image: url(/assets/media/image/default.jpg)">
+
+												<div class="image-input-wrapper"
+													th:style="'background-image: url('+${dataModel.image} +');'"></div>
+
+												<label
+													class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+													data-action="change" data-toggle="tooltip" title=""
+													data-original-title="Change avatar">
+													<i class="fa fa-pen icon-sm text-muted"></i>
+													<input type="file" name="imageFile" accept=".png, .jpg, .jpeg"
+														th:field="*{imageFile}" />
+													<input type="hidden" name="profile_avatar_remove" />
+												</label>
+
+												<span
+													class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow"
+													data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+													<i class="ki ki-bold-close icon-xs text-muted"></i>
+												</span>
+
+											</div>
+										</div>
+										<div class="col-xl-7 col-lg-7"> <textarea
+												class="form-control form-control-lg form-control-solid"
+												id="introduction" rows="5" placeholder="Type notes"
+												th:field="*{introduction}"></textarea> </div>
+									</div>
+
+									<!-- end::Group -->
+									<!--begin::Group-->
+									<div class="form-group row mb-2">
+										<label class="col-form-label col-3 text-left">Active</label>
+										<div class="col-9">
+											<span class="switch"> <label> <input type="checkbox" checked="checked"
+														name="useFlag" th:field="*{useFlag}" /> <span></span>
+												</label>
+											</span>
+										</div>
+									</div>
+									<!--end::Group-->
+									<!--begin::Group-->
+									<div class="form-group row">
+										<label class="col-form-label col-3 text-left">Justification
+											*</label>
+										<div class="col-9">
+											<textarea class="form-control form-control-lg form-control-solid" required
+												th:field="*{justification}"></textarea>
+										</div>
+									</div>
+									<!--end::Group-->
 								</div>
-								<!--end::Row-->
 							</div>
-							<!--end::Tab-->
-						</div>
-						
-					</form>
+							<!--end::Row-->
+
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
-<script layout:fragment="script">
+<th:block layout:fragment="script">
+	<script type="text/javascript">
+		$().ready(function () {
+			inputImage("kt_user_edit_avatar");
 
-</script>
+			//fix later
+			$("input[name='useFlag']").on("change",function () {
+				var checking = $(this);
+				if (!$(this).is(":checked")) {
+					Swal.fire({
+						title: "Team member가 존재합니다.",
+						text: "deactivate 하시겠습니까?",
+						icon: "warning",
+						showCancelButton: true,
+						confirmButtonText: "네",
+						cancelButtonText: "아니오",
+					}).then(function (result) {
+						if (result.value) {
+							checking.prop("checked", false);
+						} else {
+							checking.prop("checked", true);
+						}
+					});
+				}
+			});
+		})
+	</script>
+</th:block>
+
 </html>

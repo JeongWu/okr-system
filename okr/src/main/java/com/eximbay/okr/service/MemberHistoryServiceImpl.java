@@ -1,14 +1,11 @@
 package com.eximbay.okr.service;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
-import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-
 import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
 import com.eximbay.okr.dto.MemberDto;
 import com.eximbay.okr.dto.MemberHistoryDto;
 import com.eximbay.okr.entity.Member;
@@ -16,14 +13,11 @@ import com.eximbay.okr.entity.MemberHistory;
 import com.eximbay.okr.repository.MemberHistoryRepository;
 import com.eximbay.okr.repository.MemberRepository;
 import com.eximbay.okr.service.Interface.IMemberHistoryService;
-import com.eximbay.okr.utils.PagingUtils;
-
-import org.springframework.data.domain.Pageable;
-
-
 import ma.glasnost.orika.MapperFacade;
 
 @Service
+@AllArgsConstructor
+@Transactional
 public class MemberHistoryServiceImpl implements IMemberHistoryService {
 	
 	@Autowired
@@ -34,10 +28,7 @@ public class MemberHistoryServiceImpl implements IMemberHistoryService {
 	
     @Autowired
     MapperFacade mapper;
-    
-    private EntityManager em;
-	
-    // 다시
+
     @Override
     public MemberHistoryDto save(MemberHistoryDto memberDto) {
         MemberHistory memberHistory = mapper.map(memberDto, MemberHistory.class);
@@ -76,26 +67,4 @@ public class MemberHistoryServiceImpl implements IMemberHistoryService {
 		return mapper.mapAsList(memberHistorys, MemberHistoryDto.class);
 	}
 	
-	
-	@Override
-	public List<MemberHistoryDto> findSearch(MemberDto memberDto, LocalDate from, LocalDate to, String justification) {	
-		Member member = memberRepository.findByMemberSeq(memberDto.getMemberSeq());
-		List<MemberHistory> memberHistorys = memberHistoryRepository
-				.findByMemberAndUpdatedDateBetweenAndJustificationContaining
-				(member, from.atStartOfDay().toInstant(ZoneOffset.UTC), to.atStartOfDay().toInstant(ZoneOffset.UTC), justification);
-		return mapper.mapAsList(memberHistorys, MemberHistoryDto.class);
-	}
-
-	@Override
-	public Page<MemberHistory> findSearchPage(MemberDto memberDto, LocalDate from, LocalDate to, String justification,
-			 Pageable pageable) {
-			Member member = memberRepository.findByMemberSeq(memberDto.getMemberSeq());
-			Page<MemberHistory> memberHistorys = memberHistoryRepository
-			.findByMemberAndUpdatedDateBetweenAndJustificationContaining
-			(member, from.atStartOfDay().toInstant(ZoneOffset.UTC), to.atStartOfDay().toInstant(ZoneOffset.UTC), justification, PagingUtils.buildPageRequest(pageable));
-			return memberHistorys;
-	}
-	
-	
-
 }

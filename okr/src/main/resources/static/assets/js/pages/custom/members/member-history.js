@@ -1,269 +1,195 @@
 "use strict";
-// Class definition
 
-	
-var KTDatatableJsonRemoteDemo = function() {
-	
-    // basic demo 
-    var belong = function() {
-        var datatable = $('#member_belong').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'remote',
-                source: {
-                    read: {
-                        url: '/member/get-member-data1',
-						params: {
-						}
-                    },
-                },
-                pageSize: 10,
-            },
+let KTDatatablesDataSourceAjaxServer = function() {
 
-            // layout definition
-            layout: {
-                scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
-                footer: false // display/hide footer
-            },
-
-            // column sorting
+    let initTable1 = function() {
+        let searchBox = $("#justification-search");
+        let beginDate = $("#begin-date");
+        let endDate = $("#end-date");
+        endDate.val(getCurrentDateInISOFormat());
+        beginDate.val(getOffsetDateInISOFormat(-6));
+        let table = $('#kt_datatable').DataTable({
+            dom: `
+            <'row'
+                <'col-sm-12'tr>
+            >
+            <'row' 
+                <'col-sm-12 col-md-7'p>
+                <'col-sm-12 col-md-2 pl-15 pt-2'l>
+                <'col-sm-12 col-md-3'i>
+            >`,
+            responsive: true,
+            searchDelay: 500,
+            processing: true,
+            serverSide: true,
             sortable: false,
-
-            pagination: true,
-
-            search: {
-                input: $('#kt_datatable_search_query'),
-                key: 'generalSearch'
+            autoWidth: false,
+            language: {
+                lengthMenu: "_MENU_",
+                info: "Showing _START_ - _END_ of _TOTAL_",
+                infoFiltered: "",
+                loadingRecords: '&nbsp;',
+                processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
             },
-
-            // columns definition
-            columns: [{
-                field: 'team.teamSeq',
-                title: '#',
-                width: 20,
-                textAlign: 'left',
-            }, {
-                field: 'team.localName',
-                title: 'TEAM',
-				textAlign: 'center',
-            },  {
-                field: 'applyBeginDate',
-                title: 'START',
- 				type: 'String',
-				textAlign: 'right',
-            },  {
-                field: 'applyBeginDate',
-				title: 'END',
-				type: 'String',
-				textAlign: 'left',
-            }, 
-			{
-                field: 'teamManagerFlag',
-                title: 'TEAM MANAGER',
-				textAlign: 'center',
-				template: function(row) {
-					var status = {
-					'Y': {'title': 'YES', 'class': 'label-light-primary'},
-					'N': {'title': 'NO', 'class': ' label-light-danger'},
-				};
-				return '<span class="label label-inline font-weight-bold label-lg">' + status[row.teamManagerFlag].title + '</span>';
-			},
-				
-				
-            },
-			{
-                field: 'teamLeadFlag',
-                title: ' TEAM LEAD ',
-				textAlign: 'center',
-				template: function(row) {
-					var status = {
-					'Y': {'title': 'YES', 'class': 'label-light-primary'},
-					'N': {'title': 'NO', 'class': ' label-light-danger'},
-				};
-				return '<span class="label label-inline font-weight-bold label-lg">' + status[row.teamLeadFlag].title + '</span>';
-			},
-            },
-			{
-                field: 'applyBeginDate',
-                title: 'EDIT DATE',
-                type: 'date',
-                format: 'MM  /DD / YYYY',
-				textAlign: 'center',
-            }, 
-			{
-                field: 'team.justification',
-                title: 'Justification',
-				textAlign: 'center',
-            }
-
-			]
-
-        });
-
-        $('#kt_datatable_search_teamManager').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'teamManagerFlag');
-
-			datatable.table().draw();
-        });
-
-        $('#kt_datatable_search_teamLead').on('change', function() {
-            datatable.search($(this).val().toLowerCase(), 'teamLeadFlag');
-			datatable.table().draw();
-        });
-
-        $('#kt_datatable_search_teamManager, #kt_datatable_search_teamLead').selectpicker();
-
-
-	$('#reset').on('click', function(e) {
-			e.preventDefault();
-			$('.datatable-input').each(function() {
-				$(this).val('');
-				$(this).prop("checked", false);
-			});
-			location.href = "/member/belong/" + $("#memberSeq").val();
-		});
-		
-    };
-
-	    var history = function() {
-		
-        var datatable = $('#member_history').KTDatatable({
-            // datasource definition
-            data: {
-                type: 'remote',
-                source: {
-                    read: {
-                        url: '/memberhistory/datatable/' + $("#history_name").val(),
-						params: {
-						}
-                    },
+            ajax: {
+                url: '/api/memberhistory/datatables/' + $('#memberSeq').val(),
+                type: 'POST',
+                contentType: 'application/json',
+                dataSrc: "data",
+                data: function(d) {
+                    d.beginDate = beginDate.val();
+                    d.endDate = endDate.val();
+                    return JSON.stringify(d);
                 },
-                pageSize: 10,
             },
+            columnDefs: [
+                {
+                    targets: [0,1,2,3,4,5,6,7,8],
+                    sortable: false
+                },
+                {
+                    targets: [6],
+                    width: 120,
+                },
+                {
+                    targets: '_all',
+                    className: 'text-center',
+                }
+            ],
+            columns: [
+                {
+                    target: 0,
+                    title: "#",
+                    data: 'historySeq',
+                }, 
+                {
+                    target: 1,
+                    title: "MEMBER",
+                    data: 'name'
+                },
+                {
+                    target: 2,
+                    title: "POSITION",
+                    data: 'position'
+                },
+                {
+                    target: 3,
+                    title: "JOININGDATE",
+                    data: 'joiningDate',
+                    render: function (data){
+                    var output = '';
+                    output =
+                    '<div class="align-items-center">\
+                            <h7> '+ data.substring(0,4) + '-'+ data.substring(4,6) + '-'+ data.substring(6,8) + '</h7> </div>\
+                    </div>';
+                        
+                        return output;
+                    }
+                },
+                {
+                    target: 4,
+                    title: "CAREER",
+                    data: 'career',
 
-            // layout definition
-            layout: {
-                scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
-                footer: false // display/hide footer
-            },
+                },
+                {
+                    target: 5,
+                    title: "LEVEL",
+                    data: 'level',
+                },
+                {
+                    target:6,
+                    title: "EDIT COMPANY OKR",
+                    data: 'editCompanyOkrFlag',
+                    render : function(data){
+                        var output = '';
 
-            // column sorting
-            sortable: true,
-
-            pagination: true,
-
-            search: {
-                input: $('#kt_datatable_search_query'),
-                key: 'generalSearch'
-            },
-
-            // columns definition
-            columns: [{
-                field: 'historySeq',
-                title: '#',
-                width: 20,
-                textAlign: 'left',
-            }, {
-                field: 'name',
-                title: 'NAME',
-				width: 20,
-				textAlign: 'left',
-            },  {
-                field: 'position',
-                title: 'POSITION',
-				textAlign: 'center',
-            }, {
-                field: 'joiningDate',
-                title: 'JOININGDATE',
-                type: 'date',
-                format: 'MM  /DD / YYYY',
-				textAlign: 'center',
-            }, 
-			{
-                field: 'career',
-                title: 'CAREER',
-				textAlign: 'center',
-            },
-			{
-                field: 'level',
-                title: 'LEVEL',
-				textAlign: 'center',
-            },
-			{
-                field: 'useFlag',
-                title: 'EDIT COMAPNY OKR',
-				textAlign: 'center',
-            },
-			{
-                field: 'useFlag',
-                title: 'ACTIVE',
-				textAlign: 'center',
-				template: function(row) {
-					var status = {
-					'Y': {'title': 'Active', 'class': 'label-light-primary'},
-					'N': {'title': 'Inactive', 'class': ' label-light-danger'},
-				};
-				return '<span class="label ' + status[row.useFlag].class + ' label-inline font-weight-bold label-lg">' + status[row.useFlag].title + '</span>';
-			},
-            },
-			{
-                field: 'justification',
-                title: 'Justification',
-				textAlign: 'center',
-            }
-
-			]
-
+						if (data == 'Y'){
+							output = '<div class="col-3 ">\
+							<span class="switch switch-icon align-items-center">\
+							 <label>\
+							  <input type="checkbox" checked="checked"  disabled="disabled" />\
+							  <span></span>\
+							 </label>\
+							</span>\
+						   </div>\
+						  </div>';
+						}
+						else{
+							output = '<div class="col-3 align-items-center">\
+							<span class="switch switch-icon">\
+							 <label>\
+							  <input type="checkbox"  disabled="disabled" />\
+							  <span></span>\
+							 </label>\
+							</span>\
+						   </div>\
+						  </div>';
+						}
+						return output;	
+					}
+                },
+                {
+                    target:7,
+                    title: "ACTIVE",
+                    data: 'useFlag',
+                    render: function(data){
+                        var Active = {
+							Y: {'title': 'Active'},
+							N: {'title': 'Inactive'},
+						};
+						return '<span class="font-weight-bold">' +
+							Active[data].title + '</span>';
+                    }
+                },
+                {
+                    target: 8,
+                    title: "JUSTIFICATION",
+                    data: 'justification',
+                    render : function(data) {
+                        var output = ''
+                        output = '<span data-toggle="tooltip" data-placement="top" data-trigger="focus"\
+                        title="'+data+'"><span class="d-inline-block text-truncate" style="max-width: 150px;">'+data+'</span></span>';
+                        return output;
+                    }
+                 },
+            ],
         });
+
+        $("#search-button").on('click', function (){
+            let searchValue = searchBox.val();
+            table.columns(8).search(searchValue).draw();
+        });
+        $("#reset-button").on('click', function (){
+            searchBox.val("");
+            table.columns(8).search("");
+            endDate.val(getCurrentDateInISOFormat());
+            beginDate.val(getOffsetDateInISOFormat(-6));
+            table.ajax.reload();
+        })
     };
-
     return {
-        // public functions
         init: function() {
-            history();
-			belong();
-
-        }
+            initTable1();
+        },
     };
 }();
 
-
-
-jQuery(document).ready(function() {
-    KTDatatableJsonRemoteDemo.init();
-
-	if ($('input[name=kt_datatable_search_teamManager]').is(":checked")) {
-    $('input[name=kt_datatable_search_teamManager]').val('Y');
-	} else {
-    $('input[name=kt_datatable_search_teamManager]').val('N');
-	}
-
-
-	/*
-	$('#hisotry_date').click(function(){
-	var from = $("input[name=from]").val();
-	var to = $("input[name=to]").val();
-	var justification = $("input[name=justification]").val();
-	var dateDto = {
-		'from' : from,
-		'to' : to,
-		'justification' : justification
-	};
-	alert("from : "+dateDto.from+" to : "+ dateDto.to + " js : " + dateDto.justification);
-
-
-	$.ajax({
-	url: '/member/date',
-	type: "GET",
-	dataType: "json",
-	data: dateDto,
-	success: function(data) {
-		console.log(data);
-	}, error: function(request,status,error) {
-		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	}
-	});
-
-});*/	
-
+$(document).ready(function() {
+    KTDatatablesDataSourceAjaxServer.init();
+    $("#begin-date, #end-date").datepicker({
+        rtl: KTUtil.isRTL(),
+        todayBtn: "linked",
+        clearBtn: true,
+        todayHighlight: true,
+        templates: "arrows",
+    });
 });
+
+function formatStringtoDate(instant){
+    if (instant === null) return "";
+    let year = instant.subString(0,4);
+    let month = instant.subString(4,6);
+    let day = instant.subString(6,8);
+    return year + "/" + month + "/" + day;
+}

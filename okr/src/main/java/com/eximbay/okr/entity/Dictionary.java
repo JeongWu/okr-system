@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @Table(name = "dictionary")
 @Entity
-public class Dictionary extends AbstractAuditable {
+public class Dictionary extends AbstractAuditable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

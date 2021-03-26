@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="avatar-list" class="d-flex align-items-center flex-lg-fill my-1">
+                            <span class="mr-4">
+                                <i class="flaticon-network icon-2x text-muted font-weight-bold"></i>
+                            </span>
+    <div th:if="${objectList.size() > 0}">
+        <div class="symbol-group symbol-hover">
+            <div th:each="object:${objectList}" class="symbol symbol-30 symbol-circle" data-toggle="tooltip"
+                 th:title="${object.objectName}" th:if="${objectStat.index < 5}">
+                <img alt="Not" th:src="${object.image}?${object.image}: '/image/default.jpg'"/>
+            </div>
+            <div th:if="${objectList.size() > 5}" class="symbol symbol-30  symbol-circle symbol-light">
+                <span class="symbol-label font-weight-bold" th:text="${objectList.size() - 5} + '+'"></span>
+            </div>
+        </div>
+    </div>
+    <div th:if="${objectList.size() == 0}">
+        <div class="symbol-group symbol-hover">
+            <div class="symbol symbol-30  symbol-circle symbol-light">
+                <span class="symbol-label font-weight-bold">+</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

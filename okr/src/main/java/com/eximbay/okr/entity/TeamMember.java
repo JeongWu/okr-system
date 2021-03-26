@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Data
 @Table(name = "team_member")
 @Entity
-
 public class TeamMember extends AbstractAuditable {
 
     @EmbeddedId
@@ -24,7 +23,10 @@ public class TeamMember extends AbstractAuditable {
     @Column(name = "TEAM_MANAGER_FLAG", length = 1, nullable = false)
     private String teamManagerFlag = FlagOption.N;
 
-    @Column(name = "APPLY_END_DATE", length = 8, nullable = false)
+    @Column(name = "EDIT_TEAM_OKR_FLAG", length = 1, nullable = false)
+    private String editTeamOkrFlag = FlagOption.N;
+
+    @Column(name = "APPLY_END_DATE", length = 10, nullable = false)
     private String applyEndDate;
 
     @Column(name = "JUSTIFICATION")

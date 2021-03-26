@@ -7,6 +7,7 @@ import com.eximbay.okr.service.Interface.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.*;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
@@ -14,6 +15,7 @@ import org.springframework.security.config.oauth2.client.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.registration.*;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.*;
 import org.springframework.stereotype.*;
 
@@ -26,16 +28,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
 
     private final Optional<CompanyDto> companyDto;
     private final MyUserDetailsService userDetailsService;
-    private ICompanyService companyService;
-    private Environment environment;
     private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private CustomLogOutSuccessHandler logOutSuccessHandler;
 
-    public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler, MyUserDetailsService userDetailsService, ICompanyService companyService, Environment environment) {
+    public SecurityConfig(OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler,
+                          MyUserDetailsService userDetailsService,
+                          ICompanyService companyService,
+                          CustomLogOutSuccessHandler logOutSuccessHandler) {
         this.userDetailsService = userDetailsService;
-        this.companyService = companyService;
-        this.environment = environment;
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
-        this.companyDto = companyService.getCurrentCompany();
+        this.companyDto = companyService.getCompany();
+        this.logOutSuccessHandler = logOutSuccessHandler;
     }
 
     @Override
@@ -58,8 +61,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Appl
                 .loginPage("/login").permitAll()
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/")
+                    .logoutSuccessHandler(logOutSuccessHandler)
+                    .deleteCookies("JSESSIONID")
                 .and()
                 .exceptionHandling().accessDeniedPage("/accessDenied");
 

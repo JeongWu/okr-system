@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout.html}">
+<head>
+    <title>Members</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <input id="base-url" hidden th:value="members" />
+    <!--begin::Row-->
+    <div class="row">
+        <div class="col-xl-6" th:each="member, iterStart: ${model.membersPage}">
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b card-stretch">
+                <!--begin::Body-->
+                <div class="card-body">
+                    <!--begin::Section-->
+                    <div class="d-flex align-items-center">
+                        <!--begin::Pic-->
+                        <div class="flex-shrink-0 mr-4 symbol symbol-65 symbol-circle">
+                            <img th:src="@{/assets/media/image/1.jpg}" alt="No image">
+                        </div>
+                        <!--end::Pic-->
+                        <!--begin::Info-->
+                        <div class="d-flex flex-column mr-auto">
+                            <!--begin: Title-->
+                            <span
+                                    class="card-title text-hover-primary font-weight-bolder font-size-h5 text-dark mb-1"
+                                    th:text="${member.localName}">
+
+                                </span>
+                            <span class="text-muted font-weight-bold"
+                                  th:text="${member.position}">
+                                </span>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Info-->
+                        <!--begin::Toolbar-->
+                        <!--end::Toolbar-->
+                    </div>
+                    <!--end::Section-->
+                    <!--begin::introduction and member-->
+                    <div class="d-flex flex-wrap mt-5">
+                        <div class="col-7 d-flex flex-column pl-0">
+                            <p th:text="${member.introduction}" class="limit-5-lines" th:title="${member.introduction}"
+                               data-toggle="tooltip" data-placement="right"></p>
+                        </div>
+                        <!--begin: member -->
+                        <div class="col-5 flex-column">
+                            <!--begin::Item-->
+                            <span class="font-weight-bolder mb-4 d-block text-center">Belong to</span>
+                            <div class="symbol-group symbol-hover align-items-center justify-content-center">
+                                <div th:each="team, teamStat: ${member.teams}" th:if="${teamStat.index < 5}"
+                                     class="symbol symbol-30 symbol-circle" data-toggle="tooltip"
+                                     th:title="${team.localName}" data-original-title="">
+                                    <img alt="Pic" th:src="@{~/{imgUrl}(imgUrl=${team.image})}">
+                                </div>
+                                <div th:if="${#lists.size(member.teams) > 5}"
+                                     class="symbol symbol-30 symbol-circle symbol-light">
+                                        <span class="symbol-label font-weight-bold"
+                                              th:text="${#lists.size(member.teams) - 5} + '+'"></span>
+                                </div>
+                            </div>
+                            </div>
+                            <!--end::Item-->
+                        </div>
+                        <!--end: member -->
+                    </div>
+                    <!--end::introduction and member-->
+
+                    <div class="mt-5 px-5 objective">
+                        <div th:each="objective , obStat: ${member.objectives}" th:if="${obStat.index < 3}"
+                             class="flex-row-fluid mb-7 mt-5 align-content-center justify-content-center">
+                                <span class="d-block font-weight-bold mb-2 text-center"
+                                      th:text="${objective.objective}">objective name</span>
+                            <div class="d-flex align-items-center pt-0">
+                                <div class="progress progress-xs mt-2 mb-2 w-100">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                         th:style="${'width: ' + objective.progress + '%;'}" aria-valuenow="50"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="ml-3 font-weight-bolder" th:text="${objective.progress} + '%'"></span>
+                            </div>
+                        </div>
+                        <!--end::Objective 1-->
+
+                         <span class="text-center d-block mb-2" th:if="${#lists.size(member.objectives) > 3}"
+                            th:text="${#lists.size(member.objectives) - 3 + ' more objective'}">... more
+                         objective</span>
+                </div>
+                <!--end::Body-->
+
+                <!-- begin::Footer -->
+                <div class="card-footer d-flex align-items-sm-center flex-wrap flex-column flex-sm-row">
+                    <div class="d-flex">
+                        <div class="d-flex mr-7">
+                                <span class="font-weight-boldest text-primary ml-2"
+                                      th:text="${member.keyResults + ' Key Results'}">... Key Results</span>
+                        </div>
+                        <div class="d-flex mr-7">
+                                <span class="font-weight-boldest text-primary ml-2" th:text="${member.feedbacks + ' Feedbacks'}">...
+                                    Feedbacks</span>
+                        </div>
+                    </div>
+                    <!--/okrs/quarterly-->
+                    <a th:href="@{'/okrs/quarterly?type=member&seq='+${member.memberSeq}}"
+                            class="btn btn-primary btn-sm text-uppercase font-weight-bolder mt-5 mt-sm-0 mr-auto mr-sm-0 ml-sm-auto">
+                        details
+                </a>
+                </div>
+                <!--end::Footer -->
+
+            </div>
+            <!--end::Card-->
+        </div>
+    </div>
+    <!--begin::Pagination-->
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex flex-wrap mr-3">
+            <th:block th:if="${model.membersPage.hasPrevious()}">
+                <a th:href="@{'/members?page=0&size=' + ${model.membersPage.size}}"
+                   class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i
+                        class="ki ki-bold-double-arrow-back icon-xs"></i></a>
+                <a th:href="@{'/members?page=' + ${model.membersPage.number - 1} + '&size=' + ${model.membersPage.size}}"
+                   class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i
+                        class="ki ki-bold-arrow-back icon-xs"></i></a>
+            </th:block>
+
+            <span th:if="${model.membersPage.totalPages > 10 && model.membersPage.number > 5}"
+                  class="btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</span>
+            <a th:each="navItem : ${model.navigationPageNumbers}" th:text="${navItem + 1}"
+               th:href="@{'/members?page=' + ${navItem} + '&size=' + ${model.membersPage.size}}"
+               th:class="${'btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1 ' + (navItem == model.membersPage.number ? 'active' : '')}">#</a>
+
+            <span
+                    th:if="${model.membersPage.totalPages > 10 && model.membersPage.number < (model.membersPage.totalPages -5)}"
+                    class="btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</span>
+
+            <th:block th:if="${model.membersPage.hasNext()}">
+                <a th:href="@{'/members?page=' + ${model.membersPage.number + 1} + '&size=' + ${model.membersPage.size} }"
+                   class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i
+                        class="ki ki-bold-arrow-next icon-xs"></i></a>
+                <a th:href="@{'members?page=' + ${model.membersPage.totalPages -1} + '&size=' + ${model.membersPage.size} }"
+                   class="btn btn-icon btn-sm btn-light-primary mr-2 my-1"><i
+                        class="ki ki-bold-double-arrow-next icon-xs"></i></a>
+            </th:block>
+
+        </div>
+        <div class="d-flex align-items-center">
+            <select id="page-size-selection"
+                    class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary"
+                    style="width: 75px;">
+                <option th:selected="${model.membersPage.size == 10}" value="10">10</option>
+                <option th:selected="${model.membersPage.size == 20}" value="20">20</option>
+                <option th:selected="${model.membersPage.size == 30}" value="30">30</option>
+                <option th:selected="${model.membersPage.size == 50}" value="50">50</option>
+                <option th:selected="${model.membersPage.size == 100}" value="100">100</option>
+            </select>
+            <span class="text-muted"
+                  th:text="${'Displaying ' + model.membersPage.numberOfElements + ' of ' + model.membersPage.totalElements + ' records'}"></span>
+        </div>
+    </div>
+    <!--end::Pagination-->
+</div>
+</body>
+
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        buildPageSizeSelection();
+    </script>
+</th:block>
+
+</html>

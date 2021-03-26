@@ -23,7 +23,7 @@ public class ApplicationController {
     public String loginPage(Model model) {
         Object currentMember = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (currentMember instanceof MyUserDetails) return "redirect:/";
-        boolean isGoogleLogin = companyService  .getCurrentCompany()
+        boolean isGoogleLogin = companyService  .getCompany()
                                                 .map(m->m.getGoogleSignIn().equals(FlagOption.Y))
                                                 .orElse(false);
         model.addAttribute("isGoogleLogin", isGoogleLogin);

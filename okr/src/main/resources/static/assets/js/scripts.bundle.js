@@ -109,14 +109,18 @@ var KTApp = function() {
         var sticky = new Sticky('[data-sticky="true"]');
     }
 
+  
+
     var initAbsoluteDropdown = function(context) {
         var dropdownMenu;
+
 
         if (!context) {
             return;
         }
 
         $('body').on('show.bs.dropdown', context, function(e) {
+            
         	dropdownMenu = $(e.target).find('.dropdown-menu');
         	$('body').append(dropdownMenu.detach());
         	dropdownMenu.css('display', 'block');
@@ -5551,7 +5555,7 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
 					}
 				}).on('hide.bs.dropdown', '.' + pfx + 'datatable .' + pfx + 'datatable-body', function(e) {
 					$(e.target).append(dropdownMenu.detach());
-					dropdownMenu.hide();
+					// dropdownMenu.hide();
 				});
 
 				// remove dropdown if window resize

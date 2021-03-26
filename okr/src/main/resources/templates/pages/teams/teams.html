@@ -18,7 +18,8 @@
                     <div class="d-flex align-items-center">
                         <!--begin::Pic-->
                         <div class="flex-shrink-0 mr-4 symbol symbol-65 symbol-circle">
-                            <img th:src="@{/assets/media/image/1.jpg}" alt="No image">
+                            <img th:if="${team.image} != null" th:src="${team.image}" alt="No image">
+                            <img th:if="${team.image} == null" src="/assets/media/image/default.jpg" alt="No image">
                         </div>
                         <!--end::Pic-->
                         <!--begin::Info-->
@@ -47,8 +48,7 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item" th:if="${team.isEditable}">
-                                            <a th:href="@{~/teams/view/edit/{teamSeq}(teamSeq=${team.teamSeq})}"  class="navi-link">
-                                                
+                                            <a th:href="@{~/teams/view/edit/{teamSeq}(teamSeq=${team.teamSeq})}" class="navi-link">
                                                 <span class="navi-text">Edit Team</span>
                                             </a>
                                         </li>

@@ -1,14 +1,12 @@
 package com.eximbay.okr.dto;
 
-import com.eximbay.okr.entity.Division;
+import com.eximbay.okr.listener.AbstractAuditableDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
-import java.util.Set;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class CompanyDto {
+public class CompanyDto extends AbstractAuditableDto {
 
     private Integer companySeq;
     private String name;

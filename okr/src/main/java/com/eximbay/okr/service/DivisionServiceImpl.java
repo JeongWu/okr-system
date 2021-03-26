@@ -3,14 +3,18 @@ package com.eximbay.okr.service;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.dto.*;
 import com.eximbay.okr.dto.divisionmember.DivisionMemberWithTimeDto;
-import com.eximbay.okr.entity.*;
+import com.eximbay.okr.entity.Division;
+import com.eximbay.okr.entity.DivisionHistory;
 import com.eximbay.okr.exception.UserException;
 import com.eximbay.okr.model.*;
 import com.eximbay.okr.model.division.DivisionAddModel;
 import com.eximbay.okr.repository.CompanyRepository;
-import com.eximbay.okr.repository.CompanyRepository;
+import com.eximbay.okr.repository.DivisionHistoryRepository;
 import com.eximbay.okr.repository.DivisionRepository;
-import com.eximbay.okr.service.Interface.*;
+import com.eximbay.okr.service.Interface.IDivisionHistoryService;
+import com.eximbay.okr.service.Interface.IDivisionMemberService;
+import com.eximbay.okr.service.Interface.IDivisionService;
+import com.eximbay.okr.service.Interface.ITeamMemberService;
 import com.eximbay.okr.utils.DateTimeUtils;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
@@ -33,6 +37,8 @@ public class DivisionServiceImpl implements IDivisionService {
     private final ITeamMemberService teamMemberService;
     private final IDivisionMemberService divisionMemberService;
     private final CompanyRepository companyRepository;
+    private final DivisionHistoryRepository divisionHistoryRepository;
+
     @Override
     public List<DivisionDto> findAll() {
         List<Division> divisions = divisionRepository.findAll();
@@ -42,7 +48,7 @@ public class DivisionServiceImpl implements IDivisionService {
     @Override
     public Optional<DivisionDto> findById(Integer id) {
         Optional<Division> division = divisionRepository.findById(id);
-        return division.map(m-> mapper.map(m, DivisionDto.class));
+        return division.map(m -> mapper.map(m, DivisionDto.class));
     }
 
     @Override
@@ -65,7 +71,8 @@ public class DivisionServiceImpl implements IDivisionService {
         List<DivisionDto> divisionDtos = mapper.mapAsList(divisions, DivisionDto.class);
         List<DivisionForDivisionsModel> divisionModels = mapper.mapAsList(divisions, DivisionForDivisionsModel.class);
         for (int i = 0; i < divisionModels.size(); i++) {
-            if (divisionModels.get(i).getTeams() != null) divisionModels.get(i).setTeams(divisionModels.get(i).getTeams().stream().filter(e->e.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
+            if (divisionModels.get(i).getTeams() != null)
+                divisionModels.get(i).setTeams(divisionModels.get(i).getTeams().stream().filter(e -> e.getUseFlag().equals(FlagOption.Y)).collect(Collectors.toList()));
             List<MemberDto> memberDtos = divisionMemberService.findActiveMembersOfDivision(divisionDtos.get(i));
             divisionModels.get(i).setMembers(memberDtos);
         }
@@ -76,14 +83,14 @@ public class DivisionServiceImpl implements IDivisionService {
     @Override
     public List<DivisionMemberDto> findCurrentlyValid(List<DivisionMemberDto> divisionMemberDtos) {
         return divisionMemberDtos.stream().filter(
-                m-> DateTimeUtils.isCurrentlyValid(m.getDivisionMemberId().getApplyBeginDate(), m.getApplyEndDate()))
+                m -> DateTimeUtils.isCurrentlyValid(m.getDivisionMemberId().getApplyBeginDate(), m.getApplyEndDate()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public EditDivisionModel buildEditDivisionModel(Integer id) {
         Optional<Division> division = divisionRepository.findById(id);
-        if (division.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = "+ id));
+        if (division.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = " + id));
 
         EditDivisionModel dataModel = new EditDivisionModel();
         dataModel.setSubheader("Edit ");
@@ -97,7 +104,8 @@ public class DivisionServiceImpl implements IDivisionService {
     @Override
     public void updateFormModel(DivisionUpdateFormModel updateFormModel) {
         Optional<Division> division = divisionRepository.findById(updateFormModel.getDivisionSeq());
-        if (division.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = "+ updateFormModel.getDivisionSeq()));
+        if (division.isEmpty())
+            throw new UserException(new NotFoundException("Not found Object with Id = " + updateFormModel.getDivisionSeq()));
         mapper.map(updateFormModel, division.get());
         if (updateFormModel.isUseFlag()) division.get().setUseFlag(FlagOption.Y);
         else division.get().setUseFlag(FlagOption.N);
@@ -112,7 +120,7 @@ public class DivisionServiceImpl implements IDivisionService {
     @Override
     public DivisionChangeMembersModel buildDivisionChangeMembersModel(Integer id) {
         Optional<Division> division = divisionRepository.findById(id);
-        if (division.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = "+ id));
+        if (division.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = " + id));
 
         DivisionChangeMembersModel dataModel = new DivisionChangeMembersModel();
         dataModel.setMutedHeader(division.get().getLocalName());
@@ -129,7 +137,7 @@ public class DivisionServiceImpl implements IDivisionService {
 
         List<DivisionMemberWithTimeDto> memberDtos = divisionMemberService.findActiveMembersOfDivisionWithTime(mapper.map(division.get(), DivisionDto.class));
         List<MemberForDivisionChangeMembersModel> memberModels = new ArrayList<>();
-        memberDtos.forEach(m-> {
+        memberDtos.forEach(m -> {
             MemberForDivisionChangeMembersModel item = mapper.map(m.getMember(), MemberForDivisionChangeMembersModel.class);
             List<TeamDto> teamDtos = teamMemberService.findActiveTeamsOfMember(m.getMember());
             item.setTeams(teamDtos);
@@ -148,8 +156,6 @@ public class DivisionServiceImpl implements IDivisionService {
 
     @Override
     public Division addDivision(DivisionAddModel divisionAddModel) {
-//        divisionAddModel.setCompany(companyRepository.findById(1).orElse(null));
-        System.out.println(divisionAddModel.getCompany());
         Division division = mapper.map(divisionAddModel, Division.class);
         if (divisionAddModel.isUseFlag()) {
             division.setUseFlag("Y");
@@ -157,6 +163,10 @@ public class DivisionServiceImpl implements IDivisionService {
             division.setUseFlag("N");
         }
         division = divisionRepository.save(division);
+        DivisionHistory divisionHistory = mapper.map(division, DivisionHistory.class);
+        divisionHistory.setJustification("Add new");
+        divisionHistory.setDivision(division);
+        divisionHistoryRepository.save(divisionHistory);
         return division;
     }
 }

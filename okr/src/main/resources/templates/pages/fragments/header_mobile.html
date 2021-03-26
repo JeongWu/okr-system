@@ -5,7 +5,8 @@
 <div th:fragment="header_mobile" id="kt_header_mobile" class="header-mobile ">
     <!--begin::Logo-->
     <a href="index.html">
-        <img alt="Logo" src="" class="logo-default max-h-30px" />
+        <img alt="Logo" th:if="${wireframeModel.company}" th:src="${wireframeModel.company.logo}" class="logo-default max-h-30px max-w-100px" />
+        <img alt="Logo" th:if="!${wireframeModel.company}" th:src="'/avatar/default-logo.png'" class="logo-default max-h-30px max-w-100px" />
     </a>
     <!--end::Logo-->
 
