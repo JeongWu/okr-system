@@ -18,7 +18,6 @@ let KTAppsProjectsListDatatable = (function () {
               if (typeof raw.data !== "undefined") {
                 dataSet = raw.data;
               }
-              console.log(dataSet);
               let data = dataSet.map((i) => i.divisionName);
               let list = new Set(data);
               list.forEach(function (d) {
@@ -31,7 +30,6 @@ let KTAppsProjectsListDatatable = (function () {
 
               return dataSet;
             },
-            // params: {},
           },
         },
         //not using server-side
@@ -113,7 +111,6 @@ let KTAppsProjectsListDatatable = (function () {
           field: "teamType",
           title: "TEAM Type",
           width: 80,
-          // autoHide: false,
           template: function (data) {
             let status = {
               1: {
@@ -184,6 +181,7 @@ let KTAppsProjectsListDatatable = (function () {
             <a href="/members/list">\
           <div class="symbol-group symbol-hover">';
 
+          //show except team manager in MANAGERS field
             let memberList = data.leaderOrManager
               ? data.members.filter(
                   (x) => x.memberSeq !== data.leaderOrManager.memberSeq
@@ -237,8 +235,7 @@ let KTAppsProjectsListDatatable = (function () {
           title: "Actions",
           sortable: false,
           width: 70,
-          overflow: "visible",
-          // autoHide: false,
+          textAlign: "center",
           template: function (data) {
             let id = data.teamSeq;
             return (
@@ -272,10 +269,7 @@ let KTAppsProjectsListDatatable = (function () {
     
 
     //realtime search in the view
-    // $("#kt_datatable_search_name").on("propertychange change keyup paste input", function () {
     $("#kt_datatable_search_name").on("change keyup paste", function () {
-      // console.log($(this).val());
-      // datatable.search($(this).val().toLowerCase(), "localName");
       $("#searchFun").val($(this).val().toLowerCase()).keyup();
     });
 
@@ -291,11 +285,6 @@ let KTAppsProjectsListDatatable = (function () {
     });
 
     $("#kt_datatable_search_active,#kt_datatable_search_type").selectpicker();
-
-    // $(
-    //   "#kt_datatable_search_division, #kt_datatable_search_type",
-    //   "#kt_datatable_search_active"
-    // ).selectpicker();
 
     //search button-not neccessary(search directly in the view)
     $("#kt_search").on("click", function (e) {
