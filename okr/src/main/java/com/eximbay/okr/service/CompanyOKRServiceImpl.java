@@ -24,7 +24,6 @@ import com.eximbay.okr.repository.ObjectiveRepository;
 import com.eximbay.okr.service.Interface.ICompanyOKRService;
 import com.eximbay.okr.service.Interface.ICompanyService;
 import com.eximbay.okr.service.Interface.IObjectiveService;
-import com.eximbay.okr.service.specification.CodeListQuery;
 import com.eximbay.okr.utils.DateTimeUtils;
 import lombok.AllArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
@@ -46,7 +45,6 @@ public class CompanyOKRServiceImpl implements ICompanyOKRService {
     private final ObjectiveHistoryRepository objectiveHistoryRepository;
     private final KeyResultHistoryRepository keyResultHistoryRepository;
     private final IObjectiveService objectiveService;
-    private final CodeListQuery codeListQuery;
     private final MapperFacade mapper;
 
     public AddCompanyOkrModel buildAddOkrDataModel() {
