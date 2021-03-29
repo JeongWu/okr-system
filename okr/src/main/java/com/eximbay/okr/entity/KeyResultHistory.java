@@ -15,17 +15,20 @@ import javax.persistence.Table;
 import java.time.Instant;
 
 @Data
-@Table(name = "key_result")
+@Table(name = "key_result_history")
 @Entity
-public class KeyResult extends AbstractAuditable {
+public class KeyResultHistory extends AbstractAuditable {
+
+    public static final String DEFAULT_ADD_NEW_KEY_RESULT_JUSTIFICATION = "Add new key result";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "KEY_RESULT_SEQ", length = 11)
-    private Integer keyResultSeq;
+    @Column(name = "HISTORY_SEQ")
+    private Integer historySeq;
 
-    @Column(name = "OBJECTIVE_SEQ", insertable = false, updatable = false)
-    private Integer objectiveSeq;
+    @ManyToOne
+    @JoinColumn(name = "KEY_RESULT_SEQ")
+    private KeyResult sourceKeyResult;
 
     @ManyToOne
     @JoinColumn(name = "OBJECTIVE_SEQ", nullable = false)
@@ -52,7 +55,7 @@ public class KeyResult extends AbstractAuditable {
     @Column(name = "TASK_INDICATOR", length = 20)
     private String taskIndicator;
 
-    @Column(name = "PROPORTION", length = 11, nullable = false)
+    @Column(name = "PROPORTION")
     private Integer proportion = 0;
 
     @Column(name = "PROGRESS", length = 11, nullable = false)
@@ -70,7 +73,6 @@ public class KeyResult extends AbstractAuditable {
     @Column(name = "CLOSE_DATE", length = 8)
     private String closeDate;
 
-    public boolean isClosed() {
-        return FlagOption.isYes(this.closeFlag);
-    }
+    @Column(name = "JUSTIFICATION")
+    private String justification;
 }

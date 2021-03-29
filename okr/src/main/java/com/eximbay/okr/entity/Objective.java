@@ -12,13 +12,19 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @Table(name = "objective")
 @Entity
-@ToString(exclude = { "company", "division", "team", "member"})
-@EqualsAndHashCode(callSuper = true, exclude = { "company", "division", "team", "member"})
+@ToString(exclude = {"company", "division", "team", "member"})
+@EqualsAndHashCode(callSuper = true, exclude = {"company", "division", "team", "member"})
 public class Objective extends AbstractAuditable {
+
+    public static final String OBJECTIVE_TYPE_COMPANY = "COMPANY";
+    public static final String OBJECTIVE_TYPE_DIVISON = "DIVISION";
+    public static final String OBJECTIVE_TYPE_TEAM = "TEAM";
+    public static final String OBJECTIVE_TYPE_MEMBER = "MEMBER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,28 +44,12 @@ public class Objective extends AbstractAuditable {
     private String endDate;
 
     @Column(name = "OBJECTIVE_TYPE", length = 10, nullable = false)
-    private String objectiveLevel;
+    private String objectiveType;
 
-    // @Column(name = "OBJECTIVE_LEVEL", length = 10, nullable = false)
-    // private String objectiveLevel;
-
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "DIVISION_SEQ")
-    // @JsonIgnore
-    // private Division division;
-
-    // @ManyToOne
-    // @Column(name = "OBJECTIVE_TYPE", length = 10, nullable = false)
-    // private String objectiveType;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "COMPANY_SEQ")
     @JsonBackReference
     private Company company;
-
-    // @ManyToOne
-    // @JoinColumn(name = "DIVISION_SEQ")
-    // private Division division;
 
     @ManyToOne
     @JoinColumn(name = "TEAM_SEQ")
@@ -75,8 +65,11 @@ public class Objective extends AbstractAuditable {
     @Column(name = "PRIORITY", length = 11, nullable = false)
     private Integer priority;
 
+    @Column(name = "PROPORTION", length = 11, nullable = false)
+    private Integer proportion = 0;
+
     @Column(name = "PROGRESS", length = 11, nullable = false)
-    private Integer progress;
+    private Integer progress = 0;
 
     @Column(name = "LATEST_UPDATE_DT", nullable = false)
     private Instant lastUpdateDate;
@@ -89,4 +82,12 @@ public class Objective extends AbstractAuditable {
 
     @Column(name = "CLOSE_DATE")
     private Instant closeDate;
+
+    @OneToMany(mappedBy = "objective")
+    private List<KeyResult> keyResults;
+
+    //utilities method
+    public boolean isClosed() {
+        return FlagOption.isYes(this.closeFlag);
+    }
 }

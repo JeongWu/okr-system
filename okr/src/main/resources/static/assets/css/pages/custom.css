@@ -32,12 +32,18 @@
 }
 form label.error {
     color: #F64E60;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 400;
     font-family: Poppins, Helvetica, "sans-serif";
 }
+.w1-24 {
+    width: 4.167% !important;
+}
 .w1-12 {
     width: 8.33% !important;
+}
+.w3-24 {
+    width: 12.5% !important;
 }
 .w2-12 {
     width: 16.67% !important;
@@ -45,11 +51,17 @@ form label.error {
 .w3-12 {
     width: 25% !important;
 }
+.w7-24 {
+    width: 29.17% !important;
+}
 .w4-12 {
     width: 33.33% !important;
 }
 .w5-12 {
     width: 41.67% !important;
+}
+.w11-24 {
+    width: 45.83% !important;
 }
 .w6-12 {
     width: 50% !important;

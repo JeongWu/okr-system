@@ -22,21 +22,9 @@ public class CodeListQuery {
         return (root, query, cb) -> {
             query.orderBy(cb.asc(root.get(CodeList_.sortOrder)));
             return cb.and(
-                    cb.equal(root.get(CodeList_.codeListId).get(CodeListId_.groupCode).get(CodeGroup_.groupCode), groupCode),
+                    cb.equal(root.get(CodeList_.groupCode), groupCode),
                     cb.equal(root.get(CodeList_.useFlag), FlagOption.Y)
             );
         };
     }
-
-    public Specification<CodeList> findByGroupCodeAndUseFlagOrderBySortOrderAsc(String groupCode, String useFlag) {
-        return (root, query, cb) -> {
-            query.orderBy(cb.asc(root.get(CodeList_.sortOrder)));
-            return cb.and(
-                    cb.equal(root.get(CodeList_.codeListId).get(CodeListId_.groupCode).get(CodeGroup_.groupCode), groupCode),
-                    cb.equal(root.get(CodeList_.useFlag), useFlag)
-            );
-        };
-    }
-
-
 }

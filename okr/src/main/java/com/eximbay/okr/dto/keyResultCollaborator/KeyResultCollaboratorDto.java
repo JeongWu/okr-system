@@ -1,7 +1,7 @@
 package com.eximbay.okr.dto.keyResultCollaborator;
 
 import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.keyResult.KeyResultDto;
+import com.eximbay.okr.dto.keyresult.KeyResultDto;
 import com.eximbay.okr.listener.AbstractAuditableDto;
 import lombok.Data;
 

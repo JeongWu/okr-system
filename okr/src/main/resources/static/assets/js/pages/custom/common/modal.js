@@ -235,13 +235,11 @@ var KTDatatableModalForKeyResult = (function () {
             "click",
             ".selectButton",
             function (e) {
-              var index=localStorage.getItem("index");
- 
-              $('.key-result:eq('+index+')').val(e.currentTarget.dataset.sentence);
+              const index = localStorage.getItem("index");
+              $('.key-result:eq('+index+')').val(e.currentTarget.dataset.sentence).trigger("blur");// a workaround to trigger validation
               $('.task-type:eq('+index+')').val(e.currentTarget.dataset.tasktype);
               $('.task-metric:eq('+index+')').val(e.currentTarget.dataset.taskmetric);
               $('.task-indicator:eq('+index+')').val(e.currentTarget.dataset.taskindicator);
-
             }
           );
 

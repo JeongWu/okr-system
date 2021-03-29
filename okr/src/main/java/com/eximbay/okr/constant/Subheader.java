@@ -23,4 +23,6 @@ public class Subheader {
     public static final String MEMBER = "Member";
 	public static final String ADD_TEAM = "Add Team";
     public static final String TEAM_HISTORY = "View Team History";
+    public static final String ADD_OKR = "Add OKR";
+    public static final String EDIT_OKR = "Edit OKR";
 }
