@@ -80,7 +80,7 @@ let KTAppsProjectsListDatatable = (function () {
             let teamName = data.localName;
 
             output = '<div class="d-flex align-items-center">';
-            output += makeImageSymbol(teamName, teamImg, "big");
+            output += makeImageSymbol(data, "big");
 
             output +=
               '<div class="ml-2">\
@@ -157,8 +157,7 @@ let KTAppsProjectsListDatatable = (function () {
               output = '<div class="d-flex align-items-center">\
               <a href="/members/list">';
               output += makeImageSymbol(
-                managerInfo.name,
-                managerInfo.image,
+                managerInfo,
                 "big",
                 "circle"
               );
@@ -195,8 +194,7 @@ let KTAppsProjectsListDatatable = (function () {
               memberList.forEach((member, index) => {
                 if (index < 5) {
                   output += makeImageSymbol(
-                    member.name,
-                    member.image,
+                    member,
                     "small",
                     "circle"
                   );
@@ -213,8 +211,7 @@ let KTAppsProjectsListDatatable = (function () {
             } else {
               memberList.forEach((member) => {
                 output += makeImageSymbol(
-                  member.name,
-                  member.image,
+                  member,
                   "small",
                   "circle"
                 );
