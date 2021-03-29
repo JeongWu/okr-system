@@ -18,4 +18,7 @@ public interface ObjectiveRepository extends JpaRepository<Objective, Integer>, 
 
     @Query("SELECT SUM(o.proportion) FROM Objective o WHERE o.closeFlag = 'N' AND o.objectiveType = ?1 AND o.year = ?2 AND o.quarter = ?3")
     int sumProportionsOfActiveObjectivesInQuarter(String objectiveType, int year, int quarter);
+
+    @Query("SELECT SUM(o.proportion) FROM Objective o WHERE o.closeFlag = 'N' AND o.objectiveType = ?1 AND o.TEAM_SEQ = ?2 AND o.year = ?3 AND o.quarter = ?4")
+    int sumProportionOfTeamActiveObjectiveInQuarter(String objectiveType, int teamSeq, int year, int quarter);
 }

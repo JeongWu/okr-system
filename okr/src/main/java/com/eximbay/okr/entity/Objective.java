@@ -51,6 +51,9 @@ public class Objective extends AbstractAuditable {
     @JsonBackReference
     private Company company;
 
+    @Column(name = "TEAM_SEQ", insertable = false, updatable = false)
+    private Integer TEAM_SEQ;
+
     @ManyToOne
     @JoinColumn(name = "TEAM_SEQ")
     private Team team;
