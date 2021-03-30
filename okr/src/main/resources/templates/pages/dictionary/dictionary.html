@@ -64,8 +64,8 @@
                                         id="kt_datatable_search_type">
                                         <option value="">All</option>
                                         <th:block
-                                            th:each="codeList: ${TypeModel.dictionaryType}">
-                                            <option th:value="${codeList.codeListId.code}"
+                                            th:each="codeList: ${TypeModel.dictionaryTypes}">
+                                            <option th:value="${codeList.code}"
                                                 th:text="${codeList.codeName}"></option>
                                         </th:block>
                                     </select>
@@ -76,8 +76,8 @@
                                     <select class="form-control datatable-input"
                                         id="kt_datatable_search_job">
                                         <option value="">All</option>
-                                        <th:block th:each="codeList: ${TypeModel.jobType}">
-                                            <option th:value="${codeList.codeListId.code}"
+                                        <th:block th:each="codeList: ${TypeModel.jobTypes}">
+                                            <option th:value="${codeList.code}"
                                                 th:text="${codeList.codeName}"></option>
                                         </th:block>
                                     </select>
@@ -89,8 +89,8 @@
                                         id="kt_datatable_search_categorygroup">
                                         <option value="">All</option>
                                         <th:block
-                                            th:each="codeList: ${TypeModel.categoryGroup}">
-                                            <option th:value="${codeList.codeListId.code}"
+                                            th:each="codeList: ${TypeModel.categoryGroups}">
+                                            <option th:value="${codeList.code}"
                                                 th:text="${codeList.codeName}"></option>
                                         </th:block>
                                     </select>
@@ -101,8 +101,8 @@
                                     <select class="form-control datatable-input"
                                         id="kt_datatable_search_category">
                                         <option value="">All</option>
-                                        <th:block th:each="codeList: ${TypeModel.category}">
-                                            <option th:value="${codeList.codeListId.code}"
+                                        <th:block th:each="codeList: ${TypeModel.categories}">
+                                            <option th:value="${codeList.code}"
                                                 th:text="${codeList.codeName}"></option>
                                         </th:block>
                                     </select>

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.constant.GroupCode;
+import com.eximbay.okr.dto.CodeListDto;
 import com.eximbay.okr.dto.dictionary.DictionaryDto;
 import com.eximbay.okr.entity.CodeList;
 import com.eximbay.okr.entity.Dictionary;
@@ -14,16 +15,12 @@ import com.eximbay.okr.model.dictionary.DictionaryUpdateModel;
 import com.eximbay.okr.model.dictionary.SelectTypeModel;
 import com.eximbay.okr.repository.CodeListRepository;
 import com.eximbay.okr.repository.DictionaryRepository;
-import com.eximbay.okr.service.Interface.ICodeGroupService;
 import com.eximbay.okr.service.Interface.IDictionaryService;
-import com.eximbay.okr.service.specification.CodeListQuery;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javassist.NotFoundException;
-
-import org.springframework.stereotype.Service;
-
 import lombok.AllArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 
@@ -33,9 +30,7 @@ import ma.glasnost.orika.MapperFacade;
 public class DictionaryService implements IDictionaryService {
     private final DictionaryRepository dictionaryRepository;
     private final CodeListRepository codeListRepository;
-    private final CodeListQuery codeListQuery;
     private final MapperFacade mapper;
-    private final ICodeGroupService codeGroupService;
 
     @Override
     public List<DictionaryDto> findAll() {
@@ -66,29 +61,24 @@ public class DictionaryService implements IDictionaryService {
     public SelectTypeModel buildSelectTypeModel() {
 
         SelectTypeModel selectTypeModel = new SelectTypeModel();
-        List<CodeList> availableDictinaryType = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.DICTIONARY_TYPE));
-        selectTypeModel.setDictionaryType(availableDictinaryType);
-       
-        List<CodeList> availableCategory = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.DIC_CATEGORY));
-        selectTypeModel.setCategory(availableCategory);
-       
-        List<CodeList> availableCategoryGroup = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.DIC_CATEGORY_GROUP));
-        selectTypeModel.setCategoryGroup(availableCategoryGroup);
-       
-        List<CodeList> availableJobType = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.JOB_TYPE));
-        selectTypeModel.setJobType(availableJobType);
-        
-        List<CodeList> availablePosition = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.POSITION));
-        selectTypeModel.setPosition(availablePosition);
-        
-        List<CodeList> availableTaskType = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.TASK_TYPE));
-        selectTypeModel.setTaskType(availableTaskType);
-        
-        List<CodeList> availableTaskMetric = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.TASK_METRIC));
-        selectTypeModel.setTaskMetric(availableTaskMetric);
-        
-        List<CodeList> avalableTaskIndicator = codeListRepository.findAll(codeListQuery.findActiveByGroupCodeAndOrderBySortOrderAsc(GroupCode.TASK_INDICATOR));
-        selectTypeModel.setTaskIndicator(avalableTaskIndicator);
+
+        List<CodeList> availableDictinaryType = codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(GroupCode.DICTIONARY_TYPE, FlagOption.Y);
+        List<CodeList> availableCategory = codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(GroupCode.DIC_CATEGORY, FlagOption.Y);
+        List<CodeList> availableCategoryGroup = codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(GroupCode.DIC_CATEGORY_GROUP, FlagOption.Y);
+        List<CodeList> availableJobType = codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(GroupCode.JOB_TYPE, FlagOption.Y);
+        List<CodeList> availablePosition = codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(GroupCode.POSITION, FlagOption.Y);
+        List<CodeList> availableTaskType = codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(GroupCode.TASK_TYPE, FlagOption.Y);
+        List<CodeList> availableTaskMetric = codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(GroupCode.TASK_METRIC, FlagOption.Y);
+        List<CodeList> avalableTaskIndicator = codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(GroupCode.TASK_INDICATOR, FlagOption.Y);
+
+        selectTypeModel.setDictionaryTypes(mapper.mapAsList(availableDictinaryType, CodeListDto.class));
+        selectTypeModel.setCategories(mapper.mapAsList(availableCategory, CodeListDto.class));
+        selectTypeModel.setCategoryGroups(mapper.mapAsList(availableCategoryGroup, CodeListDto.class));
+        selectTypeModel.setJobTypes(mapper.mapAsList(availableJobType, CodeListDto.class));
+        selectTypeModel.setPositions(mapper.mapAsList(availablePosition, CodeListDto.class));
+        selectTypeModel.setTaskTypes(mapper.mapAsList(availableTaskType, CodeListDto.class));
+        selectTypeModel.setTaskMetrics(mapper.mapAsList(availableTaskMetric, CodeListDto.class));
+        selectTypeModel.setTaskIndicators(mapper.mapAsList(avalableTaskIndicator, CodeListDto.class));
         
         return selectTypeModel;
 

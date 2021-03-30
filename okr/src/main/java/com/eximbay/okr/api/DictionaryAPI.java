@@ -1,8 +1,10 @@
 package com.eximbay.okr.api;
 
-import com.eximbay.okr.constant.DictionaryType;
-import com.eximbay.okr.entity.CodeList;
+import java.util.List;
+import java.util.Optional;
 
+import com.eximbay.okr.constant.DictionaryType;
+import com.eximbay.okr.dto.CodeListDto;
 import com.eximbay.okr.entity.Dictionary;
 import com.eximbay.okr.model.dictionary.DictionaryViewModel;
 import com.eximbay.okr.model.dictionary.SelectTypeModel;
@@ -10,15 +12,12 @@ import com.eximbay.okr.repository.DictionaryRepository;
 import com.eximbay.okr.service.Interface.IDictionaryService;
 import com.eximbay.okr.service.specification.DictionaryQuery;
 
-import lombok.AllArgsConstructor;
-import ma.glasnost.orika.MapperFacade;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.AllArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
 
 @RestController
 @RequestMapping("api/dictionary")
@@ -38,23 +37,23 @@ public class DictionaryAPI {
                 SelectTypeModel selectTypeModel = dictionaryService.buildSelectTypeModel();
 
                 for (DictionaryViewModel model : viewModels) {
-                        Optional<CodeList> dictionaryType = selectTypeModel.getDictionaryType().stream()
+                        Optional<CodeListDto> dictionaryType = selectTypeModel.getDictionaryTypes().stream()
                                         .filter(d -> d.getCodeListId().getCode().equals(model.getDictionaryType()))
                                         .findFirst();
                         model.setDictionaryTypeCodeName(dictionaryType.get().getCodeName());
 
-                        Optional<CodeList> jobType = selectTypeModel.getJobType().stream()
+                        Optional<CodeListDto> jobType = selectTypeModel.getJobTypes().stream()
                                         .filter(d -> d.getCodeListId().getCode().equals(model.getJobType()))
                                         .findFirst();
                         model.setJobTypeCodeName(jobType.get().getCodeName());
 
                         if (model.getDictionaryType().equals(DictionaryType.COMPETENCE)) {
-                                Optional<CodeList> categoryGroup = selectTypeModel.getCategoryGroup().stream().filter(
+                                Optional<CodeListDto> categoryGroup = selectTypeModel.getCategoryGroups().stream().filter(
                                                 d -> d.getCodeListId().getCode().equals(model.getCategoryGroup()))
                                                 .findFirst();
                                 model.setCategoryGroupCodeName(categoryGroup.get().getCodeName());
 
-                                Optional<CodeList> category = selectTypeModel.getCategory().stream()
+                                Optional<CodeListDto> category = selectTypeModel.getCategories().stream()
                                                 .filter(d -> d.getCodeListId().getCode().equals(model.getCategory()))
                                                 .findFirst();
                                 model.setCategoryCodeName(category.get().getCodeName());
@@ -77,19 +76,19 @@ public class DictionaryAPI {
                 SelectTypeModel selectTypeModel = dictionaryService.buildSelectTypeModel();
 
                 for (DictionaryViewModel model : viewModels) {
-                        Optional<CodeList> availableJobType = selectTypeModel.getJobType().stream()
+                        Optional<CodeListDto> availableJobType = selectTypeModel.getJobTypes().stream()
                                         .filter(d -> d.getCodeListId().getCode().equals(model.getJobType()))
                                         .findFirst();
                         model.setJobTypeCodeName(availableJobType.get().getCodeName());
-                        Optional<CodeList> availableTaskType = selectTypeModel.getTaskType().stream()
+                        Optional<CodeListDto> availableTaskType = selectTypeModel.getTaskTypes().stream()
                                         .filter(d -> d.getCodeListId().getCode().equals(model.getTaskType()))
                                         .findFirst();
                         model.setTaskTypeCodeName(availableTaskType.get().getCodeName());
-                        Optional<CodeList> availableTaskMetric = selectTypeModel.getTaskMetric().stream()
+                        Optional<CodeListDto> availableTaskMetric = selectTypeModel.getTaskMetrics().stream()
                                         .filter(d -> d.getCodeListId().getCode().equals(model.getTaskMetric()))
                                         .findFirst();
                         model.setTaskMetricCodeName(availableTaskMetric.get().getCodeName());
-                        Optional<CodeList> availableTaskIndicator = selectTypeModel.getTaskIndicator().stream()
+                        Optional<CodeListDto> availableTaskIndicator = selectTypeModel.getTaskIndicators().stream()
                                         .filter(d -> d.getCodeListId().getCode().equals(model.getTaskIndicator()))
                                         .findFirst();
                         model.setTaskIndicatorCodeName(availableTaskIndicator.get().getCodeName());

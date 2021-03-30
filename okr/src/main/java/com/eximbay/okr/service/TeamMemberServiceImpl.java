@@ -2,7 +2,7 @@ package com.eximbay.okr.service;
 
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.dto.DivisionDto;
-import com.eximbay.okr.dto.keyResult.KeyResultDto;
+import com.eximbay.okr.dto.keyresult.KeyResultDto;
 import com.eximbay.okr.dto.MemberDto;
 import com.eximbay.okr.dto.MemberWithActiveDto;
 import com.eximbay.okr.dto.TeamDto;

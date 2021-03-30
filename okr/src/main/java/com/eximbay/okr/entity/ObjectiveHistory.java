@@ -1,12 +1,17 @@
 package com.eximbay.okr.entity;
 
-import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.listener.AbstractAuditable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
@@ -14,6 +19,8 @@ import java.time.Instant;
 @Table(name = "objective_history")
 @Entity
 public class ObjectiveHistory extends AbstractAuditable {
+
+    public static final String DEFAULT_ADD_OBJECTIVE_JUSTIFICATION = "Add new objective";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,6 +63,9 @@ public class ObjectiveHistory extends AbstractAuditable {
 
     @Column(name = "PRIORITY", length = 11)
     private Integer priority;
+
+    @Column(name = "PROPORTION", length = 11, nullable = false)
+    private Integer proportion = 0;
 
     @Column(name = "PROGRESS", length = 11)
     private Integer progress = 0;

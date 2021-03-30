@@ -1,33 +1,22 @@
 package com.eximbay.okr.model.dictionary;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.eximbay.okr.dto.CodeGroupDto;
-import com.eximbay.okr.entity.CodeGroup;
-import com.eximbay.okr.entity.CodeList;
+import com.eximbay.okr.dto.CodeListDto;
 
 import lombok.Data;
 
 @Data
 public class SelectTypeModel {
 
-    private List<CodeList> dictionaryType;
-
-    private List<CodeList> categoryGroup;
-
-    private List<CodeList> category;
-
-    private List<CodeList> jobType;
-
-    private List<CodeList> position;
-
-    private List<CodeList> taskIndicator;
-    
-    private List<CodeList> taskMetric;
-
-    private List<CodeList> taskType;
-
-    private List<CodeList> teamType;
+    private List<CodeListDto> dictionaryTypes;
+    private List<CodeListDto> categoryGroups;
+    private List<CodeListDto> categories;
+    private List<CodeListDto> jobTypes;
+    private List<CodeListDto> positions;
+    private List<CodeListDto> taskIndicators;
+    private List<CodeListDto> taskMetrics;
+    private List<CodeListDto> taskTypes;
+    private List<CodeListDto> teamTypes;
     
 }

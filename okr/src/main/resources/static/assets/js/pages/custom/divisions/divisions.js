@@ -71,7 +71,6 @@ let KTDatatableRemoteAjaxDemo = function () {
                 sortable: false,
                 width: 70,
                 textAlign: 'center',
-                overflow: "visible",
                 template: function (data) {
                     return `<div class="dropdown dropdown-inline">
                     <a href="javascript:;" class="btn btn-sm btn-light btn-text-primary btn-icon mr-2" data-toggle="dropdown">
