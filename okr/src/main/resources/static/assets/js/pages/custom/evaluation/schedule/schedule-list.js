@@ -121,15 +121,18 @@ let KTDatatablesDataSourceAjaxServer = (function () {
           target: 8,
           title: "ACTIONS",
           data: "scheduleSeq",
-          render: function (data) {
+          render: function (data, type, full, meta) {
+            if (full.evaluationStep === 99) return '<button class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
+								<i class="flaticon-more-1"></i>\
+	                            </button>';
             return (
               '\
 						\
 					\
 							<div class="dropdown dropdown-inline">\
-								<a href="javascript:;" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
+								<button class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
 								<i class="flaticon-more-1"></i>\
-	                            </a>\
+	                            </button>\
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
 									<ul class="nav nav-hoverable flex-column">\
 							    		<li class="nav-item"><a class="nav-link" href="/schedule/edit/' +
