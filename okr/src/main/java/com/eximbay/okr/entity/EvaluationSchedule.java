@@ -1,6 +1,11 @@
 package com.eximbay.okr.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.eximbay.okr.listener.AbstractAuditable;
 
@@ -17,7 +22,7 @@ public class EvaluationSchedule extends AbstractAuditable {
     private Integer scheduleSeq;
 
     @Column(name = "EVALUATION_TYPE", length = 20, nullable = false)
-    private String evalutaionType;
+    private String evaluationType;
 
     @Column(name = "EVALUATION_STEP", length = 11, nullable = false)
     private int evaluationStep;

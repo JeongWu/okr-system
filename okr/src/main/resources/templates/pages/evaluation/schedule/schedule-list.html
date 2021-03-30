@@ -15,8 +15,8 @@
         .pagination {
             justify-content: start !important;
         }
-        .dataTables_length{
-            text-align: right !important;
+        .dataTables_info{
+            padding:0px !important;
         }
     </style>
     <link rel="stylesheet" href="assets/css/pages/datatables.bundle.css">
@@ -26,7 +26,7 @@
       class="header-mobile-fixed subheader-enabled aside-enabled aside-fixed aside-secondary-enabled page-loading">
 
 <div layout:fragment="right-floating-toolbar">
-    <a href="#" id="export_excel"
+    <a href="/schedule/add" id="export_excel"
        class="btn button-color btn-primary btn-hover-primary btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2">
         Add Schedule
     </a>
@@ -76,13 +76,13 @@
                     </td>
                     <td>
                         <button type="submit" class=" col-sm-12 form-control btn button-color btn-primary
-                                btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" id="search-button">
+                                btn-fixed-height font-weight-bold px-2 px-lg-5" id="search-button">
                             Search
                         </button>
                     </td>
                     <td>
                         <button type="submit" class=" col-sm-12 form-control btn button-color btn-secondary
-                                 btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2" id="reset-button">
+                                 btn-fixed-height font-weight-bold px-2 px-lg-5" id="reset-button">
                             Reset
                         </button>
                     </td>

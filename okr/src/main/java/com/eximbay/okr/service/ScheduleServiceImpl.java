@@ -7,13 +7,16 @@ import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.constant.GroupCode;
 import com.eximbay.okr.dto.CodeListDto;
 import com.eximbay.okr.dto.schedule.EvaluationScheduleDto;
+import com.eximbay.okr.dto.schedule.ScheduleDatatablesInput;
 import com.eximbay.okr.entity.CodeList;
 import com.eximbay.okr.entity.EvaluationSchedule;
 import com.eximbay.okr.model.schedule.ScheduleModel;
 import com.eximbay.okr.repository.CodeListRepository;
 import com.eximbay.okr.repository.ScheduleRepository;
 import com.eximbay.okr.service.Interface.IScheduleService;
+import com.eximbay.okr.service.specification.ScheduleQuery;
 
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
@@ -29,6 +32,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
     private final CodeListRepository codeListRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ScheduleQuery scheduleQuery;
     private final MapperFacade mapper;
 
     @Override
@@ -65,6 +69,13 @@ public class ScheduleServiceImpl implements IScheduleService {
         scheduleModel.setEvaluationTypes(mapper.mapAsList(availableEvaluationTypes, CodeListDto.class));
 
         return scheduleModel;
+    }
+
+    @Override
+    public DataTablesOutput<EvaluationSchedule> getDataForDatatables(ScheduleDatatablesInput input) {
+        DataTablesOutput<EvaluationSchedule> output = scheduleRepository.findAll(input,
+        scheduleQuery.buildQueryForDatatables(input));
+        return output;
     }
 
 }
