@@ -1,9 +1,8 @@
 package com.eximbay.okr.model;
 
-import com.eximbay.okr.dto.TeamDto;
+import com.eximbay.okr.dto.team.TeamDto;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

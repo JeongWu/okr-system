@@ -1,15 +1,9 @@
-package com.eximbay.okr.dto.okrChecklistGroup;
+package com.eximbay.okr.dto.okrchecklistgroup;
+
+import com.eximbay.okr.dto.objective.ObjectiveDto;
+import lombok.Data;
 
 import java.time.Instant;
-
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.objective.ObjectiveDto;
-import com.eximbay.okr.dto.TeamDto;
-import com.eximbay.okr.entity.TeamMemberId;
-import com.eximbay.okr.listener.AbstractAuditableDto;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 
 @Data
@@ -25,8 +19,7 @@ public class OkrChecklistGroupDto{
     private Integer keyResult3Score;
     private Integer keyResult4Score;
     private Integer keyResult5Score;
-    protected String createdBy = "system";
+    protected String createdBy;
     protected Instant createdDate;
-    
-    
+
 }

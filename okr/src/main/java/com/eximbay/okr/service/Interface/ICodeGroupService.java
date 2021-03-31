@@ -1,11 +1,11 @@
 package com.eximbay.okr.service.Interface;
 
+import com.eximbay.okr.dto.codegroup.CodeGroupDto;
+
 import java.util.Optional;
 
-import com.eximbay.okr.dto.CodeGroupDto;
-
-public interface ICodeGroupService extends ISerivce<CodeGroupDto, Integer>{
+public interface ICodeGroupService extends IService<CodeGroupDto, Integer> {
 
     Optional<CodeGroupDto> findByGroupCode(String code);
-    
+
 }

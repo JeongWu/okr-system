@@ -1,38 +1,48 @@
 package com.eximbay.okr.api;
 
-import com.eximbay.okr.constant.*;
-import com.eximbay.okr.dto.*;
+import com.eximbay.okr.constant.FlagOption;
+import com.eximbay.okr.dto.company.CompanyDashboardResponse;
+import com.eximbay.okr.dto.company.CompanyDto;
 import com.eximbay.okr.enumeration.EntityType;
 import com.eximbay.okr.enumeration.FileContentType;
 import com.eximbay.okr.enumeration.FileType;
-import com.eximbay.okr.exception.*;
-import com.eximbay.okr.model.company.*;
+import com.eximbay.okr.exception.InvalidRestInputException;
+import com.eximbay.okr.exception.RestUserException;
+import com.eximbay.okr.exception.UserException;
+import com.eximbay.okr.model.company.CompanyDashboardContentModel;
+import com.eximbay.okr.model.company.CompanyOkrModel;
+import com.eximbay.okr.model.company.CompanyUpdateFormModel;
 import com.eximbay.okr.service.FileUploadService;
-import com.eximbay.okr.service.Interface.*;
+import com.eximbay.okr.service.Interface.ICompanyService;
+import com.eximbay.okr.service.Interface.IMemberService;
 import com.eximbay.okr.service.TemplateService;
 import com.eximbay.okr.utils.DateTimeUtils;
-import javassist.*;
-import lombok.*;
-import ma.glasnost.orika.*;
-import org.springframework.http.*;
-import org.springframework.ui.Model;
-import org.springframework.validation.*;
-import org.springframework.web.bind.annotation.*;
+import javassist.NotFoundException;
+import lombok.RequiredArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.*;
-import java.util.*;
+import javax.validation.Valid;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/companies")
-@Data
-@AllArgsConstructor
 public class CompanyAPI {
+
+    private final MapperFacade mapper;
+    private final FileUploadService fileUploadService;
+    private final TemplateService templateService;
     private final ICompanyService companyService;
     private final IMemberService memberService;
-    private final FileUploadService fileUploadService;
-    private final MapperFacade mapper;
-    private final TemplateService templateService;
 
     @PostMapping()
     @ResponseStatus(value = HttpStatus.ACCEPTED)
@@ -81,10 +91,8 @@ public class CompanyAPI {
     }
 
     @GetMapping("/okrs/quarterly")
-    public String viewOkr(Model model, String quarter){
-        if (quarter == null || !Pattern.compile("^\\d{4}-\\dQ").matcher(quarter).matches())
-            quarter = DateTimeUtils.findCurrentQuarter();
-
+    public String viewOkr(String quarter){
+        formatQuarter(quarter);
         CompanyOkrModel viewModel = companyService.buildCompanyOkrModel(quarter);
         Map<String, Object> variables = Map.of("model", viewModel);
         return templateService.buildTemplate(variables, "pages/companies/okr");

@@ -1,6 +1,8 @@
 package com.eximbay.okr.entity;
 
 import com.eximbay.okr.listener.AbstractAuditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -29,6 +31,7 @@ public class ObjectiveHistory extends AbstractAuditable {
 
     @ManyToOne
     @JoinColumn(name = "OBJECTIVE_SEQ", nullable = false)
+    @JsonIgnore
     private Objective objectiveObject;
 
     @Column(name = "YEAR", length = 4)
@@ -68,10 +71,10 @@ public class ObjectiveHistory extends AbstractAuditable {
     private Integer proportion = 0;
 
     @Column(name = "PROGRESS", length = 11)
-    private Integer progress = 0;
+    private Integer progress;
 
     @Column(name = "LATEST_UPDATE_DT")
-    private Instant lastUpdateDate;
+    private Instant latestUpdateDt;
 
     @Column(name = "CLOSE_FLAG", length = 1)
     private String closeFlag;

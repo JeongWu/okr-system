@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class KeyResultQuery {
 
-    public Specification<KeyResult> findByObjectiveSeqIn(List<Integer> in){
+    public Specification<KeyResult> findByObjectiveSeqIn(List<Integer> in) {
         return (root, query, cb) -> root.get(KeyResult_.OBJECTIVE).get(Objective_.OBJECTIVE_SEQ).in(in);
     }
 }

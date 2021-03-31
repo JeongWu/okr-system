@@ -1,6 +1,9 @@
 package com.eximbay.okr.controller;
 
-import org.springframework.http.MediaType;
+import com.eximbay.okr.model.okrSchedule.EditOkrScheduleModel;
+import com.eximbay.okr.model.okrSchedule.QuarterlyScheduleUpdateModel;
+import com.eximbay.okr.service.Interface.IOkrScheduleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,13 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.eximbay.okr.model.okrSchedule.*;
-import com.eximbay.okr.service.Interface.IOkrScheduleService;
-
-import lombok.AllArgsConstructor;
-
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/okr-schedule-edit")
 public class OkrScheduleController {
     private final IOkrScheduleService okrScheduleService;

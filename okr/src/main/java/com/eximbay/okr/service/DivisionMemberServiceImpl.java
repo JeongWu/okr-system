@@ -1,17 +1,21 @@
 package com.eximbay.okr.service;
 
 import com.eximbay.okr.constant.AppConst;
-import com.eximbay.okr.dto.*;
+import com.eximbay.okr.dto.division.AddDivisionMemberFormDto;
+import com.eximbay.okr.dto.division.DivisionDto;
+import com.eximbay.okr.dto.division.RemoveDivisionMemberFormDto;
+import com.eximbay.okr.dto.divisionmember.DivisionMemberDto;
 import com.eximbay.okr.dto.divisionmember.DivisionMemberWithTimeDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.entity.Division;
 import com.eximbay.okr.entity.DivisionMember;
-import com.eximbay.okr.entity.DivisionMemberId;
 import com.eximbay.okr.entity.Member;
+import com.eximbay.okr.entity.id.DivisionMemberId;
 import com.eximbay.okr.repository.DivisionMemberRepository;
 import com.eximbay.okr.service.Interface.IDivisionMemberService;
 import com.eximbay.okr.service.Interface.IMemberService;
 import com.eximbay.okr.service.specification.DivisionMemberQuery;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +26,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class DivisionMemberServiceImpl implements IDivisionMemberService {
+
+    private final MapperFacade mapper;
     private final DivisionMemberRepository divisionMemberRepository;
     private final DivisionMemberQuery divisionMemberQuery;
     private final IMemberService memberService;
-    private final MapperFacade mapper;
 
     @Override
     public List<DivisionMemberDto> findAll() {
@@ -39,7 +44,7 @@ public class DivisionMemberServiceImpl implements IDivisionMemberService {
     @Override
     public Optional<DivisionMemberDto> findById(DivisionMemberId id) {
         Optional<DivisionMember> divisionMember = divisionMemberRepository.findById(id);
-        return divisionMember.map(m-> mapper.map(m, DivisionMemberDto.class));
+        return divisionMember.map(m -> mapper.map(m, DivisionMemberDto.class));
     }
 
     @Override
@@ -55,11 +60,11 @@ public class DivisionMemberServiceImpl implements IDivisionMemberService {
         divisionMember.setApplyEndDate(divisionMemberDto.getApplyEndDate());
         divisionMember.setJustification(divisionMemberDto.getJustification());
         divisionMember = divisionMemberRepository.save(divisionMember);
-        DivisionMemberDto result = new DivisionMemberDto(divisionMember.getDivisionMemberId(),divisionMember.getApplyEndDate(), divisionMember.getJustification());
+        DivisionMemberDto result = new DivisionMemberDto(divisionMember.getDivisionMemberId(), divisionMember.getApplyEndDate(), divisionMember.getJustification());
         return result;
     }
 
-    private void mapDivisionMemberId(DivisionMemberDto dto, Division division, Member member, String applyBeginDate){
+    private void mapDivisionMemberId(DivisionMemberDto dto, Division division, Member member, String applyBeginDate) {
         dto.getDivisionMemberId().setDivision(division);
         dto.getDivisionMemberId().setMember(member);
         dto.getDivisionMemberId().setApplyBeginDate(applyBeginDate);
@@ -69,7 +74,7 @@ public class DivisionMemberServiceImpl implements IDivisionMemberService {
     public void removeDivisionMember(RemoveDivisionMemberFormDto dto) {
         DivisionMemberDto divisionMemberDto = mapper.map(dto, DivisionMemberDto.class);
         mapDivisionMemberId(divisionMemberDto, dto.getDivision(), dto.getMember(), dto.getApplyBeginDate());
-        divisionMemberDto.setApplyEndDate(divisionMemberDto.getApplyEndDate().replace("-",""));
+        divisionMemberDto.setApplyEndDate(divisionMemberDto.getApplyEndDate().replace("-", ""));
         save(divisionMemberDto);
     }
 
@@ -80,11 +85,11 @@ public class DivisionMemberServiceImpl implements IDivisionMemberService {
         if (divisionMembers.size() > 0) {
             divisionMemberDto.getDivisionMemberId().setMember(divisionMembers.get(0).getDivisionMemberId().getMember());
             divisionMemberDto.getDivisionMemberId().setDivision(divisionMembers.get(0).getDivisionMemberId().getDivision());
-            divisionMemberDto.getDivisionMemberId().setApplyBeginDate(dto.getApplyBeginDate().replace("-",""));
+            divisionMemberDto.getDivisionMemberId().setApplyBeginDate(dto.getApplyBeginDate().replace("-", ""));
             divisionMemberRepository.deleteAll(divisionMembers);
         } else {
             divisionMemberDto = mapper.map(dto, DivisionMemberDto.class);
-            mapDivisionMemberId(divisionMemberDto, dto.getDivision(), dto.getMember(), dto.getApplyBeginDate().replace("-",""));
+            mapDivisionMemberId(divisionMemberDto, dto.getDivision(), dto.getMember(), dto.getApplyBeginDate().replace("-", ""));
         }
         divisionMemberDto.setApplyEndDate(AppConst.DEFAULT_APPLY_END_DATE);
         divisionMemberDto.setJustification(AppConst.DEFAULT_ADD_DIVISION_MEMBER_JUSTIFICATION);
@@ -106,7 +111,7 @@ public class DivisionMemberServiceImpl implements IDivisionMemberService {
                         .and(divisionMemberQuery.findCurrentlyValid())
                         .and(divisionMemberQuery.findActiveMemberOnly())
         );
-        List<MemberDto> currentMembers = mapper.mapAsList(divisionMembers.stream().map(m->m.getDivisionMemberId().getMember()).collect(Collectors.toList()), MemberDto.class);
+        List<MemberDto> currentMembers = mapper.mapAsList(divisionMembers.stream().map(m -> m.getDivisionMemberId().getMember()).collect(Collectors.toList()), MemberDto.class);
         return currentMembers;
     }
 
@@ -118,7 +123,7 @@ public class DivisionMemberServiceImpl implements IDivisionMemberService {
                         .and(divisionMemberQuery.findActiveMemberOnly())
         );
         List<DivisionMemberWithTimeDto> result = new ArrayList<>();
-        for (DivisionMember divisionMember: divisionMembers){
+        for (DivisionMember divisionMember : divisionMembers) {
             DivisionMemberWithTimeDto item = new DivisionMemberWithTimeDto();
             item.setDivision(divisionDto);
             item.setMember(mapper.map(divisionMember.getDivisionMemberId().getMember(), MemberDto.class));
@@ -130,7 +135,7 @@ public class DivisionMemberServiceImpl implements IDivisionMemberService {
     }
 
     @Override
-    public List<DivisionMember> findActiveInFutureByMember(Integer memberSeq){
+    public List<DivisionMember> findActiveInFutureByMember(Integer memberSeq) {
         List<DivisionMember> divisionMembers = divisionMemberRepository.findAll(
                 divisionMemberQuery.findByMemberSeq(memberSeq)
                         .and(divisionMemberQuery.isActiveInFuture())

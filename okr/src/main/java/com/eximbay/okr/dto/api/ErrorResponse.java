@@ -1,8 +1,9 @@
 package com.eximbay.okr.dto.api;
 
-import lombok.*;
+import lombok.Data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class ErrorResponse {

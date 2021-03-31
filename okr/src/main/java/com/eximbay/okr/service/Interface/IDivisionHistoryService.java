@@ -1,6 +1,6 @@
 package com.eximbay.okr.service.Interface;
 
-import com.eximbay.okr.dto.*;
+import com.eximbay.okr.dto.divisionhistory.DivisionHistoryDto;
 
-public interface IDivisionHistoryService extends ISerivce<DivisionHistoryDto, Integer>{
+public interface IDivisionHistoryService extends IService<DivisionHistoryDto, Integer> {
 }

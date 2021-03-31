@@ -1,36 +1,30 @@
 package com.eximbay.okr.api;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
+import com.eximbay.okr.dto.team.TeamDto;
+import com.eximbay.okr.dto.teammember.TeamMemberDto;
+import com.eximbay.okr.dto.okrschedulehistory.ScheduleHistoryDatatablesInput;
+import com.eximbay.okr.entity.TeamHistory;
+import com.eximbay.okr.service.Interface.ITeamHistoryService;
+import com.eximbay.okr.service.Interface.ITeamMemberService;
+import com.eximbay.okr.service.Interface.ITeamService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eximbay.okr.dto.TeamDto;
-import com.eximbay.okr.dto.TeamMemberDto;
-import com.eximbay.okr.dto.okrScheduleHistory.ScheduleHistoryDatatablesInput;
-import com.eximbay.okr.entity.TeamHistory;
-import com.eximbay.okr.service.MemberServiceImpl;
-import com.eximbay.okr.service.TeamHistoryDataServiceImpl;
-import com.eximbay.okr.service.TeamMemberServiceImpl;
-import com.eximbay.okr.service.Interface.ITeamService;
+import javax.validation.Valid;
+import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/team-histories")
 public class TeamHistoryAPI {
-    private final TeamHistoryDataServiceImpl teamHistoryService;
+
+    private final ITeamHistoryService teamHistoryService;
     private final ITeamService teamService;
-    private final MemberServiceImpl memberService;
-    private final TeamMemberServiceImpl teamMemberService;
+    private final ITeamMemberService teamMemberService;
     
     @RequestMapping("/datatables/{id}")
     public DataTablesOutput<TeamHistory> getById(@Valid @RequestBody ScheduleHistoryDatatablesInput input, 

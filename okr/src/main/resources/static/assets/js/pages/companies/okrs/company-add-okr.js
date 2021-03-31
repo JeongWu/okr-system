@@ -146,7 +146,7 @@ $(document).ready(function () {
             })
 
             $.ajax({
-                url: '/company/okrs/add',
+                url: '/companies/okrs/add',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -204,7 +204,6 @@ $(document).ready(function () {
     $('input.proportion').each(function () {
         $(this).rules('add', {integer: true})
     })
-
     function validateTotalProportion() {
         formValidator.element('#proportionSum');
     }
@@ -212,6 +211,7 @@ $(document).ready(function () {
     function removeCurrentRow() {
         const row = $(this).parents('tr.row-key-result');
         table.row(row).remove().draw();
+        validateTotalProportion();
     }
 
     const objectiveProp = $('#objectiveProportion');

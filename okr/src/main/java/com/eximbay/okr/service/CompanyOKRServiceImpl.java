@@ -3,8 +3,8 @@ package com.eximbay.okr.service;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.constant.GroupCode;
 import com.eximbay.okr.constant.Subheader;
-import com.eximbay.okr.dto.CodeListDto;
-import com.eximbay.okr.dto.CompanyDto;
+import com.eximbay.okr.dto.codelist.CodeListDto;
+import com.eximbay.okr.dto.company.CompanyDto;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
 import com.eximbay.okr.entity.CodeList;
 import com.eximbay.okr.entity.KeyResult;
@@ -25,7 +25,7 @@ import com.eximbay.okr.service.Interface.ICompanyOKRService;
 import com.eximbay.okr.service.Interface.ICompanyService;
 import com.eximbay.okr.service.Interface.IObjectiveService;
 import com.eximbay.okr.utils.DateTimeUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +33,12 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
 
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class CompanyOKRServiceImpl implements ICompanyOKRService {
+
+    private final MapperFacade mapper;
     private final ICompanyService companyService;
     private final CompanyRepository companyRepository;
     private final CodeListRepository codeListRepository;
@@ -45,7 +47,6 @@ public class CompanyOKRServiceImpl implements ICompanyOKRService {
     private final ObjectiveHistoryRepository objectiveHistoryRepository;
     private final KeyResultHistoryRepository keyResultHistoryRepository;
     private final IObjectiveService objectiveService;
-    private final MapperFacade mapper;
 
     public AddCompanyOkrModel buildAddOkrDataModel() {
         AddCompanyOkrModel model = new AddCompanyOkrModel();
@@ -55,7 +56,7 @@ public class CompanyOKRServiceImpl implements ICompanyOKRService {
         model.setQuarter(DateTimeUtils.getCurrentQuarter());
         model.setQuarterBeginDate(model.getYear() + "-" + DateTimeUtils.firstDayOfQuarter[model.getQuarter()]);
         model.setQuarterEndDate(model.getYear() + "-" + DateTimeUtils.lastDayOfQuarter[model.getQuarter()]);
-        model.setSumProportionOfOtherObjectives(objectiveRepository.sumProportionsOfActiveObjectivesInQuarter(Objective.OBJECTIVE_TYPE_COMPANY, model.getYear(), model.getQuarter()));
+        model.setSumProportionOfOtherObjectives(objectiveRepository.sumActiveProportionOfCompanyByYearAndQuarter(model.getYear(), model.getQuarter()));
         return model;
     }
 
@@ -79,17 +80,17 @@ public class CompanyOKRServiceImpl implements ICompanyOKRService {
         objective.setEndDate(quarterEndDate);
         objective.setObjectiveType(Objective.OBJECTIVE_TYPE_COMPANY);
         objective.setCompany(companyRepository.findFirstByOrderByCompanySeq().orElse(null));
-        objective.setLastUpdateDate(Instant.now());
+        objective.setLatestUpdateDt(Instant.now());
         objectiveRepository.save(objective);
         objectiveDto.getKeyResults().forEach(kr -> {
             KeyResult keyResult = mapper.map(kr, KeyResult.class);
             keyResult.setBeginDate(quarterStartDate);
             keyResult.setEndDate(quarterEndDate);
             keyResult.setObjective(objective);
-            keyResult.setLastUpdatedDate(Instant.now());
+            keyResult.setLatestUpdateDt(Instant.now());
             keyResultRepository.save(keyResult);
             KeyResultHistory keyResultHistory = mapper.map(keyResult, KeyResultHistory.class);
-            keyResultHistory.setSourceKeyResult(keyResult);
+            keyResultHistory.setKeyResultObject(keyResult);
             keyResultHistory.setObjective(objective);
             keyResultHistory.setJustification(KeyResultHistory.DEFAULT_ADD_NEW_KEY_RESULT_JUSTIFICATION);
             keyResultHistoryRepository.save(keyResultHistory);
@@ -107,7 +108,7 @@ public class CompanyOKRServiceImpl implements ICompanyOKRService {
         this.buildCommonModel(model);
         model.setMutedHeader(companyService.getCompany().map(CompanyDto::getLocalName).orElse(""));
         ObjectiveDto objectiveDto = objectiveService.findById(objectiveId).orElseThrow(() -> new UserException("Cannot find objective with ID: " + objectiveId));
-        int sumObjectivesProportions = objectiveRepository.sumProportionsOfActiveObjectivesInQuarter(Objective.OBJECTIVE_TYPE_COMPANY, objectiveDto.getYear(), objectiveDto.getQuarter());
+        int sumObjectivesProportions = objectiveRepository.sumActiveProportionOfCompanyByYearAndQuarter(objectiveDto.getYear(), objectiveDto.getQuarter());
         objectiveDto.setSumProportionOfOtherObjectives(sumObjectivesProportions - objectiveDto.getProportion());
         model.setObjectiveDto(objectiveDto);
         return model;

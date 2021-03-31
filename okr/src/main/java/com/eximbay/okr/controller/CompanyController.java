@@ -1,9 +1,9 @@
 package com.eximbay.okr.controller;
 
-import com.eximbay.okr.model.company.*;
+import com.eximbay.okr.model.company.CompanyUpdateFormModel;
+import com.eximbay.okr.model.company.EditCompanyModel;
 import com.eximbay.okr.service.Interface.ICompanyService;
-import com.eximbay.okr.utils.DateTimeUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.regex.Pattern;
-
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/companies")
 public class CompanyController {
+
     private final ICompanyService companyService;
 
     @GetMapping("/edit")

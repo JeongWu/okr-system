@@ -1,12 +1,20 @@
 package com.eximbay.okr.service;
 
 import com.eximbay.okr.constant.FlagOption;
-import com.eximbay.okr.dto.*;
+import com.eximbay.okr.dto.division.DivisionDto;
+import com.eximbay.okr.dto.divisionhistory.DivisionHistoryDto;
 import com.eximbay.okr.dto.divisionmember.DivisionMemberWithTimeDto;
+import com.eximbay.okr.dto.member.MemberDto;
+import com.eximbay.okr.dto.team.TeamDto;
 import com.eximbay.okr.entity.Division;
 import com.eximbay.okr.entity.DivisionHistory;
 import com.eximbay.okr.exception.UserException;
-import com.eximbay.okr.model.*;
+import com.eximbay.okr.model.DivisionChangeMembersModel;
+import com.eximbay.okr.model.DivisionForDivisionsModel;
+import com.eximbay.okr.model.DivisionUpdateFormModel;
+import com.eximbay.okr.model.DivisionsModel;
+import com.eximbay.okr.model.EditDivisionModel;
+import com.eximbay.okr.model.MemberForDivisionChangeMembersModel;
 import com.eximbay.okr.model.division.DivisionAddModel;
 import com.eximbay.okr.repository.CompanyRepository;
 import com.eximbay.okr.repository.DivisionHistoryRepository;
@@ -15,9 +23,8 @@ import com.eximbay.okr.service.Interface.IDivisionHistoryService;
 import com.eximbay.okr.service.Interface.IDivisionMemberService;
 import com.eximbay.okr.service.Interface.IDivisionService;
 import com.eximbay.okr.service.Interface.ITeamMemberService;
-import com.eximbay.okr.utils.DateTimeUtils;
 import javassist.NotFoundException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,10 +36,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DivisionServiceImpl implements IDivisionService {
-    private final DivisionRepository divisionRepository;
+
     private final MapperFacade mapper;
+    private final DivisionRepository divisionRepository;
     private final IDivisionHistoryService divisionHistoryService;
     private final ITeamMemberService teamMemberService;
     private final IDivisionMemberService divisionMemberService;
@@ -81,13 +89,6 @@ public class DivisionServiceImpl implements IDivisionService {
     }
 
     @Override
-    public List<DivisionMemberDto> findCurrentlyValid(List<DivisionMemberDto> divisionMemberDtos) {
-        return divisionMemberDtos.stream().filter(
-                m -> DateTimeUtils.isCurrentlyValid(m.getDivisionMemberId().getApplyBeginDate(), m.getApplyEndDate()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public EditDivisionModel buildEditDivisionModel(Integer id) {
         Optional<Division> division = divisionRepository.findById(id);
         if (division.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = " + id));
@@ -133,7 +134,7 @@ public class DivisionServiceImpl implements IDivisionService {
     @Override
     public List<MemberForDivisionChangeMembersModel> getMembersForDivisionChangeMembersModel(Integer id) {
         Optional<Division> division = divisionRepository.findById(id);
-        if (division.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = "+ id));
+        if (division.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = " + id));
 
         List<DivisionMemberWithTimeDto> memberDtos = divisionMemberService.findActiveMembersOfDivisionWithTime(mapper.map(division.get(), DivisionDto.class));
         List<MemberForDivisionChangeMembersModel> memberModels = new ArrayList<>();

@@ -1,13 +1,11 @@
 package com.eximbay.okr.config.security;
 
 import com.eximbay.okr.constant.*;
-import com.eximbay.okr.dto.*;
+import com.eximbay.okr.dto.company.CompanyDto;
 import com.eximbay.okr.handler.*;
 import com.eximbay.okr.service.Interface.*;
 import org.springframework.context.*;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.*;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
@@ -15,7 +13,6 @@ import org.springframework.security.config.oauth2.client.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.registration.*;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.*;
 import org.springframework.stereotype.*;
 

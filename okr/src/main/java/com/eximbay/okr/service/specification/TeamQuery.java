@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class TeamQuery {
 
-    public Specification<Team> findInUse(){
+    public Specification<Team> findInUse() {
         return (root, query, cb) -> cb.equal(root.get(Team_.USE_FLAG), FlagOption.Y);
     }
 

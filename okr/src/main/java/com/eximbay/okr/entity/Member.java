@@ -24,7 +24,7 @@ import java.util.Set;
 public class Member extends AbstractAuditable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_SEQ", length = 11)
     private Integer memberSeq;
 
@@ -42,9 +42,6 @@ public class Member extends AbstractAuditable {
 
     @Column(name = "CONTACT_PHONE", length = 20)
     private String contactPhone;
-
-    // @Column(name = "PASSWORD", nullable = false)
-    // private String password;
 
     @Column(name = "INTRODUCTION", length = 1000)
     private String introduction;

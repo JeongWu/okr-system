@@ -3,9 +3,6 @@ package com.eximbay.okr.entity;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.listener.AbstractAuditable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -17,8 +14,8 @@ import java.util.List;
 @Data
 @Table(name = "objective")
 @Entity
-@ToString(exclude = {"company", "division", "team", "member"})
-@EqualsAndHashCode(callSuper = true, exclude = {"company", "division", "team", "member"})
+@ToString(exclude = { "company", "team", "member"})
+@EqualsAndHashCode(callSuper = true, exclude = { "company", "team", "member"})
 public class Objective extends AbstractAuditable {
 
     public static final String OBJECTIVE_TYPE_COMPANY = "COMPANY";
@@ -52,11 +49,14 @@ public class Objective extends AbstractAuditable {
     private Company company;
 
     @Column(name = "TEAM_SEQ", insertable = false, updatable = false)
-    private Integer TEAM_SEQ;
+    private Integer teamSeq;
 
     @ManyToOne
     @JoinColumn(name = "TEAM_SEQ")
     private Team team;
+
+    @Column(name = "MEMBER_SEQ", insertable = false, updatable = false)
+    private Integer memberSeq;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MEMBER_SEQ")
@@ -75,7 +75,7 @@ public class Objective extends AbstractAuditable {
     private Integer progress = 0;
 
     @Column(name = "LATEST_UPDATE_DT", nullable = false)
-    private Instant lastUpdateDate;
+    private Instant latestUpdateDt;
 
     @Column(name = "CLOSE_FLAG", length = 1, nullable = false)
     private String closeFlag = FlagOption.N;

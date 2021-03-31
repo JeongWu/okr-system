@@ -1,9 +1,7 @@
 package com.eximbay.okr.listener;
 
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.service.Interface.IMemberService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;

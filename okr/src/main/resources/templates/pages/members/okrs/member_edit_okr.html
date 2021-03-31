@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{pages/layout/main_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Member OKRs</title>
+    <style>
+        table, table thead th, table tr td {
+            border-bottom: none !important;
+            border-top: none !important;
+        }
+        table tr td {
+            text-align: center !important;
+        }
+        table.dataTable tbody td.select-checkbox:before, table.dataTable tbody td.select-checkbox:after {
+            top: 50% !important;;
+        }
+        td .fv-plugins-icon {
+            right: 10px;
+            top: 10px;
+        }
+        .input-symbol-percent {
+            position: relative;
+        }
+        .input-symbol-percent input {
+            padding-right: 5px;
+        }
+        .input-symbol-percent:after {
+            position: absolute;
+            top: 10px;
+            content: "%";
+            left: 40px;
+        }
+        .input-proportion-symbol-percent input {
+            padding-right: 5px;
+        }
+        .input-proportion-symbol-percent:after {
+            position: absolute;
+            top: 10px;
+            content: "%";
+            left: 90px;
+        }
+        .col-px-5 {
+            padding-left: 5px !important;
+            padding-right: 5px !important;
+        }
+        td.col-prop {
+            padding-right: 20px !important;
+        }
+        #proportionSumDiv {
+            padding-right: 450px;
+        }
+    </style>
+    <link rel="stylesheet" href="/assets/css/pages/datatables.bundle.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+</head>
+<body>
+<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+    <a th:href="@{~/companies/okrs}"
+       class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-120px justify-content-center">Back</a>
+</div>
+
+<div layout:fragment="content" class="container">
+    <div>
+        <!--begin::Objective Level Guideline-->
+        <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
+            <div class="card-body container">
+                <div class="w-50 pl-5 pb-10">
+                    <h3 class="text-primary">OKR Level Guideline</h3>
+                    <div class="w-200px h-4px bg-primary"></div>
+                </div>
+                <div th:each="objLevel : ${model.objectiveLevels}" class="row no-gutters align-items-center mb-5">
+                    <div class="col col-1 symbol symbol-70" style="margin-left: 4.1667%">
+                        <div class="symbol-label" style="background-color: #5fc9b1" th:text="${'LEVEL ' + objLevel.sortOrder}"></div>
+                    </div>
+                    <div class="col col-10 my-lg-0 my-2">
+                        <span class="text-dark-75 font-weight-bolder text-hover-primary font-size-h4" th:text="${objLevel.codeName}">codeName</span>
+                        <div class="font-size-h6" th:text="${objLevel.description}">description</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--end::Objective Level Guideline-->
+        <form id="formEditObjective" class="form">
+            <!--begin::Card-->
+            <input type="number" name="objectiveSeq" id="objectiveSeq" hidden th:value="${model.objectiveDto.objectiveSeq}">
+            <input type="number" name="sumOfOtherObjectiveProportion" id="sumOfOtherObjectiveProportion" hidden th:value="${model.objectiveDto.sumProportionOfOtherObjectives}">
+            <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label" style="font-size: larger">Objective</small></h3>
+                    </div>
+                </div>
+                <div class="card-body container">
+                    <div class="row form-group ml-10">
+                        <label class="col-2 col-form-label font-size-h6">Quarter</label>
+                        <div class="col col-2">
+                            <input type="text" class="quarter form-control form-control-lg form-control-solid pl-5 input disabled" disabled th:value="${model.objectiveDto.year + '-' + model.objectiveDto.quarter + 'Q'}">
+                        </div>
+                        <div class="col col-3">
+                            <input type="text" class="form-control form-control-lg form-control-solid text-center" disabled th:value="${model.objectiveDto.displayBeginDate + ' ~ ' + model.objectiveDto.displayEndDate}">
+                        </div>
+                    </div>
+                    <div class="row form-group ml-10 ">
+                        <label class="col-2 col-form-label font-size-h6">Objective *</label>
+                        <div class="col col-9">
+                            <input type="text" name="objective" id="objective" class="form-control w-100" th:value="${model.objectiveDto.objective}" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="row form-group ml-10 ">
+                        <label class="col-2 col-form-label font-size-h6">Proportion *</label>
+                        <div class="col col-9">
+                            <span class="input-proportion-symbol-percent d-inline-block w1-12">
+                                <input type="number" name="objectiveProportion" id="objectiveProportion" class="form-control" th:value="${model.objectiveDto.proportion}" required min="1" data-msg-min="Must be greater than 0">
+                            </span>
+                            <span class="ml-10">(Total: <span th:text="${model.objectiveDto.sumProportionOfOtherObjectives + model.objectiveDto.proportion}" id="spanSumObjectivesProportions"></span>%)</span>
+                            <input type="number" max="100" name="totalObjectiveProportionHidden" id="totalObjectiveProportionHidden" class="w1-24 invisible" data-msg-max="Sum of objectives proportions exceeds 100">
+                        </div>
+                    </div>
+                    <div class="row form-group ml-10 mr-0 px-5">
+                        <label class="col-2 col-form-label text-left font-size-h6">Active</label>
+                        <div class="col-1">
+                            <span class="switch switch-icon col-1">
+                                <label>
+                                    <input type="checkbox" th:checked="${model.objectiveDto.closeFlag == 'N'}" id="objectiveActivation">
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                        <div class="col-8 px-0">
+                            <input class="form-control" placeholder="Inactive justification" type="text" th:value="${model.objectiveDto.closeJustification}"
+                                   name="closeJustification" id="objInactiveJustification" th:disabled="${model.objectiveDto.closeFlag == 'N'}" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="row form-group ml-10">
+                        <label for="objectiveJustification" class="col-2 col-form-label font-size-h6">Justification*</label>
+                        <div class="col col-9">
+                            <input type="text" id="objectiveJustification" name="obj-justification" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <button id="btnUpdateObjective" class="btn btn-primary btn-lg" value="Submit">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        <!--end::Card-->
+        <form id="formChangeKeyResult">
+            <!--begin::Card-->
+            <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label" style="font-size: larger">Key Results</small></h3>
+                    </div>
+                </div>
+                <div class="card-body container-fluid">
+
+                    <table id="keyResultTable" class="display">
+                    </table>
+
+                    <div class="text-right" id="proportionSumDiv">
+                        <input type="number" id="proportionSum" class="" name="sumOfProportion" style="visibility: hidden">
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <span id="btnAddKeyResult" class="btn btn-primary btn-icon flaticon2-plus"></span>
+                    </div>
+
+                    <div class="row justify-content-center mt-20">
+                        <button id="btnUpdateKeyResult" class="btn btn-primary btn-lg" value="Submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <!--end::Card-->
+        </form>
+
+    </div>
+
+    <!--begin::Modal-->
+    <div th:replace="pages/common/modal::dictionary-keyresult">
+    </div>
+    <!--end::Modal-->
+</div>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+            localStorage.setItem('objLevels', JSON.stringify([[${model.objectiveLevels}]]));
+            localStorage.setItem('taskTypes', JSON.stringify([[${model.taskTypes}]]));
+            localStorage.setItem('taskMetrics', JSON.stringify([[${model.taskMetrics}]]));
+            localStorage.setItem('taskIndicators', JSON.stringify([[${model.taskIndicators}]]));
+        /*]]*/
+    </script>
+    <!--for using modal-->
+    <script src="/assets/js/pages/custom/common/modal.js"></script>
+    <script src="/assets/js/datatables.bundle.js"></script>
+    <script src="/assets/js/jquery.validate.js"></script>
+    <script src="/assets/js/additional-methods.js"></script>
+    <script src="/assets/js/pages/members/okrs/member-edit-okr.js"></script>
+</th:block>
+
+</body>
+</html>

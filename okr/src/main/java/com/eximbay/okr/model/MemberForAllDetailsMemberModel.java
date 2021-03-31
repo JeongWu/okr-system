@@ -2,7 +2,7 @@ package com.eximbay.okr.model;
 
 import java.util.List;
 
-import com.eximbay.okr.dto.TeamDto;
+import com.eximbay.okr.dto.team.TeamDto;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
 
 import lombok.Data;

@@ -2,9 +2,9 @@ package com.eximbay.okr.service;
 
 import com.eximbay.okr.config.security.MyUserDetails;
 import com.eximbay.okr.constant.ErrorMessages;
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.auditLog.AuditLogDto;
-import com.eximbay.okr.dto.auditLog.AuditLogsDatatablesInput;
+import com.eximbay.okr.dto.auditlog.AuditLogDto;
+import com.eximbay.okr.dto.auditlog.AuditLogsDatatablesInput;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.entity.AuditLog;
 import com.eximbay.okr.enumeration.LogType;
 import com.eximbay.okr.exception.UserException;
@@ -12,11 +12,9 @@ import com.eximbay.okr.model.ComboBoxModel;
 import com.eximbay.okr.model.auditLog.AuditLogsModel;
 import com.eximbay.okr.repository.AuditLogRepository;
 import com.eximbay.okr.service.Interface.IAuditLogService;
-import com.eximbay.okr.service.Interface.IMemberService;
 import com.eximbay.okr.service.specification.AuditLogQuery;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.aspectj.lang.JoinPoint;
 import org.springframework.aop.framework.Advised;
@@ -33,14 +31,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class AuditLogServiceImpl implements IAuditLogService {
+
+    private final MapperFacade mapper;
     private final AuditLogRepository auditLogRepository;
     private final AuditLogQuery auditLogQuery;
-    private final IMemberService memberService;
-    private final MapperFacade mapper;
 
     @Override
     public List<AuditLogDto> findAll() {
@@ -51,7 +48,7 @@ public class AuditLogServiceImpl implements IAuditLogService {
     @Override
     public Optional<AuditLogDto> findById(Integer id) {
         Optional<AuditLog> auditLog = auditLogRepository.findById(id);
-        Optional<AuditLogDto> auditLogDto = auditLog.map(m-> mapper.map(m, AuditLogDto.class));
+        Optional<AuditLogDto> auditLogDto = auditLog.map(m -> mapper.map(m, AuditLogDto.class));
         return auditLogDto;
     }
 
@@ -102,14 +99,14 @@ public class AuditLogServiceImpl implements IAuditLogService {
                 if (isChangeData) dataChangeLog(request, currentMember, joinPoint);
                 else dataAccessLog(request, currentMember, joinPoint);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new UserException(ErrorMessages.canNotLog + " with type " + logType + "with jointPoint " + joinPoint.toString());
         }
 
     }
 
-    private AuditLog initAuditLog(LogType logType, MemberDto memberDto, HttpServletRequest request){
-        return  AuditLog
+    private AuditLog initAuditLog(LogType logType, MemberDto memberDto, HttpServletRequest request) {
+        return AuditLog
                 .builder()
                 .logType(logType)
                 .email(memberDto.getEmail())
@@ -118,24 +115,24 @@ public class AuditLogServiceImpl implements IAuditLogService {
                 .build();
     }
 
-    private void signInLog(HttpServletRequest request, MemberDto memberDto){
+    private void signInLog(HttpServletRequest request, MemberDto memberDto) {
         AuditLog auditLog = initAuditLog(LogType.SIGNIN, memberDto, request);
         auditLogRepository.save(auditLog);
     }
 
-    private void signOutLog(HttpServletRequest request, MemberDto memberDto){
+    private void signOutLog(HttpServletRequest request, MemberDto memberDto) {
         AuditLog auditLog = initAuditLog(LogType.SIGNOUT, memberDto, request);
         auditLogRepository.save(auditLog);
     }
 
-    private void pageLog(HttpServletRequest request, MemberDto memberDto){
+    private void pageLog(HttpServletRequest request, MemberDto memberDto) {
         AuditLog auditLog = initAuditLog(LogType.PAGE, memberDto, request);
         auditLog.setTarget(request.getRequestURI());
         auditLog.setParameter(request.getQueryString());
         auditLogRepository.save(auditLog);
     }
 
-    private void dataChangeLog(HttpServletRequest request, MemberDto memberDto, JoinPoint joinPoint){
+    private void dataChangeLog(HttpServletRequest request, MemberDto memberDto, JoinPoint joinPoint) {
         AuditLog auditLog = initAuditLog(LogType.DATA, memberDto, request);
 
         Advised advised = (Advised) joinPoint.getTarget();
@@ -149,7 +146,7 @@ public class AuditLogServiceImpl implements IAuditLogService {
         auditLogRepository.save(auditLog);
     }
 
-    private void dataAccessLog(HttpServletRequest request, MemberDto memberDto, JoinPoint joinPoint){
+    private void dataAccessLog(HttpServletRequest request, MemberDto memberDto, JoinPoint joinPoint) {
         AuditLog auditLog = initAuditLog(LogType.DATA, memberDto, request);
 
         String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
@@ -161,14 +158,14 @@ public class AuditLogServiceImpl implements IAuditLogService {
         auditLogRepository.save(auditLog);
     }
 
-    private String shortenParameters(JoinPoint joinPoint){
+    private String shortenParameters(JoinPoint joinPoint) {
         String parameters = Arrays.toString(joinPoint.getArgs());
         if (parameters.length() < 1000) return parameters;
-        else return Arrays.stream(joinPoint.getArgs()).map(m->{
+        else return Arrays.stream(joinPoint.getArgs()).map(m -> {
             if (m instanceof Model) {
                 return ((Model) m).asMap().values().stream().map(value -> value.getClass().getSimpleName()).collect(Collectors.joining(","));
             }
-                return m.getClass().getSimpleName();
-            }).collect(Collectors.joining(";"));
+            return m.getClass().getSimpleName();
+        }).collect(Collectors.joining(";"));
     }
 }

@@ -1,16 +1,17 @@
 package com.eximbay.okr.service.Interface;
 
-import com.eximbay.okr.dto.keyResultCollaborator.KeyResultCollaboratorDto;
+import com.eximbay.okr.dto.evaluationobjective.EvaluationObjectiveDto;
+import com.eximbay.okr.dto.keyresultcollaborator.KeyResultCollaboratorDto;
 import com.eximbay.okr.dto.like.LikeDto;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
 import com.eximbay.okr.dto.objective.UpdateObjectivePriorityRequest;
-import com.eximbay.okr.dto.objectiveRelation.ObjectiveRelationDto;
+import com.eximbay.okr.dto.objectiverelation.ObjectiveRelationDto;
 import com.eximbay.okr.model.feedback.FeedbackForViewOkrModel;
 import com.eximbay.okr.model.objective.ObjectiveViewOkrModel;
 
 import java.util.List;
 
-public interface IObjectiveService extends ISerivce<ObjectiveDto, Integer> {
+public interface IObjectiveService extends IService<ObjectiveDto, Integer> {
     List<ObjectiveDto> findAllInUse();
 
     List<String> findAllQuarters();
@@ -32,6 +33,8 @@ public interface IObjectiveService extends ISerivce<ObjectiveDto, Integer> {
     void mapObjectiveRelationsIntoObjectiveModel(List<ObjectiveViewOkrModel> objectives, List<ObjectiveRelationDto> objectiveRelations);
 
     void mapKeyResultCollaborators(List<ObjectiveViewOkrModel> objectives, List<KeyResultCollaboratorDto> keyResultCollaborators);
+
+    void mapEditableForObjectiveModel(List<ObjectiveViewOkrModel> objectives, List<EvaluationObjectiveDto> evaluationObjectiveDtos, boolean isCurrentMemberCanEditOkr);
 
     List<ObjectiveDto> findMemberObjective(Integer memberSeq);
 

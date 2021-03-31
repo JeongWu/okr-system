@@ -1,27 +1,24 @@
 package com.eximbay.okr.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import com.eximbay.okr.dto.CodeListDto;
+import com.eximbay.okr.dto.codelist.CodeListDto;
 import com.eximbay.okr.entity.CodeList;
 import com.eximbay.okr.repository.CodeListRepository;
 import com.eximbay.okr.service.Interface.ICodeListService;
-
+import lombok.RequiredArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-import ma.glasnost.orika.MapperFacade;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class CodeListServiceImpl implements ICodeListService {
 
-    private final CodeListRepository codeListRepository;
     private final MapperFacade mapper;
+    private final CodeListRepository codeListRepository;
 
     @Override
     public List<CodeListDto> findAll() {
@@ -45,8 +42,7 @@ public class CodeListServiceImpl implements ICodeListService {
 
     @Override
     public Optional<CodeListDto> findById(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+        return Optional.empty();
     }
-    
+
 }

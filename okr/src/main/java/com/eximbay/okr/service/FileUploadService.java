@@ -2,13 +2,12 @@ package com.eximbay.okr.service;
 
 import com.eximbay.okr.constant.AppConst;
 import com.eximbay.okr.constant.ErrorMessages;
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.enumeration.EntityType;
 import com.eximbay.okr.enumeration.FileContentType;
 import com.eximbay.okr.enumeration.FileType;
 import com.eximbay.okr.exception.UserException;
 import com.eximbay.okr.service.Interface.IMemberService;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,15 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Data
+@RequiredArgsConstructor
 public class FileUploadService {
+
     private final IMemberService memberService;
 
     @Value("${application.file.imagesPath}")
@@ -35,9 +34,10 @@ public class FileUploadService {
 
     @Value("${application.image-max-size}")
     private Integer imageMaxSize;
-    
-    public String store(FileType fileType, FileContentType fileContentType, EntityType entityType, MultipartFile file){
-        if (fileType.equals(FileType.VIDEO)) throw new UserException(new IllegalArgumentException("Video is not supported yet"));
+
+    public String store(FileType fileType, FileContentType fileContentType, EntityType entityType, MultipartFile file) {
+        if (fileType.equals(FileType.VIDEO))
+            throw new UserException(new IllegalArgumentException("Video is not supported yet"));
         validateImage(file);
         String uploadFileName = file.getOriginalFilename();
         String extension = uploadFileName.substring(uploadFileName.lastIndexOf("."));
@@ -52,7 +52,7 @@ public class FileUploadService {
                     .normalize().toAbsolutePath();
             FileCopyUtils.copy(file.getBytes(), saveDestination.toFile());
             return getPrefix(fileContentType) + saveFileName;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new UserException(ErrorMessages.errorWhileSavingFile);
         }
@@ -68,24 +68,26 @@ public class FileUploadService {
         if (!supportedImageExtensions.contains(extension))
             throw new UserException(new IllegalArgumentException(ErrorMessages.fileExtensionIsNotSupported));
         if (file.getSize() > imageMaxSize)
-            throw new UserException(new IllegalArgumentException(ErrorMessages.fileSizeLimitExceeded + " of " + imageMaxSize/1024 + " Kb"));
+            throw new UserException(new IllegalArgumentException(ErrorMessages.fileSizeLimitExceeded + " of " + imageMaxSize / 1024 + " Kb"));
     }
 
-    private String getSubPath(FileContentType fileContentType){
-        switch (fileContentType){
+    private String getSubPath(FileContentType fileContentType) {
+        switch (fileContentType) {
             case AVATAR:
                 return AppConst.AVATAR_SUB_PATH;
             case IMAGE:
-            default: return "";
+            default:
+                return "";
         }
     }
 
-    private String getPrefix(FileContentType fileContentType){
-        switch (fileContentType){
+    private String getPrefix(FileContentType fileContentType) {
+        switch (fileContentType) {
             case AVATAR:
                 return AppConst.AVATAR_PREFIX;
             case IMAGE:
-            default: return AppConst.IMAGE_PREFIX;
+            default:
+                return AppConst.IMAGE_PREFIX;
         }
     }
 }

@@ -1,28 +1,24 @@
 package com.eximbay.okr.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import com.eximbay.okr.dto.CheckListDto;
+import com.eximbay.okr.dto.checklist.CheckListDto;
 import com.eximbay.okr.entity.CheckList;
 import com.eximbay.okr.repository.CheckListRepository;
 import com.eximbay.okr.service.Interface.ICheckListService;
-
+import lombok.RequiredArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-import ma.glasnost.orika.MapperFacade;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class CheckListServiceImpl implements ICheckListService {
 
     private final MapperFacade mapper;
     private final CheckListRepository checkListRepository;
-
 
     @Override
     public List<CheckListDto> findAll() {
@@ -33,7 +29,7 @@ public class CheckListServiceImpl implements ICheckListService {
     @Override
     public Optional<CheckListDto> findById(Integer id) {
         Optional<CheckList> checklist = checkListRepository.findById(id);
-        return checklist.map(m-> mapper.map(m, CheckListDto.class));
+        return checklist.map(m -> mapper.map(m, CheckListDto.class));
     }
 
     @Override
@@ -48,5 +44,5 @@ public class CheckListServiceImpl implements ICheckListService {
         checklist = checkListRepository.save(checklist);
         return mapper.map(checklist, CheckListDto.class);
     }
-    
+
 }

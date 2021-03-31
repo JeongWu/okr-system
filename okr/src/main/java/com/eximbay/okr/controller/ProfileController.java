@@ -1,9 +1,7 @@
 package com.eximbay.okr.controller;
 
-import java.util.Optional;
-
 import com.eximbay.okr.constant.ErrorMessages;
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.enumeration.EntityType;
 import com.eximbay.okr.enumeration.FileContentType;
 import com.eximbay.okr.enumeration.FileType;
@@ -12,8 +10,9 @@ import com.eximbay.okr.exception.UserException;
 import com.eximbay.okr.model.profile.EditProfileModel;
 import com.eximbay.okr.model.profile.ProfileUpdateModel;
 import com.eximbay.okr.service.FileUploadService;
-import com.eximbay.okr.service.MemberServiceImpl;
-
+import com.eximbay.okr.service.Interface.IMemberService;
+import javassist.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,18 +21,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javassist.NotFoundException;
-import lombok.AllArgsConstructor;
-import ma.glasnost.orika.MapperFacade;
+import java.util.Optional;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/profile")
 public class ProfileController {
 
-    private final MemberServiceImpl memberService;
-    private final MapperFacade mapper;
     private final FileUploadService fileUploadService;
+    private final IMemberService memberService;
 
     @GetMapping("/edit")
     public String editProfile(Model model) {

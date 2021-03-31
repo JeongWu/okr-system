@@ -1,7 +1,7 @@
 package com.eximbay.okr.dto.divisionmember;
 
-import com.eximbay.okr.dto.DivisionDto;
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.division.DivisionDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

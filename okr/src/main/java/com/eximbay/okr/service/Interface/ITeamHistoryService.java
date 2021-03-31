@@ -1,17 +1,14 @@
 package com.eximbay.okr.service.Interface;
 
 
-import java.time.LocalDate;
-import java.util.List;
+import com.eximbay.okr.dto.okrschedulehistory.ScheduleHistoryDatatablesInput;
+import com.eximbay.okr.dto.team.TeamDto;
+import com.eximbay.okr.dto.teamhistory.TeamHistoryDto;
+import com.eximbay.okr.entity.TeamHistory;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+public interface ITeamHistoryService extends IService<TeamHistoryDto, Integer> {
+    DataTablesOutput<TeamHistory> getDataForDatatables(ScheduleHistoryDatatablesInput input);
 
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.MemberHistoryDto;
-import com.eximbay.okr.dto.TeamDto;
-import com.eximbay.okr.dto.TeamHistoryDto;
-import com.eximbay.okr.entity.MemberHistory;
-
-public interface ITeamHistoryService extends ISerivce<TeamHistoryDto, Integer> {
+    DataTablesOutput<TeamHistory> getDataForDatatablesTeam(TeamDto teamDto, ScheduleHistoryDatatablesInput input);
 }

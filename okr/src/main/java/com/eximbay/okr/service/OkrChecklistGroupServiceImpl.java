@@ -1,33 +1,31 @@
 package com.eximbay.okr.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.eximbay.okr.dto.objective.ObjectiveDto;
-import com.eximbay.okr.dto.okrChecklistGroup.ChecklistGroupDatatablesInput;
-import com.eximbay.okr.dto.okrChecklistGroup.OkrChecklistGroupDto;
+import com.eximbay.okr.dto.okrchecklistgroup.ChecklistGroupDatatablesInput;
+import com.eximbay.okr.dto.okrchecklistgroup.OkrChecklistGroupDto;
 import com.eximbay.okr.entity.Objective;
 import com.eximbay.okr.entity.OkrChecklistGroup;
 import com.eximbay.okr.repository.OkrChecklistGroupRepository;
 import com.eximbay.okr.service.Interface.IOkrChecklistGroupService;
 import com.eximbay.okr.service.specification.OkrChecklistGroupQuery;
 import com.google.common.collect.Lists;
-
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import ma.glasnost.orika.MapperFacade;
+import java.util.List;
+import java.util.Optional;
 
-@Data
-@AllArgsConstructor
 @Service
+@Data
+@RequiredArgsConstructor
 public class OkrChecklistGroupServiceImpl implements IOkrChecklistGroupService {
 
+    private final MapperFacade mapper;
     private final OkrChecklistGroupRepository okrChecklistGroupRepository;
     private final OkrChecklistGroupQuery okrChecklistGroupQuery;
-    private final MapperFacade mapper;
 
     @Override
     public List<OkrChecklistGroupDto> findAll() {
@@ -38,7 +36,7 @@ public class OkrChecklistGroupServiceImpl implements IOkrChecklistGroupService {
     @Override
     public Optional<OkrChecklistGroupDto> findById(Integer id) {
         Optional<OkrChecklistGroup> okrChecklistGroup = okrChecklistGroupRepository.findById(id);
-        return okrChecklistGroup.map(m-> mapper.map(m, OkrChecklistGroupDto.class));
+        return okrChecklistGroup.map(m -> mapper.map(m, OkrChecklistGroupDto.class));
     }
 
     @Override
@@ -55,25 +53,23 @@ public class OkrChecklistGroupServiceImpl implements IOkrChecklistGroupService {
     }
 
     @Override
-    public DataTablesOutput<OkrChecklistGroup> getDataForDatatables( ChecklistGroupDatatablesInput input) {
-        // Objective objective = mapper.map(objectiveDto, Objective.class);
+    public DataTablesOutput<OkrChecklistGroup> getDataForDatatables(ChecklistGroupDatatablesInput input) {
         DataTablesOutput<OkrChecklistGroup> output = okrChecklistGroupRepository
 
-                                                        .findAll(input,
-                                                                okrChecklistGroupQuery.buildQueryForDatatables( input)
-                                                        );
+                .findAll(input,
+                        okrChecklistGroupQuery.buildQueryForDatatables(input)
+                );
         return output;
     }
 
     @Override
     public DataTablesOutput<OkrChecklistGroup> getDataForDatatablesObjective(ObjectiveDto objectiveDto,
-            ChecklistGroupDatatablesInput input) {
-                Objective objective = mapper.map(objectiveDto, Objective.class);
-                DataTablesOutput<OkrChecklistGroup> output = okrChecklistGroupRepository.findAll(input, 
+                                                                             ChecklistGroupDatatablesInput input) {
+        Objective objective = mapper.map(objectiveDto, Objective.class);
+        DataTablesOutput<OkrChecklistGroup> output = okrChecklistGroupRepository.findAll(input,
                 okrChecklistGroupQuery.buildQueryForDatatablesObjective(objective, input));
-                return output;
+        return output;
     }
 
 
-    
 }

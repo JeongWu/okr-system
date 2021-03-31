@@ -1,7 +1,7 @@
 package com.eximbay.okr.model.team;
 
 import com.eximbay.okr.constant.Subheader;
-import com.eximbay.okr.dto.CodeListDto;
+import com.eximbay.okr.dto.codelist.CodeListDto;
 import lombok.Data;
 
 import java.util.List;

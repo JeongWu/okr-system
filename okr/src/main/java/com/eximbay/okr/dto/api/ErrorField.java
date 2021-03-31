@@ -1,6 +1,7 @@
 package com.eximbay.okr.dto.api;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Data
 @AllArgsConstructor

@@ -1,22 +1,20 @@
 package com.eximbay.okr.controller;
 
-import java.util.List;
-import com.eximbay.okr.dto.CheckListDto;
-import com.eximbay.okr.service.CheckListServiceImpl;
-import org.springframework.web.bind.annotation.PostMapping;
+import com.eximbay.okr.dto.checklist.CheckListDto;
+import com.eximbay.okr.service.Interface.ICheckListService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import lombok.AllArgsConstructor;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/checklists")
 public class OkrChecklistController {
 
-    private final CheckListServiceImpl checkListService;
+    private final ICheckListService checkListService;
 
     @GetMapping
     public String checklistView(){

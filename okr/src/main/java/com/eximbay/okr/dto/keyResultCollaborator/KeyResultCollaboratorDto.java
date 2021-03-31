@@ -1,10 +1,12 @@
-package com.eximbay.okr.dto.keyResultCollaborator;
+package com.eximbay.okr.dto.keyresultcollaborator;
 
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.dto.keyresult.KeyResultDto;
 import com.eximbay.okr.listener.AbstractAuditableDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class KeyResultCollaboratorDto extends AbstractAuditableDto {
 

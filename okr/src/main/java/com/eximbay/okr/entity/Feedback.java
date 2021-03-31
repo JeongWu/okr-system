@@ -1,5 +1,6 @@
 package com.eximbay.okr.entity;
 
+import com.eximbay.okr.constant.FlagOption;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -35,6 +36,16 @@ public class Feedback {
     @JoinColumn(name = "MEMBER_SEQ", nullable = false)
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(name = "PARENT_FEEDBACK_SEQ")
+    private Feedback parentFeedback;
+
+    @Column(name = "DEPTH", length = 11)
+    private Integer depth =0 ;
+
+    @Column(name = "USE_FLAG", length = 1, nullable = false)
+    private String useFlag = FlagOption.Y;
+
     @CreatedDate
     @Column(name = "REG_DT", nullable = false)
     protected Instant createdDate;
@@ -42,4 +53,7 @@ public class Feedback {
     @LastModifiedDate
     @Column(name = "MOD_DT")
     protected Instant updatedDate;
+
+    @Column(name = "DEL_DT")
+    protected Instant deletedDate;
 }

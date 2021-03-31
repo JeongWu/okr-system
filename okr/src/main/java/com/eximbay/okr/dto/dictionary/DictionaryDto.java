@@ -1,7 +1,6 @@
 package com.eximbay.okr.dto.dictionary;
 
 import com.eximbay.okr.constant.FlagOption;
-
 import lombok.Data;
 
 @Data

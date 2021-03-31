@@ -1,7 +1,7 @@
 package com.eximbay.okr.model.team;
 
 import com.eximbay.okr.constant.Subheader;
-import com.eximbay.okr.dto.TeamDto;
+import com.eximbay.okr.dto.team.TeamDto;
 import com.eximbay.okr.model.objective.ObjectiveViewOkrModel;
 import lombok.Data;
 

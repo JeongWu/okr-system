@@ -57,7 +57,10 @@
                                 <h3 class="card-label" th:text="'Objective #' + ${objective.priority}"></h3>
                             </div>
                             <div class="card-toolbar">
-                                <a th:if="${model.editable}" href="#" class="btn btn-secondary btn-sm mr-5">
+                                <a href="#" class="btn btn-secondary btn-sm mr-5">
+                                    OKR Checklist
+                                </a>
+                                <a th:if="${objective.editable}" href="#" class="btn btn-secondary btn-sm mr-5">
                                     Edit OKR
                                 </a>
                                 <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary draggable-handle">

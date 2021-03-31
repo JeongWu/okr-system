@@ -1,28 +1,27 @@
 package com.eximbay.okr.api;
 
-import javax.validation.Valid;
-
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.okrScheduleHistory.ScheduleHistoryDatatablesInput;
-import com.eximbay.okr.entity.Member;
+import com.eximbay.okr.dto.member.MemberDto;
+import com.eximbay.okr.dto.okrschedulehistory.ScheduleHistoryDatatablesInput;
 import com.eximbay.okr.entity.MemberHistory;
-import com.eximbay.okr.service.MemberHistoryDataServiceImpl;
-import com.eximbay.okr.service.MemberServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.eximbay.okr.service.Interface.IMemberHistoryDataService;
+import com.eximbay.okr.service.Interface.IMemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import lombok.AllArgsConstructor;
+
+import javax.validation.Valid;
 
 @RestController
-@AllArgsConstructor
-@RequestMapping("api/memberhistory")
+@RequiredArgsConstructor
+@RequestMapping("api/member-histories")
 public class MemberHistoryAPI {
-    private final MemberHistoryDataServiceImpl memberHistoryService;
-    private final MemberServiceImpl memberService;
+
+    private final IMemberHistoryDataService memberHistoryService;
+    private final IMemberService memberService;
 
     @PostMapping("/datatables/{memberSeq}")
     public DataTablesOutput<MemberHistory> getAlla(

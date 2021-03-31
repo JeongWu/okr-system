@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/assets/css/pages/datatables.bundle.css">
+</head>
+<body>
+<!--begin::Content-->
+<div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-3 py-lg-8  subheader-transparent " id="kt_subheader">
+        <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h2 class=" my-1 mr-3">
+                        <span class="subheader-title text-dark font-weight-bold"
+                              th:text="${model != null ? model.subheader : subheader}" th:remove="tag"></span>
+                        <span class="subheader-title text-muted text-dark font-weight-bold"
+                              th:text="${model != null && model.mutedHeader != null ? '| ' + model.mutedHeader : ''}"></span>
+                    </h2>
+                    <!--end::Page Title-->
+
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+
+            <!--begin::Toolbar-->
+            <div class="class-from-content-wrapper">
+                <button class="btn btn-secondary mr-5 back-btn">
+                    Back
+                </button>
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid real-content">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Objective-->
+            <div class="card card-custom mb-5" data-card="true" id="objetive_card">
+                <div th:include="~{pages/fragments/custom/card::card-header-toggle-like}" class="card-header"
+                     th:with="title=${model.objective}, currentMember=${model.currentMember}, likeModel=${model.likeModel}, sourceTable='OBJECTIVE', sourceSeq=${model.objectiveSeq}"></div>
+                <div class="card-body">
+                    <span th:text="${model.likeModel.content}"
+                          th:id="'like-content-OBJECTIVE-' + ${model.objectiveSeq}"></span>
+                    <div>
+                        Chart Here
+                    </div>
+                </div>
+            </div>
+            <!--end::Objective-->
+            <!--begin::OKR Relation-->
+            <div class="card card-custom mb-5" data-card="true" id="relation_card">
+                <div th:include="~{pages/fragments/custom/card::card-header-toggle-add}" class="card-header"
+                     th:with="title='OKR Relation'"></div>
+                <div class="card-body">
+                    <div>
+                        Diagram here
+                    </div>
+                </div>
+            </div>
+            <!--end::OKR Relation-->
+            <!--begin::Likes and Feedbacks-->
+            <div class="card card-custom mb-5" data-card="true" id="feedback_card">
+                <div th:include="~{pages/fragments/custom/card::card-header-toggle}" class="card-header"
+                     th:with="title='Likes & Feedbacks'"></div>
+                <div class="card-body">
+                    <div th:each="feedback:${model.feedbacks}"
+                         th:include="~{pages/fragments/custom/feedback::feedback-for-okr-view-details}"
+                         th:with="feedback=${feedback}"></div>
+
+                    <!--begin::Reply Box-->
+                    <div class="d-flex pt-10 px-5 mb-4" id="objective-input-div">
+                        <div style="width: 15%; min-width: 40px; max-width: 50px; " class="pr-5 pt-4">
+                            <img th:src="${model.currentMember.image}"
+                                 class="symbol align-self-end max-h-100px" style="max-width: 100%" alt=""/>
+                        </div>
+                        <div style="width: 82%">
+                            <textarea rows="2" class="form-control mb-2" id="objective-feedback-input"></textarea>
+                            <div class="ml-5 mb-5">
+                                <span class="mr-3"><button class="btn btn-light-primary btn-sm"
+                                                           data-sourceTable="OBJECTIVE"
+                                                           th:onclick="'handleAddFeedbackForObjective('+ ${model.objectiveSeq} + ')'">Save</button></span>
+                                <span><button class="btn btn-light-secondary btn-sm" style="color: black"
+                                              onclick="clearInput()">Cancel</button></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--begin::Reply Box-->
+                </div>
+            </div>
+            <!--end::Likes and Feedbacks-->
+            <!--begin::History Detail-->
+            <div class="card card-custom mb-5" data-card="true" id="history_card">
+                <div th:include="~{pages/fragments/custom/card::card-header-toggle}" class="card-header"
+                     th:with="title='History Detail'"></div>
+                <div class="card-body">
+                    <table class="table table-hover" id="kt_datatable">
+                    </table>
+                </div>
+            </div>
+            <!--end::History Detail-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+
+<script src="/assets/js/datatables.bundle.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/assets/js/pages/okrs/okr-objective-details.js"></script>
+</body>
+
+</html>

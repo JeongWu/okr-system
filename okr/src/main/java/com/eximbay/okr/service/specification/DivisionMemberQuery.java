@@ -2,7 +2,11 @@ package com.eximbay.okr.service.specification;
 
 import com.eximbay.okr.constant.AppConst;
 import com.eximbay.okr.constant.FlagOption;
-import com.eximbay.okr.entity.*;
+import com.eximbay.okr.entity.DivisionMember;
+import com.eximbay.okr.entity.id.DivisionMemberId_;
+import com.eximbay.okr.entity.DivisionMember_;
+import com.eximbay.okr.entity.Division_;
+import com.eximbay.okr.entity.Member_;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,11 +22,11 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class DivisionMemberQuery {
 
-    public Specification<DivisionMember> findByDivisionSeq(Integer divisionSeq){
+    public Specification<DivisionMember> findByDivisionSeq(Integer divisionSeq) {
         return (root, query, cb) -> cb.equal(root.get(DivisionMember_.DIVISION_MEMBER_ID).get(DivisionMemberId_.DIVISION).get(Division_.DIVISION_SEQ), divisionSeq);
     }
 
-    public Specification<DivisionMember> findCurrentlyValid(){
+    public Specification<DivisionMember> findCurrentlyValid() {
         String currentTime = LocalDate.now().format(DateTimeFormatter.ofPattern(AppConst.DATE_FORMAT_YYYYMMDD));
         Specification<DivisionMember> result = (root, query, cb) ->
                 cb.lessThanOrEqualTo(root.get(DivisionMember_.DIVISION_MEMBER_ID).get(DivisionMemberId_.APPLY_BEGIN_DATE), currentTime);
@@ -33,16 +37,16 @@ public class DivisionMemberQuery {
         return result;
     }
 
-    public Specification<DivisionMember> findActiveMemberOnly(){
+    public Specification<DivisionMember> findActiveMemberOnly() {
         return (root, query, cb) -> cb.equal(root.get(DivisionMember_.DIVISION_MEMBER_ID).get(DivisionMemberId_.MEMBER).get(Member_.USE_FLAG), FlagOption.Y);
     }
 
-    public Specification<DivisionMember> isActiveInFuture(){
+    public Specification<DivisionMember> isActiveInFuture() {
         String currentTime = LocalDate.now().format(DateTimeFormatter.ofPattern(AppConst.DATE_FORMAT_YYYYMMDD));
         return (root, query, cb) -> cb.greaterThan(root.get(DivisionMember_.DIVISION_MEMBER_ID).get(DivisionMemberId_.APPLY_BEGIN_DATE), currentTime);
     }
 
-    public Specification<DivisionMember> findByMemberSeq(Integer memberSeq){
+    public Specification<DivisionMember> findByMemberSeq(Integer memberSeq) {
         return (root, query, cb) -> cb.equal(root.get(DivisionMember_.DIVISION_MEMBER_ID).get(DivisionMemberId_.MEMBER).get(Member_.MEMBER_SEQ), memberSeq);
     }
 }

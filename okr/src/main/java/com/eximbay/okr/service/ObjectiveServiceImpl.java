@@ -2,13 +2,14 @@ package com.eximbay.okr.service;
 
 import com.eximbay.okr.constant.AppConst;
 import com.eximbay.okr.constant.FlagOption;
-import com.eximbay.okr.dto.keyResultCollaborator.KeyResultCollaboratorDto;
+import com.eximbay.okr.dto.evaluationobjective.EvaluationObjectiveDto;
+import com.eximbay.okr.dto.keyresultcollaborator.KeyResultCollaboratorDto;
 import com.eximbay.okr.dto.like.LikeDto;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
 import com.eximbay.okr.dto.objective.UpdateObjectivePriorityDto;
 import com.eximbay.okr.dto.objective.UpdateObjectivePriorityRequest;
-import com.eximbay.okr.dto.objectiveHistory.ObjectiveHistoryDto;
-import com.eximbay.okr.dto.objectiveRelation.ObjectiveRelationDto;
+import com.eximbay.okr.dto.objectivehistory.ObjectiveHistoryDto;
+import com.eximbay.okr.dto.objectiverelation.ObjectiveRelationDto;
 import com.eximbay.okr.entity.KeyResultHistory;
 import com.eximbay.okr.entity.Objective;
 import com.eximbay.okr.entity.ObjectiveHistory;
@@ -27,7 +28,8 @@ import com.eximbay.okr.service.Interface.IObjectiveHistoryService;
 import com.eximbay.okr.service.Interface.IObjectiveService;
 import com.eximbay.okr.service.specification.ObjectiveQuery;
 import com.eximbay.okr.utils.DateTimeUtils;
-import lombok.AllArgsConstructor;
+import com.eximbay.okr.utils.StringUtils;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -41,16 +43,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class ObjectiveServiceImpl implements IObjectiveService {
+
+    private final MapperFacade mapper;
     private final ObjectiveRepository objectiveRepository;
     private final ObjectiveQuery objectiveQuery;
     private final IObjectiveHistoryService objectiveHistoryService;
     private final ObjectiveHistoryRepository objectiveHistoryRepository;
     private final KeyResultRepository keyResultRepository;
     private final KeyResultHistoryRepository keyResultHistoryRepository;
-    private final MapperFacade mapper;
 
     @Override
     public List<ObjectiveDto> findAll() {
@@ -114,10 +117,16 @@ public class ObjectiveServiceImpl implements IObjectiveService {
                             .and(objectiveQuery.findInQuarter(quarter))
                     , Sort.by(Objective_.PRIORITY)
             );
-            return mapper.mapAsList(objectives, ObjectiveViewOkrModel.class);
+            List<ObjectiveViewOkrModel> results = mapper.mapAsList(objectives, ObjectiveViewOkrModel.class);
+            formatObjectiveViewOkrModel(results);
+            return results;
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    private void formatObjectiveViewOkrModel(List<ObjectiveViewOkrModel> objectives) {
+        objectives.forEach(e -> e.setShortenObjective(StringUtils.shortenString(e.getObjective(), AppConst.KR_MAX_LENGTH)));
     }
 
     @Override
@@ -151,7 +160,9 @@ public class ObjectiveServiceImpl implements IObjectiveService {
                             .and(objectiveQuery.findByTeamSeq(teamSeq))
                     , Sort.by(Objective_.PRIORITY)
             );
-            return mapper.mapAsList(objectives, ObjectiveViewOkrModel.class);
+            List<ObjectiveViewOkrModel> results = mapper.mapAsList(objectives, ObjectiveViewOkrModel.class);
+            formatObjectiveViewOkrModel(results);
+            return results;
         } catch (Exception e) {
             return new ArrayList<>();
         }
@@ -169,7 +180,9 @@ public class ObjectiveServiceImpl implements IObjectiveService {
                             .and(objectiveQuery.findByMemberSeq(memberSeq))
                     , Sort.by(Objective_.PRIORITY)
             );
-            return mapper.mapAsList(objectives, ObjectiveViewOkrModel.class);
+            List<ObjectiveViewOkrModel> results = mapper.mapAsList(objectives, ObjectiveViewOkrModel.class);
+            formatObjectiveViewOkrModel(results);
+            return results;
         } catch (Exception e) {
             return new ArrayList<>();
         }
@@ -295,7 +308,7 @@ public class ObjectiveServiceImpl implements IObjectiveService {
                 activeKeyResult.setCloseDate(DateTimeUtils.todayDBString());
                 activeKeyResult.setCloseJustification(objectiveUpdateDto.getCloseJustification());
                 KeyResultHistory keyResultHistory = mapper.map(activeKeyResult, KeyResultHistory.class);
-                keyResultHistory.setSourceKeyResult(activeKeyResult);
+                keyResultHistory.setKeyResultObject(activeKeyResult);
                 keyResultRepository.save(activeKeyResult);
                 keyResultHistoryRepository.save(keyResultHistory);
             });
@@ -306,6 +319,21 @@ public class ObjectiveServiceImpl implements IObjectiveService {
         objectiveHistory.setObjectiveObject(originalObjective);
         objectiveRepository.save(originalObjective);
         objectiveHistoryRepository.save(objectiveHistory);
+    }
+
+    @Override
+    public void mapEditableForObjectiveModel(List<ObjectiveViewOkrModel> objectives,
+                                             List<EvaluationObjectiveDto> evaluationObjectiveDtos,
+                                             boolean isCurrentMemberCanEditOkr) {
+        Map<Integer, String> map = evaluationObjectiveDtos.stream()
+                .collect(Collectors.toMap(e -> e.getEvaluationObjectiveId().getObjective().getObjectiveSeq(),
+                        e -> e.getEvaluationObjectiveId().getEvaluationOkr().getQuarterEndDate()));
+
+        objectives.forEach(o -> {
+            o.setEditable(isCurrentMemberCanEditOkr
+                    && Optional.ofNullable(map.getOrDefault(o.getObjectiveSeq(), null))
+                    .map(e -> e.compareToIgnoreCase(DateTimeUtils.getCurrentDateInString()) >= 0).orElse(true));
+        });
     }
 
 }

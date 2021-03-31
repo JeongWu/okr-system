@@ -3,7 +3,7 @@ package com.eximbay.okr.model;
 import lombok.Data;
 
 
-import com.eximbay.okr.dto.DivisionDto;
+import com.eximbay.okr.dto.division.DivisionDto;
 import com.eximbay.okr.enumeration.TeamType;
 
 import org.springframework.web.multipart.MultipartFile;

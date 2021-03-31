@@ -3,10 +3,11 @@ package com.eximbay.okr.service;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eximbay.okr.dto.okeSchedule.OkrScheduleDto;
+import com.eximbay.okr.dto.okeschedule.OkrScheduleDto;
 import com.eximbay.okr.entity.OkrSchedule;
 import com.eximbay.okr.enumeration.ScheduleType;
 import com.eximbay.okr.exception.UserException;
@@ -19,10 +20,11 @@ import lombok.AllArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OkrScheduleServiceImpl implements IOkrScheduleService {
-    private final OkrScheduleRepository okrScheduleRepository;
+
     private final MapperFacade mapper;
+    private final OkrScheduleRepository okrScheduleRepository;
 
     @Override
     public List<OkrScheduleDto> findAll() {

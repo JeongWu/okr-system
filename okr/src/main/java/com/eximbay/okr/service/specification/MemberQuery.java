@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class MemberQuery {
 
-    public Specification<Member> findActiveMember(){
+    public Specification<Member> findActiveMember() {
         return (root, query, cb) -> cb.equal(root.get(Member_.USE_FLAG), FlagOption.Y);
     }
 
-    public Specification<Member> findLeadOrDirectorMember(){
+    public Specification<Member> findLeadOrDirectorMember() {
         Specification<Member> result = (root, query, cb) -> cb.equal(root.get(Member_.POSITION), MemberPosition.LEAD);
         result = result.or((root, query, cb) -> cb.equal(root.get(Member_.POSITION), MemberPosition.DIRECTOR));
         return result;

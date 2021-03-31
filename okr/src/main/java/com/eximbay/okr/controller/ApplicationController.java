@@ -3,15 +3,16 @@ package com.eximbay.okr.controller;
 import com.eximbay.okr.config.security.MyUserDetails;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.service.Interface.ICompanyService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApplicationController {
+
     private final ICompanyService companyService;
 
     @GetMapping("/")

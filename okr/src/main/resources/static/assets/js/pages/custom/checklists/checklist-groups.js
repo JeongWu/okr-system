@@ -117,7 +117,7 @@ let KTDatatablesDataSourceAjaxServer = function() {
 	                            </a>\
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
 									<ul class="nav nav-hoverable flex-column">\
-							    		<li class="nav-item"><a class="nav-link" href="/checklistdetail/'+data+'"><i class="nav-icon la la-eye"></i><span class="nav-text">Checklist Details</span></a></li>\
+							    		<li class="nav-item"><a class="nav-link" href="/checklist-details/'+data+'"><i class="nav-icon la la-eye"></i><span class="nav-text">Checklist Details</span></a></li>\
 									\
 									</ul>\
 							  	</div>\

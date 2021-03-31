@@ -15,23 +15,25 @@ import com.eximbay.okr.service.specification.KeyResultQuery;
 import com.eximbay.okr.utils.DateTimeUtils;
 import com.eximbay.okr.utils.StringUtils;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class KeyResultServiceImpl implements IKeyResultService {
 
+    private final MapperFacade mapper;
     private final KeyResultRepository keyResultRepository;
     private final KeyResultHistoryRepository keyResultHistoryRepository;
     private final ObjectiveRepository objectiveRepository;
     private final KeyResultQuery keyResultQuery;
-    private final MapperFacade mapper;
 
     @Override
     public List<KeyResultDto> findAll() {
@@ -102,7 +104,7 @@ public class KeyResultServiceImpl implements IKeyResultService {
         originalKeyResult.setProportion(keyResultDto.getProportion());
         KeyResultHistory keyResultHistory = mapper.map(originalKeyResult, KeyResultHistory.class);
         keyResultHistory.setJustification(keyResultDto.getJustification());
-        keyResultHistory.setSourceKeyResult(originalKeyResult);
+        keyResultHistory.setKeyResultObject(originalKeyResult);
         keyResultRepository.save(originalKeyResult);
         keyResultHistoryRepository.save(keyResultHistory);
     }
@@ -119,7 +121,7 @@ public class KeyResultServiceImpl implements IKeyResultService {
         }
         KeyResultHistory keyResultHistory = mapper.map(keyResult, KeyResultHistory.class);
         keyResultHistory.setJustification(keyResultDto.getJustification());
-        keyResultHistory.setSourceKeyResult(keyResult);
+        keyResultHistory.setKeyResultObject(keyResult);
         keyResultRepository.save(keyResult);
         keyResultHistoryRepository.save(keyResultHistory);
     }

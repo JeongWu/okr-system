@@ -3,7 +3,7 @@ package com.eximbay.okr.controller;
 import com.eximbay.okr.model.okr.QuarterlyOkrModel;
 import com.eximbay.okr.service.Interface.ICompanyService;
 import com.eximbay.okr.utils.DateTimeUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.regex.Pattern;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/okrs")
-@AllArgsConstructor
 public class OkrController {
+
     private final ICompanyService companyService;
 
     @GetMapping("/quarterly")

@@ -1,4 +1,4 @@
-package com.eximbay.okr.dto.auditLog;
+package com.eximbay.okr.dto.auditlog;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

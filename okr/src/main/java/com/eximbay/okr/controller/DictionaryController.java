@@ -5,7 +5,7 @@ import com.eximbay.okr.model.dictionary.DictionaryAddModel;
 import com.eximbay.okr.model.dictionary.DictionaryUpdateModel;
 import com.eximbay.okr.model.dictionary.SelectTypeModel;
 import com.eximbay.okr.service.Interface.IDictionaryService;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import lombok.AllArgsConstructor;
-
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/dictionary")
 public class DictionaryController {
 
@@ -54,7 +52,6 @@ public class DictionaryController {
             case "saveAndAddNew":
                 return "redirect:/dictionary/add";
             case "saveAndExit":
-                return "redirect:/dictionary";
             default:
                 return "redirect:/dictionary";
         }
@@ -78,7 +75,6 @@ public class DictionaryController {
         if (error.hasErrors()) return "redirect:/dictionary/edit/"+ updateFormModel.getDictionarySeq();
         dictionaryService.updateFormModel(updateFormModel);
         return "redirect:/dictionary";
-        // return "redirect:/dictionary/add";
     }
 
 }

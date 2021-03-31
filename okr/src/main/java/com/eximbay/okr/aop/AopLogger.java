@@ -1,14 +1,16 @@
 package com.eximbay.okr.aop;
 
-import com.eximbay.okr.constant.ErrorMessages;
 import com.eximbay.okr.enumeration.LogType;
-import com.eximbay.okr.exception.UserException;
 import com.eximbay.okr.repository.AuditLogRepository;
 import com.eximbay.okr.service.Interface.IAuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
