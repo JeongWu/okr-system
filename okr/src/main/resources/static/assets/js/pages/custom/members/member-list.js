@@ -52,7 +52,7 @@ var KTDefaultDatatableDemo = function() {
 						var memberName = row.localName;
 			
 						output = '<div class="d-flex align-items-center">';
-						output += makeImageSymbol(memberName, memberImg, "big");
+						output += makeImageSymbol(row, "big");
 			
 						output +=
 						  '<div class="ml-2">\
@@ -112,7 +112,7 @@ var KTDefaultDatatableDemo = function() {
 						'<div class="d-flex align-items-center">\
 							<div class="symbol-group symbol-hover">';
 
-						if (columnTotal < 3 ){
+						if (columnTotal < 4 ){
 							for (let i = 0; i < columnTotal; i++){
 								if(arrImage[i] == null){
 									var stateNo = KTUtil.getRandomInt(0, 7);
@@ -375,47 +375,6 @@ var KTDefaultDatatableDemo = function() {
 
 	};
 
-	var makeImageSymbol = function (name, image, size, shape) {
-		var output = "";
-  
-		var stateNo = KTUtil.getRandomInt(0, 7);
-		var states = [
-		  "success",
-		  "primary",
-		  "danger",
-		  "success",
-		  "warning",
-		  "dark",
-		  "primary",
-		  "info",
-		];
-		var state = states[stateNo];
-  
-		output =
-		  '<div class="symbol symbol-' +
-		  (size === "big" ? "40" : "30") +
-		  " " +
-		  (shape === "circle" && "symbol-circle") +
-		  " symbol-light-" +
-		  state +
-		  ' flex-shrink-0" data-toggle="tooltip" title="' +
-		  name +
-		  '">';
-  
-		if (image === null) {
-		  output +=
-			'<span class="symbol-label font-size-' +
-			(size === "big" && "h4") +
-			'">' +
-			name.substring(0, 1) +
-			"</span>";
-		} else {
-		  output += '<img class="" src="' + image + '" alt="photo">';
-		}
-  
-		output += "</div>";
-		return output;
-	  };
 
 	return {
 		// public functions
