@@ -145,12 +145,13 @@ public class TeamServiceImpl implements ITeamService {
 
         for (int i = 0; i < teamListModels.size(); i++) {
             List<TeamMemberDto> teamMemberDtos = mapper.mapAsList(teams.get(i).getTeamMembers(), TeamMemberDto.class);
+            List<TeamMemberDto> availableTeamMembers = teamMemberService.findCurrentlyValid(teamMemberDtos);
 
-            Optional<MemberDto> leaderOrManager = teamMemberService.findTeamLeaderOrManager(teamMemberDtos);
+            Optional<MemberDto> leaderOrManager = teamMemberService.findTeamLeaderOrManager(availableTeamMembers);
             teamListModels.get(i).setLeaderOrManager(leaderOrManager.orElse(null));
 
-            List<Member> members = teamMemberService.findCurrentlyValid(teamMemberDtos).stream()
-                    .map(m -> m.getTeamMemberId().getMember()).distinct().collect(Collectors.toList());
+            List<Member> members = availableTeamMembers.stream().map(m -> m.getTeamMemberId().getMember()).distinct()
+                    .collect(Collectors.toList());
             teamListModels.get(i).setMembers(mapper.mapAsList(members, MemberDto.class));
 
             DivisionDto divisionDto = mapper.map(teamListModels.get(i).getDivision(), DivisionDto.class);
@@ -244,7 +245,7 @@ public class TeamServiceImpl implements ITeamService {
             String imageSrc;
             try {
                 imageSrc = fileUploadService.store(FileType.IMAGE, FileContentType.AVATAR, EntityType.TEAM,
-                updateFormModel.getImageFile());
+                        updateFormModel.getImageFile());
             } catch (UserException e) {
                 String message = Optional.ofNullable(e.getCause()).orElse(e).getMessage();
                 throw new RestUserException(message);
