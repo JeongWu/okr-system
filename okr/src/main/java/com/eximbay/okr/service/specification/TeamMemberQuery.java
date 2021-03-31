@@ -4,7 +4,7 @@ import com.eximbay.okr.constant.AppConst;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.entity.Member_;
 import com.eximbay.okr.entity.TeamMember;
-import com.eximbay.okr.entity.TeamMemberId_;
+import com.eximbay.okr.entity.id.TeamMemberId_;
 import com.eximbay.okr.entity.TeamMember_;
 import com.eximbay.okr.entity.Team_;
 import com.eximbay.okr.service.Interface.IGenericQuery;

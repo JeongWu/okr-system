@@ -3,7 +3,7 @@ package com.eximbay.okr.service.specification;
 import com.eximbay.okr.constant.AppConst;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.entity.DivisionMember;
-import com.eximbay.okr.entity.DivisionMemberId_;
+import com.eximbay.okr.entity.id.DivisionMemberId_;
 import com.eximbay.okr.entity.DivisionMember_;
 import com.eximbay.okr.entity.Division_;
 import com.eximbay.okr.entity.Member_;
