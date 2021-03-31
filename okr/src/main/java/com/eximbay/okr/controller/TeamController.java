@@ -1,5 +1,7 @@
 package com.eximbay.okr.controller;
 
+import java.util.List;
+
 import com.eximbay.okr.constant.Subheader;
 import com.eximbay.okr.dto.division.DivisionDto;
 import com.eximbay.okr.entity.Team;
@@ -8,12 +10,12 @@ import com.eximbay.okr.model.AllDetailsTeamModel;
 import com.eximbay.okr.model.AllTeamUpdateModel;
 import com.eximbay.okr.model.EditForViewAllTeamsModel;
 import com.eximbay.okr.model.EditTeamModel;
-import com.eximbay.okr.model.TeamListPageModel;
 import com.eximbay.okr.model.TeamUpdateFormModel;
+import com.eximbay.okr.model.common.PageModel;
 import com.eximbay.okr.model.team.TeamAddModel;
 import com.eximbay.okr.service.Interface.IDivisionService;
 import com.eximbay.okr.service.Interface.ITeamService;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
@@ -67,7 +69,7 @@ public class TeamController {
 	@GetMapping("/list")
     public String viewTeamList(Model model) {
         long totalCount = teamService.countAllTeam();
-        TeamListPageModel pageModel = new TeamListPageModel();
+        PageModel pageModel = new PageModel();
         pageModel.setSubheader("Team");
         pageModel.setMutedHeader(totalCount + " total");
         model.addAttribute("model", pageModel);
