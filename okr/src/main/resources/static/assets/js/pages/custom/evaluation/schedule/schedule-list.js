@@ -122,7 +122,8 @@ let KTDatatablesDataSourceAjaxServer = (function () {
           title: "ACTIONS",
           data: "scheduleSeq",
           render: function (data, type, full, meta) {
-            if (full.evaluationStep === 99) return '<button class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
+            if (full.evaluationStep === 99)
+              return '<button class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
 								<i class="flaticon-more-1"></i>\
 	                            </button>';
             return (
@@ -203,5 +204,7 @@ function formatInstantDate(instant) {
 }
 
 function bindStartDateAndEndDate(startDate, endDate) {
-  return startDate + " ~ " + endDate;
+  if (startDate !== null || endDate !== null)
+    return startDate + " ~ " + endDate;
+  else return "";
 }
