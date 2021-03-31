@@ -1,6 +1,5 @@
 package com.eximbay.okr.aop;
 
-import com.eximbay.okr.utils.StopWatch;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

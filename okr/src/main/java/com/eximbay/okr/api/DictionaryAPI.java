@@ -1,32 +1,30 @@
 package com.eximbay.okr.api;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.eximbay.okr.constant.DictionaryType;
-import com.eximbay.okr.dto.CodeListDto;
+import com.eximbay.okr.dto.codelist.CodeListDto;
 import com.eximbay.okr.entity.Dictionary;
 import com.eximbay.okr.model.dictionary.DictionaryViewModel;
 import com.eximbay.okr.model.dictionary.SelectTypeModel;
 import com.eximbay.okr.repository.DictionaryRepository;
 import com.eximbay.okr.service.Interface.IDictionaryService;
 import com.eximbay.okr.service.specification.DictionaryQuery;
-
+import lombok.RequiredArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.AllArgsConstructor;
-import ma.glasnost.orika.MapperFacade;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/dictionary")
-@AllArgsConstructor
 public class DictionaryAPI {
 
+        private final MapperFacade mapper;
         private final DictionaryRepository dictionaryRepository;
         private final IDictionaryService dictionaryService;
-        private final MapperFacade mapper;
         private final DictionaryQuery dictionaryQuery;
 
         @PostMapping("/datatables")

@@ -3,7 +3,7 @@ package com.eximbay.okr.controller;
 import com.eximbay.okr.api.response.RestResponse;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
 import com.eximbay.okr.service.Interface.ICompanyOKRService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@AllArgsConstructor
-@RequestMapping("/company/okrs")
+@RequiredArgsConstructor
+@RequestMapping("/companies/okrs")
 public class CompanyOKRController {
 
     private final ICompanyOKRService companyOKRService;

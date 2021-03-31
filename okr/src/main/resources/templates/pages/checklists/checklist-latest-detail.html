@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{pages/layout/main_layout.html}"
+	th:with="title='Team Update'">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Checklist History Details</title>
+        <meta name="description" content="Page with empty content"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    </head>    
+<body>
+	<div layout:fragment="right-floating-toolbar"
+		class="d-flex align-items-center flex-wrap">
+        <a th:href="@{~/okr-checklist-groups}"
+			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-100px justify-content-center">Back</a>
+		<a th:href="@{'~/checklist-details/new/'+${information.objective.objectiveSeq}}"
+			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-100px justify-content-center">New Checklist</a>
+		<!--begin::Dropdown-->
+		
+		<!--end::Dropdown-->
+	</div>
+	<div layout:fragment="content" class="container">
+                <!--begin::Card-->
+                <div class="card card-custom">
+                    <!--begin::Card header-->
+                    <div class="card-header nav-tabs-line-3x">
+                        <!--begin::Toolbar-->
+                        <div class="w-50 pt-20 pl-20">
+                            <h3 class="text-primary">ChekList Details</h3>
+                            <div class="w-200px h-4px bg-primary"></div>
+                        </div>
+                        <!--end::Toolbar-->
+                    </div>
+                    <!--end::Card header-->
+                    <div class="card-body">
+                        <div class="row mb-15">
+                            <div class="col-xl-12">
+                        <div class="row align-item-center mb-10">
+                            <div class="col-xl-4">          
+                                <div class="input-group" >
+                                    <label class="col-form-label mr-3 text-right">Team Name</label>
+                                    <input type="text" class="form-control" th:value="${information.objective.team.name}" readonly/>
+                                </div>
+                            </div>
+                            <div class="col-xl-4">          
+                                <div class="input-group" >
+                                    <label class="col-form-label mr-3 text-right">Member Name</label>
+                                    <input type="text" class="form-control" th:value="${information.objective.member.name}"  readonly />
+                                </div>
+                            </div>
+                            <div class="col-xl-3">          
+                                <div class="input-group" >
+                                    <label class="col-form-label mr-3 text-right">Year / Quarter</label>
+                                    <input type="text" class="form-control" th:value="${information.objective.year} + ' / ' + ${information.objective.quarter}" readonly/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-item-center mb-3">
+                            <div class="col-xl-12">          
+                                <div class="text-center">
+                                    <span>0 ~ 15 점 : 방향성이 안 맞는 okr 될 가능성이 높아요. 다른 okr을 설정해보는 것이 어떨까요!?</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-item-center mb-3">
+                            <div class="col-xl-12">          
+                                <div class="text-center">
+                                    <span>16점 ~ 20점 : 가능성 있는 okr 입니다. 작은 성공부터 이루어 나가요.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-item-center">
+                            <div class="col-xl-12">          
+                                <div class="text-center">
+                                    <span>21점 ~ 25점 : 훌륭한 OKR 입니다. 당신의 도전과 변화에 박수를 보냅니다.</span>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                        <!--begin row-->
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card card-custom gutter-b card-stretch">
+                                <div class="card-body" >
+                                    <h3 class="font-size-lg text-dark font-weight-bold mb-6" th:text="'OBJECTIVE. '+ ${information.objective.objective}">OBJECTIVE. 유연하고 탄력적인 조직</h3>
+                                    <div class="mb-3" >
+                                     <div class="form-group row" th:each="checkList, diviStat :${checkListDetail}" th:if="${#strings.toString(checkList.checkList.type)} == 'OBJECTIVE'"> 
+                                      <label class="col-lg-8 col-form-label text-left" th:text="${checkList.checkList.question}">전사 목표를 달성하는 데 도움이 되겠습니까?</label>
+                                      <div class="col-lg-3">  
+                                        <th:block th:each="assess, diviStat :${assess}">     
+                                       <input type="text" th:if="${assess.code == checkList.answerCode}" th:with="total=${assess.codeValue}"
+                                       class="form-control form-control-solid text-center p-3" th:value="${assess.codeName}" readonly/>
+                                    </th:block>
+                                    </div>
+                                     </div>
+                                    </div>     
+                                    <label th:if="${information.objectiveScore > 0}" class="col-lg-10 font-weight-bold col-form-label text-right" th:text="${information.objectiveScore}" >20</label>                       
+                                   </div>
+                                    
+                            </div>     
+                        </div> <!--col-x1 끝-->
+
+                         <!--col-x1 시작-->
+                        <div class="col-xl-6" th:each="keyResult, diviStat :${keyResultDetail}">
+                            <div class="card card-custom gutter-b card-stretch">
+                            <div class="card-body">
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6" th:text="'kR. '+ ${keyResult.keyResult}">KR. 1기 엑심베ㅣ 인턴십 프로그램 성공(프로그램 만족도 80%이상) </h3>
+                                <div class="mb-3" th:each="checkList, diviStat :${checkListDetail}">
+                                 <div class="form-group row" th:if="${#strings.toString(checkList.checkList.type)} == 'KEYRESULT' and ${checkList.keyResult.keyResultSeq} == ${keyResult.keyResultSeq}">
+                                  <label class="col-lg-8 col-form-label text-left" th:text="${checkList.checkList.question}">전사 목표를 달성하는 데 도움이 되겠습니까?</label>
+                                  <div class="col-lg-3">
+                                  <th:block th:each="assess, diviStat :${assess}">  
+                                   <input type="text" class="form-control form-control-solid text-center p-3" th:if="${assess.code == checkList.answerCode}"
+                                   th:value="${assess.codeName}" readonly/>
+                                </th:block> 
+                                </div>
+                                 </div>
+                            </div>
+                            <label th:if="${keyResult.totalValue > 0}"class="col-lg-10 font-weight-bold col-form-label text-right" th:text="${keyResult.totalValue}" >20</label> 
+                        
+                    </div>             
+                    </div>
+                </div> <!--col-x1 끝-->
+                    </div>
+            </div>
+        <!--end::Row-->
+        </div>
+	</div>
+</body>
+
+
+</html>

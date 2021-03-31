@@ -6,7 +6,7 @@ import com.eximbay.okr.dto.keyresult.KeyResultDto;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
 import com.eximbay.okr.service.Interface.IKeyResultService;
 import com.eximbay.okr.service.Interface.IObjectiveService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/okrs")
-@AllArgsConstructor
 public class OkrAPI {
 
     private final IObjectiveService objectiveService;
@@ -36,7 +36,7 @@ public class OkrAPI {
             RestResponse.error().message("Invalid request param");
         }
         objectiveService.updateObjective(objectiveUpdateDto);
-        return RestResponse.success().message("Update successfully");
+        return RestResponse.success().message("Updated successfully");
     }
 
     @PutMapping("/objective/{objectiveSeq}/keyresults")

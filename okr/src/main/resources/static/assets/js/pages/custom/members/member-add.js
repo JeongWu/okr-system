@@ -79,18 +79,6 @@ var KTWizard3 = function () {
 							   }
 						}
 					},
-					picture: {
-						validators: {
-						}
-					},
-					introduction: {
-						validators: {
-						}
-					},					
-					active: {
-						validators: {
-						}
-					}
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

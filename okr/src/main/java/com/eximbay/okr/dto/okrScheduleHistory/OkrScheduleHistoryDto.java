@@ -1,6 +1,6 @@
-package com.eximbay.okr.dto.okrScheduleHistory;
+package com.eximbay.okr.dto.okrschedulehistory;
 
-import com.eximbay.okr.dto.okeSchedule.OkrScheduleDto;
+import com.eximbay.okr.dto.okeschedule.OkrScheduleDto;
 import com.eximbay.okr.listener.AbstractAuditableDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

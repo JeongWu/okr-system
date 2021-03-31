@@ -2,12 +2,11 @@ package com.eximbay.okr.handler;
 
 import com.eximbay.okr.config.security.MyUserDetails;
 import com.eximbay.okr.config.security.MyUserDetailsService;
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.enumeration.LogType;
 import com.eximbay.okr.service.Interface.IAuditLogService;
 import com.eximbay.okr.service.Interface.IMemberService;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

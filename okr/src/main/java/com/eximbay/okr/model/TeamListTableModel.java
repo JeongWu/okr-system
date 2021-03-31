@@ -2,8 +2,8 @@ package com.eximbay.okr.model;
 
 import java.util.List;
 
-import com.eximbay.okr.dto.DivisionDto;
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.division.DivisionDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.enumeration.TeamType;
 
 import lombok.Data;

@@ -5,6 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.eximbay.okr.dto.evaluationobjective.EvaluationObjectiveDto;
+import com.eximbay.okr.dto.member.MemberDto;
+import com.eximbay.okr.dto.team.TeamDto;
+import com.eximbay.okr.dto.teammember.TeamMemberDto;
+import com.eximbay.okr.enumeration.ObjectiveType;
+import com.eximbay.okr.utils.DateTimeUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,12 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.eximbay.okr.config.security.MyUserDetails;
 import com.eximbay.okr.constant.ErrorMessages;
 import com.eximbay.okr.constant.FlagOption;
-import com.eximbay.okr.dto.DivisionDto;
-import com.eximbay.okr.dto.*;
-import com.eximbay.okr.dto.keyResultCollaborator.KeyResultCollaboratorDto;
-import com.eximbay.okr.dto.TeamHistoryDto;
+import com.eximbay.okr.dto.division.DivisionDto;
+import com.eximbay.okr.dto.keyresultcollaborator.KeyResultCollaboratorDto;
+import com.eximbay.okr.dto.teamhistory.TeamHistoryDto;
 import com.eximbay.okr.dto.like.LikeDto;
-import com.eximbay.okr.dto.objectiveRelation.ObjectiveRelationDto;
+import com.eximbay.okr.dto.objectiverelation.ObjectiveRelationDto;
 import com.eximbay.okr.dto.team.TeamWithMembersAndLeaderDto;
 import com.eximbay.okr.entity.*;
 import com.eximbay.okr.enumeration.EntityType;
@@ -35,7 +40,6 @@ import com.eximbay.okr.model.keyResult.KeyResultViewOkrModel;
 import com.eximbay.okr.model.objective.ObjectiveViewOkrModel;
 import com.eximbay.okr.model.team.TeamAddModel;
 import com.eximbay.okr.model.team.TeamViewOkrModel;
-import com.eximbay.okr.repository.DivisionRepository;
 import com.eximbay.okr.repository.TeamRepository;
 import com.eximbay.okr.service.Interface.*;
 import com.eximbay.okr.service.specification.TeamQuery;
@@ -45,11 +49,12 @@ import lombok.*;
 import ma.glasnost.orika.MapperFacade;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class TeamServiceImpl implements ITeamService {
-    private final TeamRepository teamRepository;
+
     private final MapperFacade mapper;
+    private final TeamRepository teamRepository;
     private final ITeamMemberService teamMemberService;
     private final IObjectiveService objectiveService;
     private final IKeyResultService keyResultService;
@@ -60,6 +65,9 @@ public class TeamServiceImpl implements ITeamService {
     private final IKeyResultCollaboratorService keyResultCollaboratorService;
     private final ITeamHistoryService teamHistoryService;
     private final FileUploadService fileUploadService;
+    private final IMemberService memberService;
+    private final IEvaluationOkrService evaluationOkrService;
+    private final IEvaluationObjectiveService evaluationObjectiveService;
 
     @Override
     public List<TeamDto> findAll() {
@@ -173,7 +181,14 @@ public class TeamServiceImpl implements ITeamService {
         model.setTeam(team);
         model.setMutedHeader(team.getLocalName());
         model.setQuarter(quarter);
-        model.setEditable(teamMemberService.isCurrentMemberCanEditTeamOkr(teamSeq));
+
+        Optional<MemberDto> currentMember = memberService.getCurrentMember();
+        Optional<EvaluationOkr> evaluationOkr = evaluationOkrService.findByQuarterStringAndObjectiveType(quarter, ObjectiveType.TEAM.name());
+        boolean isCurrentMemberCanEditTeamOkr = currentMember.map(m-> m.getAdminFlag().equals(FlagOption.Y)).orElse(false)
+                && teamMemberService.isCurrentMemberCanEditTeamOkr(teamSeq);
+        boolean isEditable = isCurrentMemberCanEditTeamOkr && evaluationOkr.map(e -> e.getQuarterEndDate() == null ||
+                e.getQuarterEndDate().compareToIgnoreCase(DateTimeUtils.getCurrentDateInString()) >= 0).orElse(true);
+        model.setEditable(isEditable);
 
         List<ObjectiveViewOkrModel> objectives = objectiveService.findTeamObjectivesOkrInQuarterByTeamSeq(teamSeq,
                 quarter);
@@ -184,6 +199,7 @@ public class TeamServiceImpl implements ITeamService {
         List<Integer> keyResultsSeq = keyResults.stream().map(KeyResultViewOkrModel::getKeyResultSeq)
                 .collect(Collectors.toList());
 
+        List<EvaluationObjectiveDto> evaluationObjectiveDtos = evaluationObjectiveService.findByObjectivesSeqIn(objectivesSeq);
         List<FeedbackForViewOkrModel> feedbacks = feedbackService.getFeedbackForViewOkr(objectivesSeq, keyResultsSeq);
         List<ObjectiveRelationDto> objectiveRelations = objectiveRelationService
                 .findByObjectiveSeqInAndRelatedObjectiveNotNull(objectivesSeq);
@@ -201,6 +217,7 @@ public class TeamServiceImpl implements ITeamService {
         objectiveService.mapLikesIntoObjectiveModel(objectives, likes);
         objectiveService.mapObjectiveRelationsIntoObjectiveModel(objectives, objectiveRelations);
         objectiveService.mapKeyResultCollaborators(objectives, keyResultCollaborators);
+        objectiveService.mapEditableForObjectiveModel(objectives, evaluationObjectiveDtos, isCurrentMemberCanEditTeamOkr);
 
         model.setObjectives(objectives);
         return model;

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
+<!--start::Card header-->
 <div th:fragment="card-header" class="card-header card-header-tabs-line nav-tabs-line-3x">
     <!--begin::Toolbar-->
     <div class="card-toolbar">
@@ -17,6 +18,50 @@
     <!--end::Toolbar-->
 </div>
 <!--end::Card header-->
+<!--start::Card header Toggle with like button-->
+<div th:fragment="card-header-toggle-like" class="card-header">
+    <div class="card-title">
+        <h3 class="card-label" th:text="${title}"></h3>
+    </div>
+    <div class="card-toolbar">
+        <button class="btn btn-icon btn-sm btn-light-secondary w-80px mr-5 like-btn"
+                th:data-liked="${likeModel.liked}" th:data-sourceTable="${sourceTable}" th:data-sourceSeq="${sourceSeq}" style="color: black"
+                onclick="handleLikeClick()">
+            Like
+        </button>
+        <a class="btn btn-icon btn-sm btn-light-primary mr-1" data-card-tool="toggle">
+            <i class="ki ki-arrow-down icon-nm"></i>
+        </a>
+    </div>
+</div>
+<!--end::Card header Toggle with like button-->
+<!--start::Card header Toggle with add button-->
+<div th:fragment="card-header-toggle-add" class="card-header">
+    <div class="card-title">
+        <h3 class="card-label" th:text="${title}"></h3>
+    </div>
+    <div class="card-toolbar">
+        <button class="btn btn-icon btn-sm btn-light-primary mr-5">
+            +
+        </button>
+        <a class="btn btn-icon btn-sm btn-light-primary mr-1" data-card-tool="toggle">
+            <i class="ki ki-arrow-down icon-nm"></i>
+        </a>
+    </div>
+</div>
+<!--end::Card header Toggle with add button-->
+<!--start::Card header Toggle with no button-->
+<div th:fragment="card-header-toggle" class="card-header">
+    <div class="card-title">
+        <h3 class="card-label" th:text="${title}"></h3>
+    </div>
+    <div class="card-toolbar">
+        <a class="btn btn-icon btn-sm btn-light-primary mr-1" data-card-tool="toggle">
+            <i class="ki ki-arrow-down icon-nm"></i>
+        </a>
+    </div>
+</div>
+<!--end::Card header Toggle with no button-->
 <!--start::Progress Bar-->
 <div th:fragment="progress-bar" class="d-flex align-items-center pt-0 mb-5 row">
     <div class="font-weight-bolder col-3" th:text="${name}"></div>
@@ -69,7 +114,7 @@
     <!--begin::Name and Progress-->
     <div class="row col-lg-12 col-xl-5" >
         <p th:class="${objective.closeFlag eq 'Y'}?'font-weight-bolder align-self-center mb-0 col-4 line-through': 'font-weight-bolder align-self-center mb-0 col-4'"
-           th:text="${objective.objective}"></p>
+           th:text="${objective.shortenObjective} + ' (' + ${objective.proportion} + '%)'"></p>
         <!--begin::Progress-->
         <div class="align-self-center col-8 row">
             <div class="progress progress-xs flex-shrink-0 align-self-center pl-0 pr-0 col-8">
@@ -119,7 +164,7 @@
                                     <i class="flaticon-file-2 icon-2x text-muted font-weight-bold"></i>
                                 </span>
                 <div class="d-flex flex-column flex-lg-fill">
-                    <a href="#" class="text-primary font-weight-bolder">View Details</a>
+                    <a class="text-primary font-weight-bolder" onclick="showOkrDetails()" style="cursor: pointer" th:data-okr="objective" th:data-seq="${objective.objectiveSeq}">View Details</a>
                 </div>
             </div>
         </div>
@@ -183,7 +228,7 @@
                                     <i class="flaticon-file-2 icon-2x text-muted font-weight-bold"></i>
                                 </span>
                 <div class="d-flex flex-column flex-lg-fill">
-                    <a href="#" class="text-primary font-weight-bolder">View Details</a>
+                    <a class="text-primary font-weight-bolder" onclick="showOkrDetails()" style="cursor: pointer" th:data-okr="keyResult" th:data-seq="${keyResult.keyResultSeq}">View Details</a>
                 </div>
             </div>
         </div>

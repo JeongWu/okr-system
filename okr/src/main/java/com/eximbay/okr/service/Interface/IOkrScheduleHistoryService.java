@@ -1,13 +1,10 @@
 package com.eximbay.okr.service.Interface;
 
-import com.eximbay.okr.dto.okrScheduleHistory.OkrScheduleHistoryDto;
-import com.eximbay.okr.dto.okrScheduleHistory.ScheduleHistoryDatatablesInput;
+import com.eximbay.okr.dto.okrschedulehistory.OkrScheduleHistoryDto;
+import com.eximbay.okr.dto.okrschedulehistory.ScheduleHistoryDatatablesInput;
 import com.eximbay.okr.entity.OkrScheduleHistory;
-import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 
-import java.util.List;
-
-public interface IOkrScheduleHistoryService extends ISerivce<OkrScheduleHistoryDto, Integer>{
+public interface IOkrScheduleHistoryService extends IService<OkrScheduleHistoryDto, Integer> {
     DataTablesOutput<OkrScheduleHistory> getDataForDatatables(ScheduleHistoryDatatablesInput input);
 }

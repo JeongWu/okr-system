@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{pages/layout/main_layout.html}">
+	layout:decorate="~{pages/layout/main_layout.html}">
 
 <head>
-    <title>Edit Schedule</title>
+	<title>Edit Schedule</title>
 </head>
 
 <body>
@@ -33,11 +33,11 @@
 				<!--end::Card header-->
 				<!--begin::Form-->
 
-				<form name="quarterly_form" class="form" id="quarterly_form" 
-				method="post" th:object="${dataQuarterlyModel}">
+				<form name="quarterly_form" class="form" id="quarterly_form" method="post"
+					th:object="${dataQuarterlyModel}">
 					<input type="text" th:field="*{scheduleSeq}" hidden />
 					<input type="text" th:field="*{scheduleType}" hidden />
-			
+
 					<div class="card-body">
 						<div class="form-group row">
 							<label class="col-lg-2 col-form-label text-right">Begin day</label>
@@ -213,8 +213,7 @@
 				</div>
 				<!--end::Card header-->
 				<!--begin::Form-->
-				<form class="form" id="monthly_form"  method="post"
-					th:object="${dataMonthlyModel}">
+				<form class="form" id="monthly_form" method="post" th:object="${dataMonthlyModel}">
 					<input type="text" th:field="*{scheduleSeq}" hidden />
 					<input type="text" th:field="*{scheduleType}" hidden />
 					<div class="card-body">
@@ -263,8 +262,7 @@
 							<label class="col-lg-2 col-form-label text-right">End day</label>
 							<div class="col-lg-2">
 								<select class="form-control form-control-solid
-								" id="monthly_endDay"
-									th:field="*{endDay}">
+								" id="monthly_endDay" th:field="*{endDay}">
 									<option value="">Select..</option>
 									<option value="31">The end of the month</option>
 									<option value="1">1</option>
@@ -392,8 +390,7 @@
 				</div>
 				<!--end::Card header-->
 				<!--begin::Form-->
-				<form class="form" id="weekly_form"  method="post"
-					th:object="${dataWeeklyModel}">
+				<form class="form" id="weekly_form" method="post" th:object="${dataWeeklyModel}">
 					<input type="text" th:field="*{scheduleSeq}" hidden />
 					<input type="text" th:field="*{scheduleType}" hidden />
 					<div class="card-body">
@@ -432,7 +429,8 @@
 						<div class="form-group row">
 							<label class="col-lg-2 col-form-label text-right">Close after</label>
 							<div class="col-lg-2">
-								<select id="weekly_closeAfterDays" class="form-control form-control-solid" th:field="*{closeAfterDays}">
+								<select id="weekly_closeAfterDays" class="form-control form-control-solid"
+									th:field="*{closeAfterDays}">
 									<option value="">Select..</option>
 									<option value="0">0</option>
 									<option value="1">1</option>

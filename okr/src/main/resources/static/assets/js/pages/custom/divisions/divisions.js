@@ -55,7 +55,7 @@ let KTDatatableRemoteAjaxDemo = function () {
                 width: 150,
                 sortable: false,
                 template: function (data) {
-                    return renderImagesOnList(data, "members", "/members?memberSeq","memberSeq")
+                    return renderImagesOnList(data, "members", "/members/list?memberSeq","memberSeq")
                 },
             },{
                 field: "useFlags",
@@ -68,7 +68,7 @@ let KTDatatableRemoteAjaxDemo = function () {
             }, {
                 field: "Actions",
                 title: "Actions",
-                sortable: false,
+                sortable: false,  
                 width: 70,
                 textAlign: 'center',
                 template: function (data) {

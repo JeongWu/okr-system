@@ -19,12 +19,6 @@ $(document).ready(function () {
             $(row).find('button.search-key-result').on('click', saveRowIndexAndShowDictionary);
             $(row).find('button.remove-row').on('click', removeCurrentRow);
         },
-        "initComplete": function () {
-            // because of using ajax data source. adding rules in rowCallback won't work for data coming from server
-            $('input.proportion').each(function () {
-                $(this).rules('add', {integer: true})
-            })
-        },
         columnDefs: [
             {
                 targets: 0,
@@ -208,7 +202,9 @@ $(document).ready(function () {
         jQuery.validator.format("Sum of portion must be {0}")
     );
     $('input#proportionSum').rules('add', {sumProportion: 100});
-
+    $('input.proportion').each(function () {
+        $(this).rules('add', {integer: true})
+    })
     function validateTotalProportion() {
         formValidator.element('#proportionSum');
     }

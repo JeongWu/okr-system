@@ -1,7 +1,11 @@
 package com.eximbay.okr.service.specification;
 
 import com.eximbay.okr.dto.GenericFilter;
-import com.eximbay.okr.dto.query.*;
+import com.eximbay.okr.dto.query.EqualQueryDto;
+import com.eximbay.okr.dto.query.GreaterThanQueryDto;
+import com.eximbay.okr.dto.query.InQueryDto;
+import com.eximbay.okr.dto.query.LessThanQueryDto;
+import com.eximbay.okr.dto.query.LikeQueryDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GenericQuery {
 
-    private <T> Path getPath(Root<T> root, String fieldsString){
+    private <T> Path getPath(Root<T> root, String fieldsString) {
         String[] fields = fieldsString.split(",");
         Path path = root.get(fields[0]);
         for (int i = 1; i < fields.length; i++) {
@@ -25,33 +29,33 @@ public class GenericQuery {
         return path;
     }
 
-    public <T> Specification<T> greaterThanQuery(String field, Comparable value, boolean isEqual){
-        if(isEqual) return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get(field), value);
+    public <T> Specification<T> greaterThanQuery(String field, Comparable value, boolean isEqual) {
+        if (isEqual) return (root, query, cb) -> cb.greaterThanOrEqualTo(root.get(field), value);
         return (root, query, cb) -> cb.greaterThan(getPath(root, field), value);
     }
 
-    public <T> Specification<T> lessThanQuery(String field, Comparable value, boolean isEqual){
+    public <T> Specification<T> lessThanQuery(String field, Comparable value, boolean isEqual) {
         if (isEqual) return (root, query, cb) -> cb.lessThanOrEqualTo(root.get(field), value);
         return (root, query, cb) -> cb.lessThan(getPath(root, field), value);
     }
 
-    public <T> Specification<T> equalQuery(String field, Object value){
+    public <T> Specification<T> equalQuery(String field, Object value) {
         return (root, query, cb) -> cb.equal(getPath(root, field), value);
     }
 
-    public <T> Specification<T> likeQuery(String field, String value){
-        return (root, query, cb) -> cb.like(getPath(root, field), "%"+value+"%");
+    public <T> Specification<T> likeQuery(String field, String value) {
+        return (root, query, cb) -> cb.like(getPath(root, field), "%" + value + "%");
     }
 
-    public <T> Specification<T> notNullQuery(String field){
+    public <T> Specification<T> notNullQuery(String field) {
         return (root, query, cb) -> cb.isNotNull(getPath(root, field));
     }
 
-    public <T> Specification<T> inQuery(String field, List<Object> in){
+    public <T> Specification<T> inQuery(String field, List<Object> in) {
         return (root, query, cb) -> getPath(root, field).in(in);
     }
 
-    public <T> Specification<T> buildQuery(Class<T> T, GenericFilter filter){
+    public <T> Specification<T> buildQuery(Class<T> T, GenericFilter filter) {
         Specification<T> query = Specification.where(null);
         if (filter.getLikeQuery() != null) query = query.and(buildLikeQueryFromFilter(filter));
         if (filter.getEqualQuery() != null) query = query.and(buildEqualQueryFromFilter(filter));
@@ -110,8 +114,10 @@ public class GenericQuery {
     private <T> Specification<T> buildGreaterThanQuery(List<GreaterThanQueryDto> query) {
         Specification<T> result = Specification.where(null);
         for (int i = 0; i < query.size(); i++) {
-            if (i == 0) result = result.and(greaterThanQuery(query.get(i).getField(), query.get(i).getValue(), query.get(i).isEqual()));
-            else result = result.or(greaterThanQuery(query.get(i).getField(), query.get(i).getValue(), query.get(i).isEqual()));
+            if (i == 0)
+                result = result.and(greaterThanQuery(query.get(i).getField(), query.get(i).getValue(), query.get(i).isEqual()));
+            else
+                result = result.or(greaterThanQuery(query.get(i).getField(), query.get(i).getValue(), query.get(i).isEqual()));
         }
         return result;
     }
@@ -128,8 +134,10 @@ public class GenericQuery {
     private <T> Specification<T> buildLessThanQuery(List<LessThanQueryDto> query) {
         Specification<T> result = Specification.where(null);
         for (int i = 0; i < query.size(); i++) {
-            if (i == 0) result = result.and(lessThanQuery(query.get(i).getField(), query.get(i).getValue(), query.get(i).isEqual()));
-            else result = result.or(lessThanQuery(query.get(i).getField(), query.get(i).getValue(), query.get(i).isEqual()));
+            if (i == 0)
+                result = result.and(lessThanQuery(query.get(i).getField(), query.get(i).getValue(), query.get(i).isEqual()));
+            else
+                result = result.or(lessThanQuery(query.get(i).getField(), query.get(i).getValue(), query.get(i).isEqual()));
         }
         return result;
     }
@@ -137,9 +145,10 @@ public class GenericQuery {
     private <T> Specification<T> buildEqualQueryFromFilter(GenericFilter filter) {
         List<List<EqualQueryDto>> listQuery = filter.getEqualQuery();
         Specification<T> result = Specification.where(null);
-        for (List<EqualQueryDto> query: listQuery) {
+        for (List<EqualQueryDto> query : listQuery) {
             result = result.and(buildEqualQuery(query));
-        };
+        }
+        ;
         return result;
     }
 
@@ -155,13 +164,14 @@ public class GenericQuery {
     private <T> Specification<T> buildLikeQueryFromFilter(GenericFilter filter) {
         List<List<LikeQueryDto>> listQuery = filter.getLikeQuery();
         Specification<T> result = Specification.where(null);
-        for (List<LikeQueryDto> query: listQuery) {
+        for (List<LikeQueryDto> query : listQuery) {
             result = result.and(buildLikeQuery(query));
-        };
+        }
+        ;
         return result;
     }
 
-    private <T> Specification<T> buildLikeQuery(List<LikeQueryDto> query){
+    private <T> Specification<T> buildLikeQuery(List<LikeQueryDto> query) {
         Specification<T> result = Specification.where(null);
         for (int i = 0; i < query.size(); i++) {
             if (i == 0) result = result.and(likeQuery(query.get(i).getField(), query.get(i).getValue()));

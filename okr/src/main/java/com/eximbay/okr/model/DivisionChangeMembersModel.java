@@ -1,7 +1,8 @@
 package com.eximbay.okr.model;
 
 import com.eximbay.okr.constant.Subheader;
-import com.eximbay.okr.dto.*;
+import com.eximbay.okr.dto.division.DivisionDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import lombok.Data;
 
 import java.util.List;

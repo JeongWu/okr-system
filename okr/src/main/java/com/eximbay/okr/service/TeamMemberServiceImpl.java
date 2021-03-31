@@ -1,25 +1,33 @@
 package com.eximbay.okr.service;
 
 import com.eximbay.okr.constant.FlagOption;
-import com.eximbay.okr.dto.DivisionDto;
-import com.eximbay.okr.dto.keyresult.KeyResultDto;
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.MemberWithActiveDto;
-import com.eximbay.okr.dto.TeamDto;
-import com.eximbay.okr.dto.TeamMemberDto;
+import com.eximbay.okr.dto.division.DivisionDto;
 import com.eximbay.okr.dto.feedback.FeedbackDto;
+import com.eximbay.okr.dto.keyresult.KeyResultDto;
+import com.eximbay.okr.dto.member.MemberDto;
+import com.eximbay.okr.dto.member.MemberWithActiveDto;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
+import com.eximbay.okr.dto.team.TeamDto;
 import com.eximbay.okr.dto.team.TeamWithMembersAndLeaderDto;
-import com.eximbay.okr.entity.*;
+import com.eximbay.okr.dto.teammember.TeamMemberDto;
+import com.eximbay.okr.entity.Member;
+import com.eximbay.okr.entity.Team;
+import com.eximbay.okr.entity.TeamMember;
+import com.eximbay.okr.entity.id.TeamMemberId;
 import com.eximbay.okr.model.TeamListTableModel;
 import com.eximbay.okr.repository.TeamMemberRepository;
-import com.eximbay.okr.service.Interface.*;
+import com.eximbay.okr.service.Interface.IFeedbackService;
+import com.eximbay.okr.service.Interface.IGenericQuery;
+import com.eximbay.okr.service.Interface.IKeyResultService;
+import com.eximbay.okr.service.Interface.IMemberService;
+import com.eximbay.okr.service.Interface.ITeamMemberService;
 import com.eximbay.okr.service.specification.TeamMemberQuery;
 import com.eximbay.okr.utils.DateTimeUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +35,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional
 public class TeamMemberServiceImpl implements ITeamMemberService, IGenericQuery<TeamMember> {
+
+    private final MapperFacade mapper;
     private final TeamMemberRepository teamMemberRepository;
     private final TeamMemberQuery teamMemberQuery;
-    private final MapperFacade mapper;
     private final IMemberService memberService;
     private final ObjectiveServiceImpl objectiveService;
     private final IKeyResultService keyResultService;
@@ -82,7 +92,7 @@ public class TeamMemberServiceImpl implements ITeamMemberService, IGenericQuery<
         List<TeamMember> teamMembers = teamMemberRepository.findAll(
                 teamMemberQuery.findTeamLeaderOrManager(teamSeq)
         );
-        Optional<Member> leaderOrManager = teamMembers.stream().map(m-> m.getTeamMemberId().getMember()).findFirst();
+        Optional<Member> leaderOrManager = teamMembers.stream().map(m -> m.getTeamMemberId().getMember()).findFirst();
         return leaderOrManager.map(m -> mapper.map(m, MemberDto.class));
     }
 
@@ -91,7 +101,7 @@ public class TeamMemberServiceImpl implements ITeamMemberService, IGenericQuery<
         Optional<MemberDto> currentMember = memberService.getCurrentMember();
         if (currentMember.isEmpty()) return false;
         Optional<MemberDto> leaderOrManager = findTeamLeaderOrManager(teamSeq);
-        return leaderOrManager.map(e-> e.getMemberSeq().equals(currentMember.get().getMemberSeq())).orElse(false);
+        return leaderOrManager.map(e -> e.getMemberSeq().equals(currentMember.get().getMemberSeq())).orElse(false);
     }
 
     @Override
@@ -150,9 +160,9 @@ public class TeamMemberServiceImpl implements ITeamMemberService, IGenericQuery<
 
     @Override
     public List<TeamListTableModel> addMembersAndLeaderForDataTable(List<TeamDto> teams) {
-      
+
         List<TeamMember> teamMembers = teamMemberRepository.findAll(teamMemberQuery.findActiveMemberOnly()
-        .and(teamMemberQuery.findActiveTeamOnly()).and(teamMemberQuery.findCurrentlyValid()));
+                .and(teamMemberQuery.findActiveTeamOnly()).and(teamMemberQuery.findCurrentlyValid()));
 
         List<TeamListTableModel> teamDtos = mapper.mapAsList(teams, TeamListTableModel.class);
 
@@ -182,19 +192,18 @@ public class TeamMemberServiceImpl implements ITeamMemberService, IGenericQuery<
     public List<TeamMemberDto> findSearchBelong(MemberDto memberDto) {
         Member member = mapper.map(memberDto, Member.class);
         List<TeamMember> teamMembers = teamMemberRepository.findAll();
-        List<TeamMember> teams = teamMembers.stream().filter(m->m.getTeamMemberId().getMember().getMemberSeq().equals(member.getMemberSeq()))
-        .collect(Collectors.toList());
+        List<TeamMember> teams = teamMembers.stream().filter(m -> m.getTeamMemberId().getMember().getMemberSeq().equals(member.getMemberSeq()))
+                .collect(Collectors.toList());
         return mapper.mapAsList(teams, TeamMemberDto.class);
     }
 
 
-
     @Override
     public List<TeamMemberDto> findSearchBelongTeam(TeamDto teamDto) {
-    	Team team = mapper.map(teamDto, Team.class);
+        Team team = mapper.map(teamDto, Team.class);
         List<TeamMember> teamMembers = teamMemberRepository.findAll();
-        List<TeamMember> teams = teamMembers.stream().filter(m->m.getTeamMemberId().getTeam().getTeamSeq().equals(team.getTeamSeq()))
-        								.collect(Collectors.toList());
+        List<TeamMember> teams = teamMembers.stream().filter(m -> m.getTeamMemberId().getTeam().getTeamSeq().equals(team.getTeamSeq()))
+                .collect(Collectors.toList());
         return mapper.mapAsList(teams, TeamMemberDto.class);
     }
 
@@ -202,9 +211,9 @@ public class TeamMemberServiceImpl implements ITeamMemberService, IGenericQuery<
     public List<TeamDto> findTeamsByMemberSeq(Integer memberSeq) {
         List<TeamMember> teamMembers = teamMemberRepository.findAll(
                 teamMemberQuery.findCurrentlyValid()
-                .and(teamMemberQuery.findActiveTeamOnly())
-                .and(teamMemberQuery.findActiveMemberOnly())
-                .and(teamMemberQuery.findByMemberSeq(memberSeq))
+                        .and(teamMemberQuery.findActiveTeamOnly())
+                        .and(teamMemberQuery.findActiveMemberOnly())
+                        .and(teamMemberQuery.findByMemberSeq(memberSeq))
         );
         List<Team> teams = teamMembers.stream().map(e -> e.getTeamMemberId().getTeam()).collect(Collectors.toList());
         return mapper.mapAsList(teams, TeamDto.class);
@@ -213,14 +222,14 @@ public class TeamMemberServiceImpl implements ITeamMemberService, IGenericQuery<
     @Override
     public Page<MemberWithActiveDto> addActiveMember(Page<Member> members) {
         List<TeamMember> teamMembers = teamMemberRepository.findAll(teamMemberQuery.findActiveMemberOnly());
-        Page<MemberWithActiveDto> result = members.map( member -> {
+        Page<MemberWithActiveDto> result = members.map(member -> {
             MemberWithActiveDto item = mapper.map(member, MemberWithActiveDto.class);
             List<Team> teams = teamMembers.stream()
-                    .filter(m-> m.getTeamMemberId().getMember().getMemberSeq().equals(member.getMemberSeq()))
-                    .map(m-> m.getTeamMemberId().getTeam()).distinct().collect(Collectors.toList());
+                    .filter(m -> m.getTeamMemberId().getMember().getMemberSeq().equals(member.getMemberSeq()))
+                    .map(m -> m.getTeamMemberId().getTeam()).distinct().collect(Collectors.toList());
             List<ObjectiveDto> objectives = objectiveService.findMemberObjective(member.getMemberSeq());
             List<Integer> objectSeq = new ArrayList<>();
-            for (ObjectiveDto objects : objectives){
+            for (ObjectiveDto objects : objectives) {
                 objectSeq.add(objects.getObjectiveSeq());
             }
             List<KeyResultDto> keys = keyResultService.findByObjectSeq(objectSeq);

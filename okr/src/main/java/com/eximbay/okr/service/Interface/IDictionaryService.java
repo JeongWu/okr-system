@@ -5,7 +5,7 @@ import com.eximbay.okr.model.dictionary.DictionaryAddModel;
 import com.eximbay.okr.model.dictionary.DictionaryUpdateModel;
 import com.eximbay.okr.model.dictionary.SelectTypeModel;
 
-public interface IDictionaryService extends ISerivce<DictionaryDto, Integer> {
+public interface IDictionaryService extends IService<DictionaryDto, Integer> {
 
     SelectTypeModel buildSelectTypeModel();
 

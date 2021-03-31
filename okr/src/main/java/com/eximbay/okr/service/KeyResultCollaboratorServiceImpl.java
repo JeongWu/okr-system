@@ -1,12 +1,12 @@
 package com.eximbay.okr.service;
 
-import com.eximbay.okr.dto.keyResultCollaborator.KeyResultCollaboratorDto;
+import com.eximbay.okr.dto.keyresultcollaborator.KeyResultCollaboratorDto;
 import com.eximbay.okr.entity.KeyResultCollaborator;
 import com.eximbay.okr.repository.KeyResultCollaboratorRepository;
 import com.eximbay.okr.service.Interface.IKeyResultCollaboratorService;
 import com.eximbay.okr.service.specification.KeyResultCollaboratorQuery;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,12 @@ import java.util.Optional;
 
 @Service
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class KeyResultCollaboratorServiceImpl implements IKeyResultCollaboratorService {
+
+    private final MapperFacade mapper;
     private final KeyResultCollaboratorRepository keyResultCollaboratorRepository;
     private final KeyResultCollaboratorQuery keyResultCollaboratorQuery;
-    private final MapperFacade mapper;
 
     @Override
     public List<KeyResultCollaboratorDto> findAll() {
@@ -30,7 +31,7 @@ public class KeyResultCollaboratorServiceImpl implements IKeyResultCollaboratorS
     @Override
     public Optional<KeyResultCollaboratorDto> findById(Integer id) {
         Optional<KeyResultCollaborator> keyResultCollaborator = keyResultCollaboratorRepository.findById(id);
-        return keyResultCollaborator.map(m-> mapper.map(m, KeyResultCollaboratorDto.class));
+        return keyResultCollaborator.map(m -> mapper.map(m, KeyResultCollaboratorDto.class));
     }
 
     @Override
@@ -50,8 +51,8 @@ public class KeyResultCollaboratorServiceImpl implements IKeyResultCollaboratorS
     public List<KeyResultCollaboratorDto> findByKeyResultSeqIn(List<Integer> in) {
         List<KeyResultCollaborator> keyResultCollaborators = keyResultCollaboratorRepository.findAll(
                 keyResultCollaboratorQuery.findActiveKeyResultCollaborator()
-                .and(keyResultCollaboratorQuery.findByKeyResultSeqIn(in))
-                .and(keyResultCollaboratorQuery.findByCollaboratorNotNull())
+                        .and(keyResultCollaboratorQuery.findByKeyResultSeqIn(in))
+                        .and(keyResultCollaboratorQuery.findByCollaboratorNotNull())
         );
         return mapper.mapAsList(keyResultCollaborators, KeyResultCollaboratorDto.class);
     }

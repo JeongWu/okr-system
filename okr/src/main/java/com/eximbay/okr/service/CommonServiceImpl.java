@@ -1,21 +1,22 @@
 package com.eximbay.okr.service;
 
-import com.eximbay.okr.dto.TeamDto;
+import com.eximbay.okr.dto.team.TeamDto;
 import com.eximbay.okr.model.TeamForWireframeModel;
 import com.eximbay.okr.model.WireframeModel;
 import com.eximbay.okr.service.Interface.ICommonService;
 import com.eximbay.okr.service.Interface.ICompanyService;
 import com.eximbay.okr.service.Interface.ITeamMemberService;
 import com.eximbay.okr.service.Interface.ITeamService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CommonServiceImpl implements ICommonService {
+
     private final MapperFacade mapper;
     private final ITeamService teamService;
     private final ITeamMemberService teamMemberService;

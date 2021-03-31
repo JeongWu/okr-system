@@ -1,6 +1,6 @@
 package com.eximbay.okr.config.security;
 
-import com.eximbay.okr.dto.*;
+import com.eximbay.okr.dto.member.MemberDto;
 import lombok.*;
 import org.springframework.security.core.*;
 import org.springframework.security.core.authority.*;

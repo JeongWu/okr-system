@@ -1,31 +1,31 @@
 package com.eximbay.okr.api;
 
+import com.eximbay.okr.dto.member.MemberDto;
+import com.eximbay.okr.dto.teammember.TeamMemberDto;
+import com.eximbay.okr.model.member.MemberViewOkrModel;
+import com.eximbay.okr.service.MemberServiceImpl;
+import com.eximbay.okr.service.TeamMemberServiceImpl;
+import com.eximbay.okr.service.TemplateService;
+import com.eximbay.okr.utils.DateTimeUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.TeamMemberDto;
-import com.eximbay.okr.model.member.MemberViewOkrModel;
-import com.eximbay.okr.service.MemberServiceImpl;
-import com.eximbay.okr.service.TeamMemberServiceImpl;
-
-import com.eximbay.okr.service.TemplateService;
-import com.eximbay.okr.utils.DateTimeUtils;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import lombok.AllArgsConstructor;
-
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/members")
-@AllArgsConstructor
 public class MemberAPI {
 
     private final MemberServiceImpl memberService;
     private final TeamMemberServiceImpl teamMemberService;
     private final TemplateService templateService;
-    
 
     @PostMapping("/datatables")
     public List<MemberDto> getMemberData() {
@@ -42,7 +42,7 @@ public class MemberAPI {
     }
 
     @GetMapping("/okrs/quarterly")
-    public String viewOkr(Model model, Integer seq, String quarter){
+    public String viewOkr(Integer seq, String quarter){
         if (quarter == null || !Pattern.compile("^\\d{4}-\\dQ").matcher(quarter).matches())
             quarter = DateTimeUtils.findCurrentQuarter();
 

@@ -1,8 +1,8 @@
 package com.eximbay.okr.controller;
 
 import com.eximbay.okr.constant.Subheader;
-import com.eximbay.okr.dto.AddDivisionMemberFormDto;
-import com.eximbay.okr.dto.RemoveDivisionMemberFormDto;
+import com.eximbay.okr.dto.division.AddDivisionMemberFormDto;
+import com.eximbay.okr.dto.division.RemoveDivisionMemberFormDto;
 import com.eximbay.okr.entity.Division;
 import com.eximbay.okr.model.DivisionChangeMembersModel;
 import com.eximbay.okr.model.DivisionUpdateFormModel;
@@ -11,20 +11,25 @@ import com.eximbay.okr.model.EditDivisionModel;
 import com.eximbay.okr.model.division.DivisionAddModel;
 import com.eximbay.okr.service.Interface.IDivisionMemberService;
 import com.eximbay.okr.service.Interface.IDivisionService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/divisions")
 public class DivisionController {
+
     private final IDivisionService divisionService;
     private final IDivisionMemberService divisionMemberService;
 
@@ -93,8 +98,4 @@ public class DivisionController {
                 return "pages/divisions/divisions";
         }
     }
-
-
-
-
 }

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{pages/layout/main_layout.html}"
+	th:with="title='Team Update'">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Checklist History Details</title>
+        <meta name="description" content="Page with empty content"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    </head>    
+<body>
+	<div layout:fragment="right-floating-toolbar"
+		class="d-flex align-items-center flex-wrap">
+		<a th:href="@{~/okr-checklist-groups}"
+			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-100px justify-content-center">Back</a>
+        <button type="button" id="submitBtn" form="updatedForm"
+			class="btn btn-primary button-color btn-fixed-height font-weight-bold px-2 px-lg-5 mr-2 w-100px justify-content-center">Submit</button>
+		<!--begin::Dropdown-->
+		
+		<!--end::Dropdown-->
+	</div>
+	<div layout:fragment="content" class="container">
+                <!--begin::Card-->
+                <div class="card card-custom">
+                    <!--begin::Card header-->
+                    <div class="card-header nav-tabs-line-3x">
+                        <!--begin::Toolbar-->
+                        <div class="w-50 pt-20 pl-20">
+                            <h3 class="text-primary">ChekList Details</h3>
+                            <div class="w-200px h-4px bg-primary"></div>
+                        </div>
+                        <!--end::Toolbar-->
+                    </div>
+                    <!--end::Card header-->
+                    <div class="card-body">
+                        <div class="row mb-15">
+                            <div class="col-xl-12">
+                        <div class="row align-item-center mb-10">
+                            <div class="col-xl-4">          
+                                <div class="input-group" >
+                                    <label class="col-form-label mr-3 text-right">Team Name</label>
+                                    <input type="text" class="form-control" th:value="${information.objective.team.name}" readonly/>
+                                </div>
+                            </div>
+                            <div class="col-xl-4">          
+                                <div class="input-group" >
+                                    <label class="col-form-label mr-3 text-right">Member Name</label>
+                                    <input type="text" class="form-control" th:value="${information.objective.member.name}"  readonly />
+                                </div>
+                            </div>
+                            <div class="col-xl-3">          
+                                <div class="input-group" >
+                                    <label class="col-form-label mr-3 text-right">Year / Quarter</label>
+                                    <input type="text" class="form-control" th:value="${information.objective.year} + ' / ' + ${information.objective.quarter}" readonly/>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                        <!--begin row-->
+                        <form method="POST" action="/checklist-details/update" id="updatedForm">
+                        <div class="row">
+                            
+                            <div class="col-xl-6">
+                                <div class="card card-custom gutter-b card-stretch">
+                                <div class="card-body" >
+                                    <h3 class="font-size-lg text-dark font-weight-bold mb-6" th:text="'OBJECTIVE. '+ ${information.objective.objective}">OBJECTIVE. 유연하고 탄력적인 조직</h3>
+                                    <div class="mb-3" >
+                                        <input type="hidden" id="objectiveSeq"  name="objectiveSeq" th:value="${information.objective.objectiveSeq}">
+                                     <div class="form-group row" th:each="checkList, diviStat :${checkListDetail}" th:if="${#strings.toString(checkList.checkList.type)} == 'OBJECTIVE'" required> 
+                                      <label class="col-lg-8 col-form-label text-left" th:text="${checkList.checkList.question}">전사 목표를 달성하는 데 도움이 되겠습니까?</label>
+                                      <div class="col-lg-4"> 
+                                        <select class="form-control datatable-input" th:name="${checkList.detailSeq}" id="objectiveScore">
+                                            <option value="">선택하세요</option>
+                                            <option th:each="assess, diviStat :${assess}" th:value="${assess.code}" th:text="${assess.codeName}">1</option>
+                                        </select>
+                                    </div>
+                                     </div>
+                                    </div>                         
+                                   </div>
+                                    
+                            </div>     
+                        </div> <!--col-x1 끝-->
+
+                         <!--col-x1 시작-->
+                        <div class="col-xl-6" th:each="keyResult, i :${keyResultDetail}">
+                            <div class="card card-custom gutter-b card-stretch">
+                            <div class="card-body">
+                                <h3 class="font-size-lg text-dark font-weight-bold mb-6" th:text="'kR. '+ ${keyResult.keyResult}">KR. 1기 엑심베ㅣ 인턴십 프로그램 성공(프로그램 만족도 80%이상) </h3>
+                                <div class="mb-3" th:each="checkList, diviStat :${checkListDetail}">
+                                 <div class="form-group row" th:if="${#strings.toString(checkList.checkList.type)} == 'KEYRESULT' and ${checkList.keyResult.keyResultSeq} == ${keyResult.keyResultSeq}">
+                                  <label class="col-lg-8 col-form-label text-left" th:text="${checkList.checkList.question}">전사 목표를 달성하는 데 도움이 되겠습니까?</label>
+                                  <div class="col-lg-4">  
+                                    <select class="form-control datatable-input" th:name="${checkList.detailSeq}" th:id="'keyResult'+${i.index +1}+'Score'" required>
+                                        <option value="">선택하세요</option>
+                                        <option th:each="assess, diviStat :${assess}" th:value="${assess.code}" th:text="${assess.codeName}">1</option>
+                                    </select>
+                                </div>
+                                 </div>
+                            </div>
+                      
+                    </div>             
+                    </div>
+                    
+                </div> <!--col-x1 끝-->
+            
+                    </div>
+                </form>
+            </div>
+        <!--end::Row-->
+        </div>
+	</div>
+    <th:block layout:fragment="script">
+        <script type="text/javascript">
+            $().ready(function () {
+                var detailList = [];
+                var code;
+                $('#submitBtn').on('click', function(){
+                    
+                for (var i=0; i<$('select').length; i++){
+                    var data = {};
+                   for(var j=0; j<$('select')[i].options.length; j++) {
+                    if($('select')[i].options[j].selected == true) {
+                        code = $('select')[i].options[j].value;
+                        if (code == ""){
+                            $('select')[i].focus();
+                            return false;
+                        }
+                            data.detailSeq = $('select')[i].getAttribute('name');
+                            data.answerCode = code;
+                            detailList.push(data);
+                        break;
+                    }
+                    }
+                };
+
+                var updatedForm = JSON.stringify(detailList);
+                $.ajax({
+                url: "/checklist-details/update",
+                type: "POST",
+                cache: false,
+                dataType: "json",
+                data: {"updatedForm" : updatedForm},
+                success: function(data) {
+                    Swal.fire({
+						text: "변경되었습니다!",
+						icon: "success",
+						button: "확인",
+					  }).then(function () {
+                        location.href="/checklist-details/latest/"+ $('#objectiveSeq').val();
+					});
+                      
+                },
+                error: function(err) {
+					Swal.fire({
+						text: "실패하였습니다!",
+						icon: "warning",
+						button: "확인",
+					  })
+                    console.log(err);
+                }                    
+            }); 
+                });
+            });
+        </script>
+    </th:block>
+</body>
+
+
+</html>

@@ -1,30 +1,29 @@
 package com.eximbay.okr.service;
 
-import com.eximbay.okr.dto.okrScheduleHistory.OkrScheduleHistoryDto;
-import com.eximbay.okr.dto.okrScheduleHistory.ScheduleHistoryDatatablesInput;
+import com.eximbay.okr.dto.okrschedulehistory.OkrScheduleHistoryDto;
+import com.eximbay.okr.dto.okrschedulehistory.ScheduleHistoryDatatablesInput;
 import com.eximbay.okr.entity.OkrScheduleHistory;
 import com.eximbay.okr.repository.OkrScheduleHistoryRepository;
 import com.eximbay.okr.service.Interface.IOkrScheduleHistoryService;
 import com.eximbay.okr.service.specification.OkrScheduleHistoryQuery;
-import com.eximbay.okr.utils.StringUtils;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
-import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Data
-@AllArgsConstructor
 @Service
+@Data
+@RequiredArgsConstructor
 public class OkrScheduleHistoryServiceImpl implements IOkrScheduleHistoryService {
+
+    private final MapperFacade mapper;
     private final OkrScheduleHistoryRepository okrScheduleHistoryRepository;
     private final OkrScheduleHistoryQuery okrScheduleHistoryQuery;
-    private final MapperFacade mapper;
 
     @Override
     public List<OkrScheduleHistoryDto> findAll() {
@@ -35,7 +34,7 @@ public class OkrScheduleHistoryServiceImpl implements IOkrScheduleHistoryService
     @Override
     public Optional<OkrScheduleHistoryDto> findById(Integer id) {
         Optional<OkrScheduleHistory> okrScheduleHistory = okrScheduleHistoryRepository.findById(id);
-        return okrScheduleHistory.map(m-> mapper.map(m, OkrScheduleHistoryDto.class));
+        return okrScheduleHistory.map(m -> mapper.map(m, OkrScheduleHistoryDto.class));
     }
 
     @Override
@@ -53,10 +52,10 @@ public class OkrScheduleHistoryServiceImpl implements IOkrScheduleHistoryService
 
     @Override
     public DataTablesOutput<OkrScheduleHistory> getDataForDatatables(ScheduleHistoryDatatablesInput input) {
-    	   DataTablesOutput<OkrScheduleHistory> output = okrScheduleHistoryRepository
-                                                        .findAll(input,
-                                                                okrScheduleHistoryQuery.buildQueryForDatatables(input)
-                                                        );
+        DataTablesOutput<OkrScheduleHistory> output = okrScheduleHistoryRepository
+                .findAll(input,
+                        okrScheduleHistoryQuery.buildQueryForDatatables(input)
+                );
         return output;
     }
 

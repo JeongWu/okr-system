@@ -1,7 +1,7 @@
 package com.eximbay.okr.model;
 
-import com.eximbay.okr.dto.CompanyDto;
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.company.CompanyDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import lombok.Data;
 
 import java.util.List;

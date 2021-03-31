@@ -1,6 +1,6 @@
 package com.eximbay.okr.model.team;
 
-import com.eximbay.okr.dto.DivisionDto;
+import com.eximbay.okr.dto.division.DivisionDto;
 
 import lombok.Data;
 

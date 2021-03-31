@@ -1,8 +1,10 @@
-package com.eximbay.okr.dto.okeSchedule;
+package com.eximbay.okr.dto.okeschedule;
 
 import com.eximbay.okr.listener.AbstractAuditableDto;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class OkrScheduleDto extends AbstractAuditableDto {
     private Integer scheduleSeq;

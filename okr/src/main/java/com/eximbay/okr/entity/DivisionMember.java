@@ -1,9 +1,9 @@
 package com.eximbay.okr.entity;
 
+import com.eximbay.okr.entity.id.DivisionMemberId;
 import com.eximbay.okr.listener.AbstractAuditable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 

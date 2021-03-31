@@ -3,17 +3,12 @@ package com.eximbay.okr.entity;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.listener.AbstractAuditable;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Table(name = "key_result")
 @Entity
@@ -31,7 +26,7 @@ public class KeyResult extends AbstractAuditable {
     @JoinColumn(name = "OBJECTIVE_SEQ", nullable = false)
     private Objective objective;
 
-    @Column(name = "OBJECTIVE_LEVEL", length = 20)
+    @Column(name = "OBJECTIVE_LEVEL", length = 20, nullable = false)
     private String objectiveLevel;
 
     @Column(name = "KEY_RESULT")
@@ -59,7 +54,7 @@ public class KeyResult extends AbstractAuditable {
     private Integer progress = 0;
 
     @Column(name = "LATEST_UPDATE_DT")
-    private Instant lastUpdatedDate;
+    private Instant latestUpdateDt;
 
     @Column(name = "CLOSE_FLAG", length = 1, nullable = false)
     private String closeFlag = FlagOption.N;

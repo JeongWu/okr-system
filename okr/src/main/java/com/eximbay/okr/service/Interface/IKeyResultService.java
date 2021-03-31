@@ -5,8 +5,9 @@ import com.eximbay.okr.model.keyResult.KeyResultViewOkrModel;
 
 import java.util.List;
 
-public interface IKeyResultService extends ISerivce<KeyResultDto, Integer> {
+public interface IKeyResultService extends IService<KeyResultDto, Integer> {
     List<KeyResultViewOkrModel> findByObjectiveSeqIn(List<Integer> in);
+
     List<KeyResultDto> findByObjectSeq(List<Integer> in);
 
     List<KeyResultDto> findByCloseFlagAndObjectiveSeq(String closeFlag, int objectiveSeq);

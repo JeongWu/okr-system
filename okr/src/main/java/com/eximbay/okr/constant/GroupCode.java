@@ -11,5 +11,4 @@ public class GroupCode {
     public static final String DIC_CATEGORY = "DIC_CATEGORY";
     public static final String DIC_CATEGORY_GROUP = "DIC_CATEGORY_GROUP";
     public static final String POSITION = "POSITION";
-    public static final String EVALUATION_TYPE = "EVALUATION_TYPE";
 }

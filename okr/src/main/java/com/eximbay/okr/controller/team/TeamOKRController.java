@@ -3,8 +3,9 @@ package com.eximbay.okr.controller.team;
 import com.eximbay.okr.api.response.RestResponse;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
 import com.eximbay.okr.model.team.AddTeamOkrModel;
+import com.eximbay.okr.model.team.EditTeamOkrModel;
 import com.eximbay.okr.service.Interface.ITeamOKRService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/team/{teamId}/okrs")
 public class TeamOKRController {
 
@@ -33,5 +34,12 @@ public class TeamOKRController {
     public ResponseEntity<RestResponse> addCompanyOkrs(@RequestBody ObjectiveDto objectiveDto, @PathVariable(name = "teamId") int teamId) {
         teamOKRService.addObjectiveAndKeyResult(teamId, objectiveDto);
         return ResponseEntity.ok(RestResponse.success());
+    }
+
+    @GetMapping("/{objectiveId}/edit")
+    public String editObjectiveAndKeyResult(Model model, @PathVariable("teamId") int teamId, @PathVariable("objectiveId") int objectiveId) {
+        EditTeamOkrModel editTeamOkrModel = teamOKRService.buildEditTeamOkrDataModel(teamId, objectiveId);
+        model.addAttribute("model", editTeamOkrModel);
+        return "pages/teams/okrs/team_edit_okr";
     }
 }

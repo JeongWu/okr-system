@@ -1,10 +1,12 @@
 package com.eximbay.okr.service.Interface;
 
-import java.util.List;
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.MemberHistoryDto;
+import com.eximbay.okr.dto.member.MemberDto;
+import com.eximbay.okr.dto.memberhistory.MemberHistoryDto;
 
-public interface IMemberHistoryService extends ISerivce<MemberHistoryDto, Integer> {
-	List<MemberHistoryDto> findByName(String name);
-	List<MemberHistoryDto> findByMember(MemberDto member);
+import java.util.List;
+
+public interface IMemberHistoryService extends IService<MemberHistoryDto, Integer> {
+    List<MemberHistoryDto> findByName(String name);
+
+    List<MemberHistoryDto> findByMember(MemberDto member);
 }

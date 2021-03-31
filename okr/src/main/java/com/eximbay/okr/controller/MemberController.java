@@ -1,10 +1,10 @@
 package com.eximbay.okr.controller;
 
 import com.eximbay.okr.constant.Subheader;
-import com.eximbay.okr.dto.MemberDto;
-import com.eximbay.okr.dto.MemberHistoryDto;
-import com.eximbay.okr.dto.TeamDto;
-import com.eximbay.okr.dto.TeamMemberDto;
+import com.eximbay.okr.dto.member.MemberDto;
+import com.eximbay.okr.dto.memberhistory.MemberHistoryDto;
+import com.eximbay.okr.dto.team.TeamDto;
+import com.eximbay.okr.dto.teammember.TeamMemberDto;
 import com.eximbay.okr.enumeration.EntityType;
 import com.eximbay.okr.enumeration.FileContentType;
 import com.eximbay.okr.enumeration.FileType;
@@ -13,47 +13,39 @@ import com.eximbay.okr.exception.UserException;
 import com.eximbay.okr.model.AllDetailsMemberModel;
 import com.eximbay.okr.model.MemberModel;
 import com.eximbay.okr.model.PageModel;
-import com.eximbay.okr.model.member.MemberViewOkrModel;
 import com.eximbay.okr.service.FileUploadService;
-import com.eximbay.okr.service.MemberHistoryServiceImpl;
-import com.eximbay.okr.service.MemberServiceImpl;
-import com.eximbay.okr.service.TeamMemberServiceImpl;
-import com.eximbay.okr.service.TeamServiceImpl;
-import com.eximbay.okr.utils.DateTimeUtils;
+import com.eximbay.okr.service.Interface.IMemberHistoryDataService;
+import com.eximbay.okr.service.Interface.IMemberService;
+import com.eximbay.okr.service.Interface.ITeamMemberService;
+import com.eximbay.okr.service.Interface.ITeamService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
-
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
 
-    private final MemberServiceImpl memberService;
-    private final MemberHistoryServiceImpl memberHistoryService;
-    private final TeamMemberServiceImpl teamMemberService;
     private final FileUploadService fileUploadService;
-    private final TeamServiceImpl teamService;
+    private final IMemberService memberService;
+    private final IMemberHistoryDataService memberHistoryService;
+    private final ITeamMemberService teamMemberService;
+    private final ITeamService teamService;
 
     @GetMapping
     public String viewAllMember(Model model, @PageableDefault Pageable pageable) {

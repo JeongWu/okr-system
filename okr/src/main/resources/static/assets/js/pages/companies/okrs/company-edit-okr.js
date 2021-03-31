@@ -17,7 +17,7 @@ $(document).ready(function () {
                 $(row).find('select.objective-level').attr('name', 'keyresult-level-' + index);
                 $(row).find('input.key-result').attr('name', 'keyresult-' + index);
                 $(row).find('input.proportion').attr('name', 'proportion-' + index).on('change', validateTotalActiveProportion);
-                $(row).find('input.key-result-activation').attr('name', 'key-result-activation-' + index).on('click', validateTotalActiveProportion);
+                $(row).find('input.key-result-activation').attr('name', 'key-result-activation-' + index).on('click', validateTotalActiveProportion).on('click', validateInactiveJustification);
                 $(row).find('input.key-result-justification').attr('name', 'key-result-justification-' + index);
                 $(row).data('keyResultSeq', data.keyResultSeq);
                 $(row).addClass('row-key-result');
@@ -257,7 +257,7 @@ $(document).ready(function () {
                     proportion: proportion,
                     justification: justification,
                     closeFlag: closeFlag,
-                    closeJustification: justification
+                    closeJustification: closeFlag === 'Y' ? justification : null
                 })
             })
 
@@ -323,6 +323,15 @@ $(document).ready(function () {
     })
     function validateTotalActiveProportion() {
         keyResultFormValidator.element('#proportionSum');
+    }
+
+    $('#objectiveActivation').on('change', function() {
+        objectiveValidator.element('#objInactiveJustification');
+    })
+
+    function validateInactiveJustification() {
+        const inputJustification = $(this).parents('td').next('td').find('input.key-result-justification');
+        keyResultFormValidator.element(inputJustification);
     }
 
     function removeCurrentRow() {

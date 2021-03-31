@@ -1,7 +1,7 @@
 package com.eximbay.okr.model.okr;
 
 import com.eximbay.okr.constant.Subheader;
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.model.TeamForWireframeModel;
 import lombok.Data;
 

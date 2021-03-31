@@ -1,41 +1,66 @@
 package com.eximbay.okr.service;
 
-import com.eximbay.okr.constant.*;
-import com.eximbay.okr.dto.*;
+import com.eximbay.okr.constant.FlagOption;
+import com.eximbay.okr.dto.company.CompanyDashboardResponse;
+import com.eximbay.okr.dto.company.CompanyDto;
+import com.eximbay.okr.dto.evaluationobjective.EvaluationObjectiveDto;
 import com.eximbay.okr.dto.feedback.FeedBackForCompanyDashboardDto;
-import com.eximbay.okr.dto.keyResultCollaborator.KeyResultCollaboratorDto;
+import com.eximbay.okr.dto.keyresultcollaborator.KeyResultCollaboratorDto;
 import com.eximbay.okr.dto.like.LikeDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
-import com.eximbay.okr.dto.objectiveRelation.ObjectiveRelationDto;
-import com.eximbay.okr.entity.*;
+import com.eximbay.okr.dto.objectiverelation.ObjectiveRelationDto;
+import com.eximbay.okr.dto.team.TeamDto;
+import com.eximbay.okr.entity.Company;
+import com.eximbay.okr.entity.EvaluationOkr;
+import com.eximbay.okr.enumeration.ObjectiveType;
 import com.eximbay.okr.exception.UserException;
 import com.eximbay.okr.model.ProgressBarModel;
 import com.eximbay.okr.model.TeamForWireframeModel;
-import com.eximbay.okr.model.company.*;
+import com.eximbay.okr.model.company.CompanyDashboardContentModel;
+import com.eximbay.okr.model.company.CompanyOkrModel;
+import com.eximbay.okr.model.company.CompanyUpdateFormModel;
+import com.eximbay.okr.model.company.EditCompanyModel;
 import com.eximbay.okr.model.feedback.FeedbackForViewOkrModel;
 import com.eximbay.okr.model.keyResult.KeyResultViewOkrModel;
 import com.eximbay.okr.model.objective.ObjectiveViewOkrModel;
 import com.eximbay.okr.model.okr.QuarterlyOkrModel;
-import com.eximbay.okr.repository.*;
-import com.eximbay.okr.service.Interface.*;
+import com.eximbay.okr.repository.CompanyRepository;
+import com.eximbay.okr.service.Interface.ICompanyService;
+import com.eximbay.okr.service.Interface.IEvaluationObjectiveService;
+import com.eximbay.okr.service.Interface.IEvaluationOkrService;
+import com.eximbay.okr.service.Interface.IFeedbackService;
+import com.eximbay.okr.service.Interface.IKeyResultCollaboratorService;
+import com.eximbay.okr.service.Interface.IKeyResultService;
+import com.eximbay.okr.service.Interface.ILikeService;
+import com.eximbay.okr.service.Interface.IMemberService;
+import com.eximbay.okr.service.Interface.IObjectiveRelationService;
+import com.eximbay.okr.service.Interface.IObjectiveService;
+import com.eximbay.okr.service.Interface.ITeamMemberService;
+import com.eximbay.okr.service.Interface.ITeamService;
 import com.eximbay.okr.utils.DateTimeUtils;
 import com.eximbay.okr.utils.NumberUtils;
 import com.eximbay.okr.utils.StringUtils;
 import javassist.NotFoundException;
-import lombok.*;
-import ma.glasnost.orika.*;
+import lombok.RequiredArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class CompanyServiceImpl implements ICompanyService {
+
+    private final MapperFacade mapper;
     private final CompanyRepository companyRepository;
     private final IObjectiveService objectiveService;
     private final IFeedbackService feedbackService;
@@ -44,9 +69,10 @@ public class CompanyServiceImpl implements ICompanyService {
     private final IObjectiveRelationService objectiveRelationService;
     private final IKeyResultCollaboratorService keyResultCollaboratorService;
     private final ILikeService likeService;
-    private final MapperFacade mapper;
     private final ITeamMemberService teamMemberService;
     private final ITeamService teamService;
+    private final IEvaluationOkrService evaluationOkrService;
+    private final IEvaluationObjectiveService evaluationObjectiveService;
 
     @Override
     public List<CompanyDto> findAll() {
@@ -58,7 +84,7 @@ public class CompanyServiceImpl implements ICompanyService {
     @Transactional
     public Optional<CompanyDto> findById(Integer id) {
         Optional<Company> company = companyRepository.findById(id);
-        Optional<CompanyDto> companyDto = company.map(m-> mapper.map(m, CompanyDto.class));
+        Optional<CompanyDto> companyDto = company.map(m -> mapper.map(m, CompanyDto.class));
         return companyDto;
     }
 
@@ -79,7 +105,7 @@ public class CompanyServiceImpl implements ICompanyService {
     @Override
     @Cacheable(value = "company")
     public Optional<CompanyDto> getCompany() {
-        return companyRepository.findFirstByOrderByCompanySeq().map(m-> mapper.map(m, CompanyDto.class));
+        return companyRepository.findFirstByOrderByCompanySeq().map(m -> mapper.map(m, CompanyDto.class));
     }
 
     @Override
@@ -114,7 +140,7 @@ public class CompanyServiceImpl implements ICompanyService {
 
         List<String> quarters = objectiveService.findAllQuarters();
         model.setQuarters(quarters);
-        if (!quarters.contains(quarter)){
+        if (!quarters.contains(quarter)) {
             model.setCurrentQuarter(DateTimeUtils.findCurrentQuarter());
         } else {
             model.setCurrentQuarter(quarter);
@@ -127,7 +153,7 @@ public class CompanyServiceImpl implements ICompanyService {
         List<FeedBackForCompanyDashboardDto> feedbacks =
                 mapper.mapAsList(feedbackService.findTop10ByOrderByCreatedDateDesc(), FeedBackForCompanyDashboardDto.class);
         List<Integer> feedbacksSeq = feedbacks.stream().map(FeedBackForCompanyDashboardDto::getFeedbackSeq).collect(Collectors.toList());
-        List<LikeDto> likes = likeService.getLikeForCompanyDashboard(feedbacksSeq);
+        List<LikeDto> likes = likeService.getLikeByListFeedbacksSeq(feedbacksSeq);
         mapLikesIntoFeedbackDto(feedbacks, likes);
 
         model.setFeedbacks(feedbacks);
@@ -140,7 +166,7 @@ public class CompanyServiceImpl implements ICompanyService {
         QuarterlyOkrModel model = new QuarterlyOkrModel();
 
         List<String> quarters = objectiveService.findAllQuarters();
-        if (!quarters.contains(quarter)){
+        if (!quarters.contains(quarter)) {
             model.setCurrentQuarter(DateTimeUtils.findCurrentQuarter());
         } else {
             model.setCurrentQuarter(quarter);
@@ -163,33 +189,33 @@ public class CompanyServiceImpl implements ICompanyService {
 
     private void mapLikesIntoFeedbackDto(List<FeedBackForCompanyDashboardDto> feedbacks, List<LikeDto> likes) {
         Map<Integer, Long> likesCount = likes.stream().collect(Collectors.groupingBy(LikeDto::getSourceSeq, Collectors.counting()));
-        for (FeedBackForCompanyDashboardDto feedback: feedbacks){
+        for (FeedBackForCompanyDashboardDto feedback : feedbacks) {
             feedback.setLikes(likesCount.getOrDefault(feedback.getFeedbackSeq(), 0L));
         }
     }
 
-    private List<ProgressBarModel> getProgressBarForTeams(List<ObjectiveDto> objectives){
+    private List<ProgressBarModel> getProgressBarForTeams(List<ObjectiveDto> objectives) {
         Map<TeamDto, List<ObjectiveDto>> map = objectives.stream()
-                .filter(m->m.getTeam() != null && m.getTeam().getUseFlag().equals(FlagOption.Y))
+                .filter(m -> m.getTeam() != null && m.getTeam().getUseFlag().equals(FlagOption.Y))
                 .collect(Collectors.groupingBy(ObjectiveDto::getTeam, Collectors.toList()));
         List<ProgressBarModel> teams = map.keySet().stream()
                 .map(k -> {
                     Double progress = map.get(k).stream().collect(Collectors.summarizingDouble(ObjectiveDto::getProgress)).getAverage();
-                    return new ProgressBarModel(k.getLocalName(), NumberUtils.formatDouble(progress,1), 10.0);
+                    return new ProgressBarModel(k.getLocalName(), NumberUtils.formatDouble(progress, 1), 10.0);
                 })
                 .sorted(Comparator.comparing(ProgressBarModel::getProgress).reversed())
                 .collect(Collectors.toList());
         return teams;
     }
 
-    private List<ProgressBarModel> getProgressBarForMembers(List<ObjectiveDto> objectives){
+    private List<ProgressBarModel> getProgressBarForMembers(List<ObjectiveDto> objectives) {
         Map<MemberDto, List<ObjectiveDto>> map = objectives.stream()
-                .filter(m->m.getMember() != null && m.getMember().getUseFlag().equals(FlagOption.Y))
+                .filter(m -> m.getMember() != null && m.getMember().getUseFlag().equals(FlagOption.Y))
                 .collect(Collectors.groupingBy(ObjectiveDto::getMember, Collectors.toList()));
         List<ProgressBarModel> members = map.keySet().stream()
                 .map(k -> {
                     Double progress = map.get(k).stream().collect(Collectors.summarizingDouble(ObjectiveDto::getProgress)).getAverage();
-                    return new ProgressBarModel(k.getLocalName(), NumberUtils.formatDouble(progress,1), 10.0);
+                    return new ProgressBarModel(k.getLocalName(), NumberUtils.formatDouble(progress, 1), 10.0);
                 })
                 .sorted(Comparator.comparing(ProgressBarModel::getProgress).reversed())
                 .limit(20)
@@ -203,7 +229,7 @@ public class CompanyServiceImpl implements ICompanyService {
         if (StringUtils.isNullOrEmpty(quarter)) quarter = DateTimeUtils.findCurrentQuarter();
 
         List<ObjectiveDto> objectives = objectiveService.findAllInQuarter(quarter);
-        result.setCompanyObjectives(objectives.stream().filter(m->m.getCompany() != null).collect(Collectors.toList()));
+        result.setCompanyObjectives(objectives.stream().filter(m -> m.getCompany() != null).collect(Collectors.toList()));
         return result;
     }
 
@@ -213,9 +239,14 @@ public class CompanyServiceImpl implements ICompanyService {
         if (StringUtils.isNullOrEmpty(quarter)) quarter = DateTimeUtils.findCurrentQuarter();
 
         model.setQuarter(quarter);
-        model.setEditable(memberService.getCurrentMember().map(m->
-                m.getAdminFlag().equals(FlagOption.Y) && m.getEditCompanyOkrFlag().equals(FlagOption.Y))
-                .orElse(false));
+        Optional<MemberDto> currentMember = memberService.getCurrentMember();
+        Optional<EvaluationOkr> evaluationOkr = evaluationOkrService.findByQuarterStringAndObjectiveType(quarter, ObjectiveType.COMPANY.name());
+        boolean isCurrentMemberCanEditOkr = currentMember.map(m -> m.getAdminFlag().equals(FlagOption.Y) && m.getEditCompanyOkrFlag().equals(FlagOption.Y)).orElse(false);
+        boolean isEditable = isCurrentMemberCanEditOkr
+                && evaluationOkr.map(e -> e.getQuarterEndDate() == null ||
+                e.getQuarterEndDate().compareToIgnoreCase(DateTimeUtils.getCurrentDateInString()) >= 0).orElse(true);
+
+        model.setEditable(isEditable);
 
         List<ObjectiveViewOkrModel> objectives = objectiveService.findAllCompanyObjectivesOkrInQuarter(quarter);
         List<Integer> objectivesSeq = objectives.stream().map(ObjectiveViewOkrModel::getObjectiveSeq).collect(Collectors.toList());
@@ -223,19 +254,21 @@ public class CompanyServiceImpl implements ICompanyService {
         List<KeyResultViewOkrModel> keyResults = keyResultService.findByObjectiveSeqIn(objectivesSeq);
         List<Integer> keyResultsSeq = keyResults.stream().map(KeyResultViewOkrModel::getKeyResultSeq).collect(Collectors.toList());
 
+        List<EvaluationObjectiveDto> evaluationObjectiveDtos = evaluationObjectiveService.findByObjectivesSeqIn(objectivesSeq);
         List<FeedbackForViewOkrModel> feedbacks = feedbackService.getFeedbackForViewOkr(objectivesSeq, keyResultsSeq);
         List<ObjectiveRelationDto> objectiveRelations = objectiveRelationService.findByObjectiveSeqInAndRelatedObjectiveNotNull(objectivesSeq);
         List<KeyResultCollaboratorDto> keyResultCollaborators = keyResultCollaboratorService.findByKeyResultSeqIn(keyResultsSeq);
         List<LikeDto> likes = likeService.getLikeForViewOkr(objectivesSeq, keyResultsSeq);
 
-        objectives.forEach(m-> {
-            m.setKeyResults(keyResults.stream().filter(k-> m.getObjectiveSeq().equals(k.getObjective().getObjectiveSeq())).collect(Collectors.toList()));
+        objectives.forEach(m -> {
+            m.setKeyResults(keyResults.stream().filter(k -> m.getObjectiveSeq().equals(k.getObjective().getObjectiveSeq())).collect(Collectors.toList()));
         });
 
         objectiveService.mapFeedbackIntoObjectiveModel(objectives, feedbacks);
         objectiveService.mapObjectiveRelationsIntoObjectiveModel(objectives, objectiveRelations);
         objectiveService.mapKeyResultCollaborators(objectives, keyResultCollaborators);
         objectiveService.mapLikesIntoObjectiveModel(objectives, likes);
+        objectiveService.mapEditableForObjectiveModel(objectives, evaluationObjectiveDtos, isCurrentMemberCanEditOkr);
         model.setObjectives(objectives);
 
         return model;

@@ -2,7 +2,7 @@ package com.eximbay.okr.model.dictionary;
 
 import java.util.List;
 
-import com.eximbay.okr.dto.CodeListDto;
+import com.eximbay.okr.dto.codelist.CodeListDto;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.eximbay.okr.repository;
 
 import com.eximbay.okr.entity.KeyResultHistory;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.datatables.repository.DataTablesRepository;
 
-public interface KeyResultHistoryRepository extends JpaRepository<KeyResultHistory, Integer> {
+public interface KeyResultHistoryRepository extends DataTablesRepository<KeyResultHistory, Integer> {
 }

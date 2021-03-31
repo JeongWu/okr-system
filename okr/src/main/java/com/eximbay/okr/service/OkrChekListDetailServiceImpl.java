@@ -5,27 +5,27 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.eximbay.okr.dto.OkrCheckListDetailDto;
-import com.eximbay.okr.dto.okrChecklistGroup.OkrChecklistGroupDto;
+import com.eximbay.okr.dto.checklist.OkrCheckListDetailDto;
+import com.eximbay.okr.dto.okrchecklistgroup.OkrChecklistGroupDto;
 import com.eximbay.okr.entity.OkrCheckListDetail;
 import com.eximbay.okr.entity.OkrChecklistGroup;
 import com.eximbay.okr.repository.OkrChecklistDetailRepository;
 import com.eximbay.okr.repository.OkrChecklistGroupRepository;
 import com.eximbay.okr.service.Interface.IOkrCheckListDetailService;
-import com.eximbay.okr.service.Interface.IOkrCheckListGroupDetailService;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ma.glasnost.orika.*;
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class OkrChekListDetailServiceImpl implements IOkrCheckListDetailService {
 
+    private final MapperFacade mapper;
     private final OkrChecklistDetailRepository checklistDetailRepository;
     private final OkrChecklistGroupRepository repository;
-    private final MapperFacade mapper;
 
     @Override
     public List<OkrCheckListDetailDto> findAll() {
@@ -60,7 +60,4 @@ public class OkrChekListDetailServiceImpl implements IOkrCheckListDetailService 
         return mapper.mapAsList(details, OkrCheckListDetailDto.class);
     }
 
-
-    
-    
 }

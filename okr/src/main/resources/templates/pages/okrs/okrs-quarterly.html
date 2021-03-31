@@ -9,6 +9,8 @@
     <input type="text" th:value="${model.currentQuarter}" id="current_quarter" hidden>
     <input type="text" th:value="${model.type}" id="okr_type" hidden>
     <input type="text" th:value="${model.seq}" id="okr_seq" hidden>
+    <input type="text" th:if="${wireframeModel.currentMember}"
+           th:value="${wireframeModel.currentMember.image}" id="member-image" hidden>
     <div th:insert="~{pages/fragments/custom/team-aside::quarterly_okr}"
          th:with="currentMember=${wireframeModel.currentMember}, teams=${model.teams}"></div>
 </div>

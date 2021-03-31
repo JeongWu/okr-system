@@ -12,11 +12,14 @@ public class ObjectiveViewOkrModel {
 
     private Integer objectiveSeq;
     private String objective;
+    private String shortenObjective;
     private Integer priority;
+    private Integer proportion;
     private Integer progress;
     private String closeFlag;
     private Long likes;
     private Long feedbackCount;
     private List<KeyResultViewOkrModel> keyResults = new ArrayList<>();
     private List<ObjectiveRelationViewOkrModel> relatedObjectives = new ArrayList<>();
+    private boolean isEditable;
 }

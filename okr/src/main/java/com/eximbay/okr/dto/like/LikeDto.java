@@ -1,6 +1,6 @@
 package com.eximbay.okr.dto.like;
 
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import lombok.Data;
 
 import java.time.Instant;

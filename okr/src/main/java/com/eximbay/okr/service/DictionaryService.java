@@ -1,11 +1,8 @@
 package com.eximbay.okr.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.constant.GroupCode;
-import com.eximbay.okr.dto.CodeListDto;
+import com.eximbay.okr.dto.codelist.CodeListDto;
 import com.eximbay.okr.dto.dictionary.DictionaryDto;
 import com.eximbay.okr.entity.CodeList;
 import com.eximbay.okr.entity.Dictionary;
@@ -16,21 +13,23 @@ import com.eximbay.okr.model.dictionary.SelectTypeModel;
 import com.eximbay.okr.repository.CodeListRepository;
 import com.eximbay.okr.repository.DictionaryRepository;
 import com.eximbay.okr.service.Interface.IDictionaryService;
-
+import javassist.NotFoundException;
+import lombok.RequiredArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javassist.NotFoundException;
-import lombok.AllArgsConstructor;
-import ma.glasnost.orika.MapperFacade;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DictionaryService implements IDictionaryService {
+
+    private final MapperFacade mapper;
     private final DictionaryRepository dictionaryRepository;
     private final CodeListRepository codeListRepository;
-    private final MapperFacade mapper;
 
     @Override
     public List<DictionaryDto> findAll() {
@@ -79,7 +78,7 @@ public class DictionaryService implements IDictionaryService {
         selectTypeModel.setTaskTypes(mapper.mapAsList(availableTaskType, CodeListDto.class));
         selectTypeModel.setTaskMetrics(mapper.mapAsList(availableTaskMetric, CodeListDto.class));
         selectTypeModel.setTaskIndicators(mapper.mapAsList(avalableTaskIndicator, CodeListDto.class));
-        
+
         return selectTypeModel;
 
     }
@@ -100,9 +99,9 @@ public class DictionaryService implements IDictionaryService {
     @Override
     public DictionaryUpdateModel buildUpdateDictionaryModel(Integer id) {
         Optional<Dictionary> dictionary = dictionaryRepository.findById(id);
-        if (dictionary.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = "+ id));
+        if (dictionary.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = " + id));
 
-        DictionaryUpdateModel updateModel  = mapper.map(dictionary.get(), DictionaryUpdateModel.class);
+        DictionaryUpdateModel updateModel = mapper.map(dictionary.get(), DictionaryUpdateModel.class);
 
         updateModel.setUseFlag(dictionary.get().getUseFlag().equals(FlagOption.Y));
 
@@ -112,11 +111,12 @@ public class DictionaryService implements IDictionaryService {
     @Override
     public void updateFormModel(DictionaryUpdateModel updateFormModel) {
         Optional<Dictionary> dictionary = dictionaryRepository.findById(updateFormModel.getDictionarySeq());
-        if (dictionary.isEmpty()) throw new UserException(new NotFoundException("Not found Object with Id = "+ updateFormModel.getDictionarySeq()));
+        if (dictionary.isEmpty())
+            throw new UserException(new NotFoundException("Not found Object with Id = " + updateFormModel.getDictionarySeq()));
         mapper.map(updateFormModel, dictionary.get());
         if (updateFormModel.isUseFlag()) dictionary.get().setUseFlag(FlagOption.Y);
         else dictionary.get().setUseFlag(FlagOption.N);
-        
+
         dictionaryRepository.save(dictionary.get());
 
     }

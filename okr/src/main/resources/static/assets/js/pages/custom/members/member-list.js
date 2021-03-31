@@ -27,7 +27,6 @@ var KTDefaultDatatableDemo = function() {
 
 			// column sorting
 			sortable: true,
-
 			pagination: true,
 
 			search: {
@@ -301,7 +300,7 @@ var KTDefaultDatatableDemo = function() {
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
 									<ul class="nav nav-hoverable flex-column">\
 							    		<li class="nav-item"><a class="nav-link" href="/members/edit/'+row.memberSeq+'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>\
-							    		<li class="nav-item"><a class="nav-link" href="/memberhistorys/'+row.memberSeq+'"><i class="nav-icon la la-eye"></i><span class="nav-text">View History</span></a></li>\
+							    		<li class="nav-item"><a class="nav-link" href="/member-histories/'+row.memberSeq+'"><i class="nav-icon la la-eye"></i><span class="nav-text">View History</span></a></li>\
 									\
 									</ul>\
 							  	</div>\

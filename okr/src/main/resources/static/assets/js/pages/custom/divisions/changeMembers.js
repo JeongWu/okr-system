@@ -11,7 +11,7 @@ let KTDatatableRemoteAjaxDemo = function () {
                 type: 'remote',
                 source: {
                     read: {
-                        url: '/api/divisions/changeMembers/datatables/' + divisionId,
+                        url: '/api/divisions/change-members/datatables/' + divisionId,
                         map: function (raw) {
                             let dataSet = raw;
                             return dataSet;

@@ -98,6 +98,9 @@
         <!--end::Card-->
         <form id="formOKRs" class="form">
             <!--begin::Card-->
+            <input type="text" hidden th:value="${model.year}" id="year">
+            <input type="text" hidden th:value="${model.quarter}" id="quarter">
+            <input type="number" name="sumOfOtherObjectiveProportion" id="sumOfOtherObjectiveProportion" hidden th:value="${model.sumProportionOfOtherObjectives}">
             <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
                 <div class="card-header">
                     <div class="card-title">
@@ -110,9 +113,6 @@
                             <span class="font-size-lg">Quarter</span>
                         </div>
                         <div class="col col-2">
-                            <input type="text" hidden th:value="${model.year}" id="year">
-                            <input type="text" hidden th:value="${model.quarter}" id="quarter">
-                            <input type="number" name="sumOfOtherObjectiveProportion" id="sumOfOtherObjectiveProportion" hidden th:value="${model.sumProportionOfOtherObjectives}">
                             <input type="text" class="quarter form-control form-control-lg form-control-solid pl-5 input disabled" disabled th:value="${model.year + '-' + model.quarter + 'Q'}">
                         </div>
                         <div class="col col-3">

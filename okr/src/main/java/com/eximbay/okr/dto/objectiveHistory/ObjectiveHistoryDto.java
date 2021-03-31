@@ -1,9 +1,9 @@
-package com.eximbay.okr.dto.objectiveHistory;
+package com.eximbay.okr.dto.objectivehistory;
 
-import com.eximbay.okr.dto.CompanyDto;
-import com.eximbay.okr.dto.MemberDto;
+import com.eximbay.okr.dto.company.CompanyDto;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.dto.objective.ObjectiveDto;
-import com.eximbay.okr.dto.TeamDto;
+import com.eximbay.okr.dto.team.TeamDto;
 import com.eximbay.okr.listener.AbstractAuditableDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,8 +26,9 @@ public class ObjectiveHistoryDto extends AbstractAuditableDto {
     private MemberDto member;
     private String objective;
     private Integer priority;
+    private Integer proportion;
     private Integer progress;
-    private Instant lastUpdateDate;
+    private Instant latestUpdateDt;
     private String closeFlag;
     private String closeJustification;
     private Instant closeDate;
