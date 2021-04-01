@@ -111,7 +111,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
         },
         {
           target: 7,
-          title: "REG DATE",
+          title: "REG. DATE",
           data: "createdDate",
           render: function (data) {
             return formatInstantDate(data);
@@ -122,8 +122,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
           title: "ACTIONS",
           data: "scheduleSeq",
           render: function (data, type, full, meta) {
-            if (full.evaluationStep === 99)
-              return '<button class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
+            if (full.evaluationStep === 99) return '<button class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
 								<i class="flaticon-more-1"></i>\
 	                            </button>';
             return (
@@ -205,6 +204,6 @@ function formatInstantDate(instant) {
 
 function bindStartDateAndEndDate(startDate, endDate) {
   if (startDate !== null || endDate !== null)
-    return startDate + " ~ " + endDate;
+    return formatStringDate(startDate) + " ~ " + formatStringDate(endDate);
   else return "";
 }
