@@ -197,7 +197,8 @@ let KTAppsProjectsListDatatable = (function () {
                   );
                 }
               });
-              output += makeNumberSymbol(memberList.length - visibleImages);
+              output += makeNumberSymbol("small",
+              "circle",memberList.length - visibleImages);
             } else {
               memberList.forEach((member) => {
                 output += makeImageSymbol(

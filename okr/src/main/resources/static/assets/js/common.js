@@ -36,6 +36,42 @@ function makeImageSymbol(data, size, shape, path, prop) {
   let output = "";
   const { name, image } = data;
 
+  output += makeRandomSymbolWrap(size, shape, name,path,prop);
+
+  if (image === null) {
+    output += makeSymbolText(size, name);
+  } else {
+    output += '<img class="" src="' + image + '" alt="photo">';
+  }
+
+  output += "</a>";
+  return output;
+}
+
+function makeSymbolText(size, text) {
+  return (
+    '<span class="symbol-label font-size-' +
+    (size === "big" && "h4") +
+    '">' +
+    text.substring(0, 1) +
+    "</span>"
+  );
+}
+
+function makeNumberSymbol(size,shape,num) {
+  return (
+    '<div class="symbol symbol-' +
+    (size === "big" ? "40" : "30") +
+    " " +
+    (shape === "circle" && "symbol-circle") +
+    '"flex-shrink-0>\
+    <span class="symbol-label font-weight-bold"> +' +
+    num +
+    "</span></div>"
+  );
+}
+
+function makeRandomSymbolWrap(size, shape, data,path,prop) {
   let stateNo = KTUtil.getRandomInt(0, 7);
   let states = [
     "success",
@@ -49,7 +85,7 @@ function makeImageSymbol(data, size, shape, path, prop) {
   ];
   let state = states[stateNo];
 
-  output =
+  let output =
     '<a class="symbol symbol-' +
     (size === "big" ? "40" : "30") +
     " " +
@@ -57,33 +93,10 @@ function makeImageSymbol(data, size, shape, path, prop) {
     " symbol-light-" +
     state +
     ' flex-shrink-0" data-toggle="tooltip" title="' +
-    name +
-    '" href="' +
-    (prop !== undefined ? path + "=" + prop : "#") +
-    '">';
+    data +
+    '" href="'+(prop !== undefined ? path + "=" + prop : "#")+'">';
 
-  if (image === null) {
-    output +=
-      '<span class="symbol-label font-size-' +
-      (size === "big" && "h4") +
-      '">' +
-      name.substring(0, 1) +
-      "</span>";
-  } else {
-    output += '<img class="" src="' + image + '" alt="photo">';
-  }
-
-  output += "</a>";
   return output;
-}
-
-function makeNumberSymbol(num) {
-  return (
-    '<div class="symbol symbol-30 symbol-circle flex-shrink-0 symbol-light">\
-    <span class="symbol-label font-weight-bold"> +' +
-    num +
-    "</span></div>"
-  );
 }
 
 function renderActiveStatusOnList(data) {
