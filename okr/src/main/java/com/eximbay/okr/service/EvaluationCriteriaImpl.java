@@ -52,4 +52,10 @@ public class EvaluationCriteriaImpl implements IEvaluationCriteriaService {
         return mapper.mapAsList(evaluationCriterias, EvaluationCriteriaDto.class);
     }
 
+    @Override
+    public List<EvaluationCriteriaDto> findByGroupCodeLike(String groupCodeLike) {
+        List<EvaluationCriteria> evaluationCriteria = evaluationCriteriaRepository.findByGroupCodeLike(groupCodeLike);
+        return mapper.mapAsList(evaluationCriteria, EvaluationCriteriaDto.class);
+    }
+
 }

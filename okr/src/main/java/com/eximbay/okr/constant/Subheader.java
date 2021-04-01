@@ -28,4 +28,5 @@ public class Subheader {
     public static final String EDIT_OKR = "Edit OKR";
     public static final String SCHEDULE = "Schedule";
     public static final String PERFORMANCE_EVALUATION = "Performance Evaluation";
+    public static final String ADD_TEMPLATE = "Add Template";
 }

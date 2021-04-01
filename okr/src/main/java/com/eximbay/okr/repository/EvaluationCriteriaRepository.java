@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EvaluationCriteriaRepository extends JpaRepository<EvaluationCriteria, String> {
     List<EvaluationCriteria> findByGroupCode(String groupCode);
+    List<EvaluationCriteria> findByGroupCodeLike(String groupCodeLike);
 }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{pages/layout/main_layout}">
+<head>
+    <title>Add Template</title>
+    <style>
+        span.template-activation-switch label {
+            margin: 0 auto !important;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="right-floating-toolbar" class="d-flex align-items-center flex-wrap">
+    <button class="btn btn-primary w-120px" form="formAddTemplate">Submit</button>
+</div>
+<div layout:fragment="content" class="container">
+    <form id="formAddTemplate">
+        <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
+            <div class="card-body container">
+                <div class="w-50 pl-5 pb-10">
+                    <h3 class="text-primary">Template Details</h3>
+                    <div class="w-200px h-4px bg-primary"></div>
+                </div>
+                <div class="row form-group offset-1">
+                    <label for="evaluationType" class="col-2 col-form-label font-size-lg">Evaluation Type*</label>
+                    <div class="col-6">
+                        <select class="custom-select form-control" name="evaluationType" id="evaluationType" required>
+                            <option value="">Please select</option>
+                            <th:block th:each="evalType : ${model.evaluationTypes}">
+                                <option th:value="${evalType.code}" th:text="${evalType.codeName}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group offset-1">
+                    <label for="templateName" class="col-2 col-form-label font-size-lg">Template Name*</label>
+                    <div class="col-6">
+                        <input class="form-control" type="text" id="templateName" name="templateName" required maxlength="100">
+                    </div>
+                </div>
+                <div class="row form-group offset-1">
+                    <label class="col-2 col-form-label font-size-lg">Active*</label>
+                    <div class="col-1">
+                        <span class="switch switch-icon">
+                            <label>
+                                <input type="checkbox" checked id="templateActivation">
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-custom card-stretch card-stretch-fourth gutter-b">
+            <div class="card-body container">
+                <div class="w-50 pl-5 pb-10">
+                    <h3 class="text-primary">Questions</h3>
+                    <div class="w-200px h-4px bg-primary"></div>
+                </div>
+
+                <table id="tblTemplateDetail">
+                </table>
+                <div class="row justify-content-center">
+                    <button type="button" class="btn btn-primary btn-icon flaticon2-plus" id="btnAddTemplateDetail"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<th:block layout:fragment="script">
+    <!-- write value into local storage-->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        localStorage.setItem('answerGroupCode', JSON.stringify([[${model.answerGroupCode}]]));
+        /*]]*/
+    </script>
+    <script src="/assets/js/datatables.bundle.js"></script>
+    <script src="/assets/js/jquery.validate.js"></script>
+    <script src="/assets/js/pages/custom/evaluation-template/add-template.js"></script>
+</th:block>
+</body>
+</html>

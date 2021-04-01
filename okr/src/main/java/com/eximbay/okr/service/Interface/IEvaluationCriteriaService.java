@@ -8,4 +8,5 @@ import java.util.List;
 @Service
 public interface IEvaluationCriteriaService extends IService<EvaluationCriteriaDto, String> {
     List<EvaluationCriteriaDto> findByGroupCode(String groupCode);
+    List<EvaluationCriteriaDto> findByGroupCodeLike(String groupCodeLike);
 }

@@ -45,4 +45,8 @@ public class CodeListServiceImpl implements ICodeListService {
         return Optional.empty();
     }
 
+    @Override
+    public List<CodeListDto> findByGroupCodeAndUseFlagOrderBySortOrderAsc(String groupCode, String useFlag) {
+        return mapper.mapAsList(codeListRepository.findByGroupCodeAndUseFlagOrderBySortOrderAsc(groupCode, useFlag), CodeListDto.class);
+    }
 }
