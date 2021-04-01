@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @Controller
-@RequestMapping("/schedules")
+@RequestMapping("/evaluation-schedules")
 @RequiredArgsConstructor
 public class EvaluationScheduleController {
     private final IEvaluationScheduleService scheduleService;

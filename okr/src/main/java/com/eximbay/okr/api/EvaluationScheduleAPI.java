@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/schedules")
+@RequestMapping("api/evaluation-schedules")
 public class EvaluationScheduleAPI {
 
     private final IEvaluationScheduleService evaluationScheduleService;
