@@ -134,7 +134,7 @@ var KTDefaultDatatableDemo = (function () {
                   data,
                   "big",
                   "circle",
-                  "/teams/list?memberSeq",
+                  "/teams/list?teamSeq",
                   arrSeq[i]
                 );
               }
@@ -164,7 +164,7 @@ var KTDefaultDatatableDemo = (function () {
                   data,
                   "big",
                   "circle",
-                  "/teams/list?memberSeq",
+                  "/teams/list?teamSeq",
                   arrSeq[i]
                 );
               }

@@ -36,7 +36,7 @@ function makeImageSymbol(data, size, shape, path, prop) {
   let output = "";
   const { name, image } = data;
 
-  output += makeRandomSymbolWrap(size, shape, name,path,prop);
+  output += makeRandomSymbolWrap(size, shape, name, path, prop);
 
   if (image === null) {
     output += makeSymbolText(size, name);
@@ -58,7 +58,7 @@ function makeSymbolText(size, text) {
   );
 }
 
-function makeNumberSymbol(size,shape,num) {
+function makeNumberSymbol(size, shape, num) {
   return (
     '<div class="symbol symbol-' +
     (size === "big" ? "40" : "30") +
@@ -71,7 +71,7 @@ function makeNumberSymbol(size,shape,num) {
   );
 }
 
-function makeRandomSymbolWrap(size, shape, data,path,prop) {
+function makeRandomSymbolWrap(size, shape, data, path, prop) {
   let stateNo = KTUtil.getRandomInt(0, 7);
   let states = [
     "success",
@@ -94,7 +94,9 @@ function makeRandomSymbolWrap(size, shape, data,path,prop) {
     state +
     ' flex-shrink-0" data-toggle="tooltip" title="' +
     data +
-    '" href="'+(prop !== undefined ? path + "=" + prop : "#")+'">';
+    '" href="' +
+    (prop !== undefined ? path + "=" + prop : "#") +
+    '">';
 
   return output;
 }
