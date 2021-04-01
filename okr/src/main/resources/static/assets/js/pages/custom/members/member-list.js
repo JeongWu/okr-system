@@ -201,7 +201,7 @@ var KTDefaultDatatableDemo = (function () {
               	else{
 					output +='<li class="nav-link">\
 					<div class="symbol symbol-40 symbol-circle" >\
-						<img src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
+          <img src="' + arrImage[i] +'" alt="photo">\
 					</div> &nbsp &nbsp\
 					<a class="" href="/teams/list?teamSeq='+arrSeq[i]+'">\
 							<span class="nav-text">'+arrName[i]+'</span>\
