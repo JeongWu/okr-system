@@ -88,109 +88,104 @@ var KTDefaultDatatableDemo = function() {
 					textAlign: 'center',
 					template: function(row){
 						var output = '';
-						var temp= '';
+						// var temp= '';
+						let visibleImages = 4;
 						var arrName = [];
 						var arrImage = [];
+						var arrSeq = [];
 						var columnTotal = row.teamMembers.length;
+						console.log(row.teamMembers)
+						// console.log(row.teamMembers.teamMemberId)
 				
 						var states = ['success','primary','danger','success','warning','dark','primary','info'];
 						
 
 						for (let i = 0; i<columnTotal; i++){
 							var teamMembers = row.teamMembers[i].teamMemberId.team
-								temp = teamMembers.name;
-								arrName.push(temp);
+								// temp = teamMembers.name;
+								arrName.push(teamMembers.name);
+								arrImage.push(teamMembers.image);
+								arrSeq.push(teamMembers.teamSeq);
 						}
 
-						for (let i = 0; i<columnTotal; i++){
-							var teamMembers = row.teamMembers[i].teamMemberId.team
-								temp = teamMembers.image;
-								arrImage.push(temp);
-						}
+						// for (let i = 0; i<columnTotal; i++){
+						// 	var teamMembers = row.teamMembers[i].teamMemberId.team
+						// 		temp = teamMembers.image;
+						// 		arrImage.push(temp);
+						// }
 
 						output =
 						'<div class="d-flex align-items-center">\
 							<div class="symbol-group symbol-hover">';
 
-						if (columnTotal < 4 ){
+						if (columnTotal <= visibleImages ){
 							for (let i = 0; i < columnTotal; i++){
-								if(arrImage[i] == null){
-									var stateNo = KTUtil.getRandomInt(0, 7);
-									var state = states[stateNo];
-									output += 
-										'<div class="symbol symbol-40 symbol-circle symbol-light-'+state+' data-toggle="tooltip" title="'+arrName[i] +'" >\
-										<a href="/teams/list?='+arrName[i]+'">\
-										<span class="symbol-label font-size-h4">' + arrName[i].substring(0, 1) + '</span>\
-										</a>\
-										</div>';
-								}
-								else{
-
-									output +='<a href="/teams/list?='+arrName[i]+'">\
-											<div class="symbol symbol-40 symbol-circle" data-toggle="tooltip" title="' +arrName[i] +'">\
-													<img class="" src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
-											</div>\
-											</a>';
-								}
+								let data={name:arrName[i],image:arrImage[i]};
+								output += makeImageSymbol(data,"big","circle","/teams/list?memberSeq",arrSeq[i]);
 							}
+							output += "</div>\
+							</div>";
+							// for (let i = 0; i < columnTotal; i++){
+							// 	if(arrImage[i] == null){
+							// 		var stateNo = KTUtil.getRandomInt(0, 7);
+							// 		var state = states[stateNo];
+							// 		output += 
+							// 			'<div class="symbol symbol-40 symbol-circle symbol-light-'+state+' data-toggle="tooltip" title="'+arrName[i] +'" >\
+							// 			<span class="symbol-label font-size-h4">' + arrName[i].substring(0, 1) + '</span>\
+							// 			</a>\
+							// 			</div>';
+							// 	}
+							// 	else{
+
+							// 		output +='<div class="symbol symbol-40 symbol-circle" data-toggle="tooltip" title="' +arrName[i] +'">\
+							// 						<img class="" src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
+							// 				</div>';
+							// 	}
+							// }
 						}
 						else {
-								for (let i = 0; i < 3; i++){
-									if(arrImage[i] == null){
-										var stateNo = KTUtil.getRandomInt(0, 7);
-										var state = states[stateNo];
-											output += 
-											'<div class="symbol symbol-40 symbol-circle symbol-light-'+state+' data-toggle="tooltip" title="'+arrName[i] +'" >\
-											<a href="/teams/list?='+arrName[i]+'">\
-											<span class="symbol-label font-size-h4">' + arrName[i].substring(0, 1) + '</span>\
-											</a>\
-											</div>';
-									}
-									else{
-										output +='<a href="/teams/list?='+arrName[i]+'">\
-										<div class="symbol symbol-40 symbol-circle" data-toggle="tooltip" title="' +arrName[i] +'">\
-												<img class="" src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
-										</div>\
-										</a>';
-									}
+								for (let i = 0; i < visibleImages; i++){
+									let data={name:arrName[i],image:arrImage[i]};
+								output += makeImageSymbol(data,"big","circle","/teams/list?memberSeq",arrSeq[i]);
 								}
-								output +='<div class="dropdown">\
-								<button class="symbol symbol-40 symbol-circle symbol-light btn btn-sm" data-toggle="dropdown">\
-									<span class="symbol-label font-weight-bold"> +' +(arrName.length - 3)+'</span>\
-								</button>\
-								<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
-													<ul class="nav nav-hoverable flex-column">';
+								output += makeNumberSymbol("big",
+								"circle",columnTotal - visibleImages);
+								output += "</div>\
+							</div>";
+							
+								// output +='<div class="dropdown">\
+								// <button class="symbol symbol-40 symbol-circle symbol-light btn btn-sm" data-toggle="dropdown">\
+								// 	<span class="symbol-label font-weight-bold"> +' +(columnTotal - visibleImages)+'</span>\
+								// </button>\
+								// <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
+								// 					<ul class="nav nav-hoverable flex-column">';
 
-								for (let i = 3; i <columnTotal; i++){
-									if(arrImage[i] == null){
-										var stateNo = KTUtil.getRandomInt(0, 7);
-										var state = states[stateNo];
-										output += '<li class="nav-item">\
-														<a class="nav-link" href="/teams/list?='+arrName[i]+'">\
-															<div class="symbol symbol-40 symbol-circle symbol-light-'+state+' data-toggle="tooltip" title="'+arrName[i] +'" >\
-															<span class="symbol-label font-size-h4">'+ arrName[i].substring(0, 1) +'</span>\
-															</div>\
-															<span class="nav-text">'+arrName[i]+'</span>\
-														</a>\
-													</li>';
-									}
-									else{
-										output +='<li class="nav-link">\
-													<div class="symbol symbol-40 symbol-circle" >\
-														<img src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
-													</div> &nbsp &nbsp\
-													<a class="" href="/teams/list?='+arrName[i]+'">\
-															<span class="nav-text">'+arrName[i]+'</span>\
-													</a>\
-											</li>';
-									}
+								// for (let i = visibleImages; i <columnTotal; i++){
+								// 	if(arrImage[i] == null){
+								// 		var stateNo = KTUtil.getRandomInt(0, 7);
+								// 		var state = states[stateNo];
+								// 		output += '<li class="nav-item">\
+								// 							<div class="symbol symbol-40 symbol-circle symbol-light-'+state+' data-toggle="tooltip" title="'+arrName[i] +'" >\
+								// 							<span class="symbol-label font-size-h4">'+ arrName[i].substring(0, 1) +'</span>\
+								// 							</div>\
+								// 							<span class="nav-text">'+arrName[i]+'</span>\
+								// 					</li>';
+								// 	}
+								// 	else{
+								// 		output +='<li class="nav-link">\
+								// 					<div class="symbol symbol-40 symbol-circle" >\
+								// 						<img src="/assets/media/image/' + arrImage[i] +'.jpg" alt="photo">\
+								// 					</div>\
+								// 							<span class="nav-text">'+arrName[i]+'</span>\
+								// 			</li>';
+								// 	}
 									
-								}
-								output+='</ul>\
-									</div>\
-									</div>\
-									</div>\
-									</div>';
+								// }
+								// output+='</ul>\
+								// 	</div>\
+								// 	</div>\
+								// 	</div>\
+								// 	</div>';
 							}			
 							return output;
 					
