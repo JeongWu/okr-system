@@ -151,14 +151,15 @@ let KTAppsProjectsListDatatable = (function () {
             let managerInfo = data.leaderOrManager;
 
             if (managerInfo !== null) {
-              output = '<div class="d-flex align-items-center">\
-              <a href="/members/list">';
+              output = '<div class="d-flex align-items-center">';
               output += makeImageSymbol(
                 managerInfo,
                 "big",
-                "circle"
+                "circle",
+                "/members/list?memberSeq",
+                managerInfo.memberSeq
               );
-              output += " </div>";
+              output += "</div>";
             }
 
             return output;
@@ -169,56 +170,47 @@ let KTAppsProjectsListDatatable = (function () {
           title: "MEMBERS",
           width: 150,
           sortable: false,
-          //   template: function (data) {
-          //     console.log(data);
-          //     return renderImagesOnList(data, "members", "/members/list?memberSeq","memberSeq")
-          // },
           template: function (data) {
             let output = "";
+            let visibleImages = 5;
 
             output =
               '<div class="d-flex align-items-center">\
-            <a href="/members/list">\
           <div class="symbol-group symbol-hover">';
 
-          //show except team manager in MANAGERS field
+            //show except team manager in MANAGERS field
             let memberList = data.leaderOrManager
               ? data.members.filter(
                   (x) => x.memberSeq !== data.leaderOrManager.memberSeq
                 )
               : data.members;
 
-            if (memberList.length > 5) {
+            if (memberList.length > visibleImages) {
               memberList.forEach((member, index) => {
-                if (index < 5) {
+                if (index < visibleImages) {
                   output += makeImageSymbol(
                     member,
                     "small",
-                    "circle"
+                    "circle",
+                    "/members/list?memberSeq",
+                    member.memberSeq
                   );
                 }
               });
-              output +=
-                ' <div class="symbol symbol-30 symbol-circle flex-shrink-0 symbol-light">\
-              <span class="symbol-label font-weight-bold"> +' +
-                (memberList.length - 5) +
-                "</span>\
-          </div>\
-          </div>\
-    </div>";
+              output += makeNumberSymbol(memberList.length - visibleImages);
             } else {
               memberList.forEach((member) => {
                 output += makeImageSymbol(
                   member,
                   "small",
-                  "circle"
+                  "circle",
+                  "/members/list?memberSeq",
+                  member.memberSeq
                 );
               });
-
-              output += "</div>\
-              </a>\
-              </div>";
             }
+            output += "</div>\
+            </div>";
             return output;
           },
         },
@@ -265,8 +257,6 @@ let KTAppsProjectsListDatatable = (function () {
         },
       ],
     });
-
-    
 
     //realtime search in the view
     $("#kt_datatable_search_name").on("change keyup paste", function () {

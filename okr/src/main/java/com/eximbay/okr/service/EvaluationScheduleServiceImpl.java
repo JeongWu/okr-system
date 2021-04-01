@@ -3,16 +3,11 @@ package com.eximbay.okr.service;
 import java.util.List;
 import java.util.Optional;
 
-
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.constant.GroupCode;
 import com.eximbay.okr.dto.codelist.CodeListDto;
-import com.eximbay.okr.dto.evaluationschedule.EvaluationScheduleDto;
 import com.eximbay.okr.dto.evaluationschedule.EvaluationScheduleDatatablesInput;
+import com.eximbay.okr.dto.evaluationschedule.EvaluationScheduleDto;
 import com.eximbay.okr.entity.CodeList;
 import com.eximbay.okr.entity.EvaluationSchedule;
 import com.eximbay.okr.model.evaluationschedule.EvaluationScheduleModel;
@@ -21,14 +16,15 @@ import com.eximbay.okr.repository.EvaluationScheduleRepository;
 import com.eximbay.okr.service.Interface.IEvaluationScheduleService;
 import com.eximbay.okr.service.specification.EvaluationScheduleQuery;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
+import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 
 @Service
-@Data
-@AllArgsConstructor
-@Transactional
+@RequiredArgsConstructor
 public class EvaluationScheduleServiceImpl implements IEvaluationScheduleService {
 
     private final CodeListRepository codeListRepository;
