@@ -170,6 +170,15 @@ function formatInstantWithSecond(instant, delimer) {
   return result + ":" + second;
 }
 
+//yyyyyMMdd->yyyy-MM-dd
+function formatStringDate(data) {
+  if (data === null) return "";
+  let year = data.substring(0, 4);
+  let month = data.substring(4, 6);
+  let day = data.substring(6, 8);
+  return year + "-" + month + "-" + day;
+}
+
 function addZeroToTime(time) {
   if (time < 10) return "0" + time;
   return time;

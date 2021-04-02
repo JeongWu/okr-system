@@ -114,7 +114,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
           title: "REG. DATE",
           data: "createdDate",
           render: function (data) {
-            return formatInstantDate(data);
+            return formatInstant(data,"-");
           },
         },
         {
@@ -182,25 +182,6 @@ $(document).ready(function () {
   });
   $("#evaluation_type_search").selectpicker();
 });
-
-function formatStringDate(data) {
-  if (data === null) return "";
-  let year = data.substring(0, 4);
-  let month = data.substring(4, 6);
-  let day = data.substring(6, 8);
-  return year + "-" + month + "-" + day;
-}
-
-function formatInstantDate(instant) {
-  if (instant === null) return "";
-  let date = new Date(instant);
-  let year = date.getFullYear();
-  let month = addZeroToTime(date.getMonth() + 1);
-  let day = addZeroToTime(date.getDate());
-  let hour = addZeroToTime(date.getHours());
-  let minute = addZeroToTime(date.getMinutes());
-  return year + "-" + month + "-" + day + " " + hour + ":" + minute;
-}
 
 function bindStartDateAndEndDate(startDate, endDate) {
   if (startDate !== null || endDate !== null)
