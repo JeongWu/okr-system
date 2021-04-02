@@ -23,7 +23,7 @@ public class EvaluationTemplate extends AbstractAuditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column( name = "TEMPLATE_SEQ")
+    @Column(name = "TEMPLATE_SEQ")
     private Integer templateSeq;
 
     @Column(name = "EVALUATION_TYPE", length = 20, nullable = false)

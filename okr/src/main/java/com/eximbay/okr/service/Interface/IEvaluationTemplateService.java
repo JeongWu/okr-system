@@ -7,5 +7,11 @@ public interface IEvaluationTemplateService extends IService<EvaluationTemplateD
 
     EvaluationTemplateModel buildEvaluationTemplateModel();
 
+    EvaluationTemplateModel buildEvaluationTemplateModel(int templateId);
+
     void addEvaluationTemplate(EvaluationTemplateDto evaluationTemplateDto);
+
+    void updateEvaluationTemplate(EvaluationTemplateDto evaluationTemplateDto);
+
+    void updateEvaluationTemplateDetails(EvaluationTemplateDto evaluationTemplateDto);
 }

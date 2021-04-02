@@ -7,6 +7,7 @@ import com.eximbay.okr.dto.evaluation.EvaluationTemplateDetailDto;
 import com.eximbay.okr.dto.evaluation.EvaluationTemplateDto;
 import com.eximbay.okr.entity.evaluation.EvaluationTemplate;
 import com.eximbay.okr.entity.evaluation.EvaluationTemplateDetail;
+import com.eximbay.okr.exception.UserException;
 import com.eximbay.okr.model.evaluation.EvaluationTemplateModel;
 import com.eximbay.okr.repository.EvaluationTemplateDetailRepository;
 import com.eximbay.okr.repository.EvaluationTemplateRepository;
@@ -74,6 +75,50 @@ public class EvaluationTemplateServiceImpl implements IEvaluationTemplateService
             detailEntity.setEvaluationTemplate(evaluationTemplate);
             evalTemplateDetailRepository.save(detailEntity);
         }
+    }
+
+    @Override
+    public EvaluationTemplateModel buildEvaluationTemplateModel(int templateId) {
+        EvaluationTemplateDto evaluationTemplateDto = this.findById(templateId).orElseThrow(() -> new UserException("Cannot find template ID: " + templateId));
+        EvaluationTemplateModel editTemplateModel = this.buildEvaluationTemplateModel();
+        editTemplateModel.setMutedHeader(Subheader.EDIT_TEMPLATE);
+        editTemplateModel.setEvaluationTemplate(evaluationTemplateDto);
+        return editTemplateModel;
+    }
+
+    @Override
+    public void updateEvaluationTemplate(EvaluationTemplateDto userTemplateDto) {
+        EvaluationTemplate evalTemplate = evalTemplateRepository.findById(userTemplateDto.getTemplateSeq()).orElseThrow(() -> new UserException("Cannot find template ID: " + userTemplateDto.getTemplateSeq()));
+        evalTemplate.setTemplateName(userTemplateDto.getTemplateName());
+        evalTemplate.setEvaluationType(userTemplateDto.getEvaluationType());
+        evalTemplate.setUseFlag(userTemplateDto.getUseFlag());
+        evalTemplateRepository.save(evalTemplate);
+    }
+
+    @Override
+    public void updateEvaluationTemplateDetails(EvaluationTemplateDto userTemplateDto) {
+        EvaluationTemplate evalTemplate = evalTemplateRepository.findById(userTemplateDto.getTemplateSeq()).orElseThrow(() -> new UserException("Cannot find template ID: " + userTemplateDto.getTemplateSeq()));
+        for (EvaluationTemplateDetailDto evalDetailDto : userTemplateDto.getEvaluationTemplateDetails()) {
+            if (evalDetailDto.getDetailSeq() != null) {
+                this.updateEvaluationTemplateDetail(evalDetailDto);
+            } else {
+                this.addEvaluationTemplateDetail(evalTemplate, evalDetailDto);
+            }
+        }
+    }
+
+    private void updateEvaluationTemplateDetail(EvaluationTemplateDetailDto userEvalDetailDto) {
+        EvaluationTemplateDetail existingDetail = evalTemplateDetailRepository.findById(userEvalDetailDto.getDetailSeq()).orElseThrow(() -> new UserException("Cannot find template detail seq: " + userEvalDetailDto.getDetailSeq()));
+        existingDetail.setQuestion(userEvalDetailDto.getQuestion());
+        existingDetail.setAnswerGroupCode(userEvalDetailDto.getAnswerGroupCode());
+        existingDetail.setUseFlag(userEvalDetailDto.getUseFlag());
+        evalTemplateDetailRepository.save(existingDetail);
+    }
+
+    private void addEvaluationTemplateDetail(EvaluationTemplate evalTemplate, EvaluationTemplateDetailDto userEvalDetailDto) {
+        EvaluationTemplateDetail newEvalDetail = mapper.map(userEvalDetailDto, EvaluationTemplateDetail.class);
+        newEvalDetail.setEvaluationTemplate(evalTemplate);
+        evalTemplateDetailRepository.save(newEvalDetail);
     }
 
 }
