@@ -1,5 +1,8 @@
 package com.eximbay.okr.api;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.eximbay.okr.constant.DictionaryType;
 import com.eximbay.okr.dto.codelist.CodeListDto;
 import com.eximbay.okr.entity.Dictionary;
@@ -8,14 +11,13 @@ import com.eximbay.okr.model.dictionary.SelectTypeModel;
 import com.eximbay.okr.repository.DictionaryRepository;
 import com.eximbay.okr.service.Interface.IDictionaryService;
 import com.eximbay.okr.service.specification.DictionaryQuery;
-import lombok.RequiredArgsConstructor;
-import ma.glasnost.orika.MapperFacade;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import ma.glasnost.orika.MapperFacade;
 
 @RestController
 @RequiredArgsConstructor

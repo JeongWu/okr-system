@@ -1,14 +1,16 @@
 package com.eximbay.okr.entity;
 
-import com.eximbay.okr.constant.FlagOption;
-import com.eximbay.okr.listener.AbstractAuditable;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.eximbay.okr.constant.FlagOption;
+import com.eximbay.okr.entity.id.CodeListId;
+import com.eximbay.okr.listener.AbstractAuditable;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

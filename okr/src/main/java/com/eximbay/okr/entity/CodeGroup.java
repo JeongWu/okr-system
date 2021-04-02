@@ -29,7 +29,6 @@ public class CodeGroup extends AbstractAuditable {
     private String useFlag = FlagOption.Y;
 
     @OneToMany(mappedBy = "codeListId.groupCode", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OrderBy("SORT_ORDER ASC")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<CodeList> codeLists;

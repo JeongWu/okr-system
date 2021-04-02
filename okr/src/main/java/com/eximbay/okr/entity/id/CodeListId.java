@@ -1,12 +1,18 @@
-package com.eximbay.okr.entity;
-
-import lombok.*;
-
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package com.eximbay.okr.entity.id;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.eximbay.okr.entity.CodeGroup;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @Embeddable

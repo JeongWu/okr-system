@@ -2,7 +2,8 @@ package com.eximbay.okr.dto.codelist;
 
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.entity.CodeGroup;
-import com.eximbay.okr.entity.CodeListId;
+import com.eximbay.okr.entity.id.CodeListId;
+
 import lombok.Data;
 
 @Data
