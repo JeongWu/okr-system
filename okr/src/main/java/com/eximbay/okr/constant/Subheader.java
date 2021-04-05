@@ -30,4 +30,5 @@ public class Subheader {
     public static final String ADD_TEMPLATE = "Add Template";
     public static final String SCHEDULE = "Schedule";
     public static final String EDIT_TEMPLATE = "Edit Template";
+    public static final String WEEKLY_PRS_MEMBERS = "Weekly PRs | Members";
 }

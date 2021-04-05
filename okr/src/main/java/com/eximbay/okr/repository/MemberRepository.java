@@ -11,4 +11,5 @@ public interface MemberRepository extends JpaRepository<Member, Integer>, JpaSpe
     Optional<Member> findByEmail(String email);
     List<Member> findAll();
     Member findByMemberSeq(int memberSeq);
+    long countByUseFlag(String useFlag);
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+    <title>WeeklyPRs View All Members</title>
+</head>
+
+<body>
+    <div layout:fragment="right-floating-toolbar" class="btn-group">
+            <select class="form-control datatable-input w-100px mr-2" id="year-select" name="year-select">
+                <option>2021</option>
+            </select>
+            <select class="form-control datatable-input w-120px " id="year-select" name="year-select">
+                <option>15 week</option>
+            </select>
+    </div>
+    <div layout:fragment="content" class="container">
+
+    </div>
+</body>
+
+</html>
