@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{pages/layout/main_layout.html}">
+
+<head>
+    <title>WeeklyPRs View All Members</title>
+    <meta name="description" content="Page with empty content"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <style>
+        table tr td{
+            padding: 5px;
+        }
+        .pagination {
+            justify-content: start !important;
+        }
+        .dataTables_info{
+            padding:0px !important;
+        }
+    </style>
+    <link rel="stylesheet" href="assets/css/pages/datatables.bundle.css">
+</head>
+
+<body>
+    <div layout:fragment="right-floating-toolbar" class="btn-group">
+            <select class="form-control datatable-input w-100px mr-2" id="year-select" name="year-select">
+                <option value="">Year</option>
+                <th:block th:each="year: ${model.years}">
+                    <option th:value="${year}"
+                        th:text="${year}"></option>
+                </th:block>
+            </select>
+            <select class="form-control datatable-input w-120px " id="week-select" name="week-select">
+                <option value="">Week</option>
+            </select>
+    </div>
+    <div layout:fragment="content" class="container">
+
+        <div class="card card-custom container">
+            <div class="card-body">
+                <!--begin: Filter-->
+                <table>
+                    <tr>
+                        <td class="col-form-label">Teams</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="col-form-label">Members Name</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <select class="form-control datatable-input" 
+                                    id="team-search" data-col-index="1" name="team-search">
+                                <option value="">Choose..</option>
+                            </select>
+                        </td>
+                        <td colspan="4">
+                            <select class="form-control datatable-input" 
+                                    id="member-search" data-col-index="2" name="member-search">
+                                <option value="">Choose..</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class=" col-sm-12 form-control btn button-color btn-primary
+                                    btn-fixed-height font-weight-bold px-2 px-lg-5" id="search-button">
+                                Search
+                            </button>
+                        </td>
+                        <td>
+                            <button type="submit" class=" col-sm-12 form-control btn button-color btn-secondary
+                                     btn-fixed-height font-weight-bold px-2 px-lg-5" id="reset-button">
+                                Reset
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <!--end: Filter-->
+                <!--begin: Datatable-->
+                <div class="">
+                    <table class="table table-hover" id="kt_datatable">
+                    </table>
+                </div>
+                <!--end: Datatable-->
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/assets/js/datatables.bundle.js}"></script>
+    <script th:src="@{/assets/js/pages/custom/weeklypr/members.js}"></script>
+</th:block>
+
+</html>

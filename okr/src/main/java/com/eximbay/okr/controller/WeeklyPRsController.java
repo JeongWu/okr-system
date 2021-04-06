@@ -1,7 +1,7 @@
 package com.eximbay.okr.controller;
 
-import com.eximbay.okr.model.weeklyprs.WeeklyPRsMemberModel;
-import com.eximbay.okr.service.Interface.IWeeklyPRsService;
+import com.eximbay.okr.model.weeklypr.WeeklyPRMemberModel;
+import com.eximbay.okr.service.Interface.IWeeklyPRService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,13 +15,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/weekly-prs")
 public class WeeklyPRsController {
 
-    private final IWeeklyPRsService weeklyPRsService;
+    private final IWeeklyPRService weeklyPRService;
 
     @GetMapping("/members")
     public String viewAllMembers(Model model) {
-        WeeklyPRsMemberModel viewModel = weeklyPRsService.buildViewAllMembersModel();
+        WeeklyPRMemberModel viewModel = weeklyPRService.buildViewAllMembersModel();
         model.addAttribute("model", viewModel);
-        return "pages/weeklyprs/members";
+        return "pages/weeklypr/members";
     }
 
 }

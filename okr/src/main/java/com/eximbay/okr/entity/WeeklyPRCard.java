@@ -43,6 +43,6 @@ public class WeeklyPRCard extends AbstractAuditable {
     private Member member;
 
     @Column(name = "CHALLENGE", length = 1000)
-    private String chanllenge;
+    private String challenge;
     
 }
