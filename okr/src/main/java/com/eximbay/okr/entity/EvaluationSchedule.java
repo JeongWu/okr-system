@@ -25,7 +25,7 @@ public class EvaluationSchedule extends AbstractAuditable {
     private String evaluationType;
 
     @Column(name = "EVALUATION_STEP", length = 11, nullable = false)
-    private int evaluationStep;
+    private Integer evaluationStep = 1;
 
     @Column(name = "SELF_REVIEW_BEGIN_DATE", length = 8, nullable = false)
     private String selfReviewBeginDate;

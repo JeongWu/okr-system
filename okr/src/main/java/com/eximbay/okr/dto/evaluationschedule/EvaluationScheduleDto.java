@@ -6,7 +6,7 @@ import lombok.Data;
 public class EvaluationScheduleDto {
     private Integer scheduleSeq;
     private String evaluationType;
-    private int evaluationStep;
+    private Integer evaluationStep;
     private String selfReviewBeginDate;
     private String selfReviewEndDate;
     private String firstReviewBeginDate;
