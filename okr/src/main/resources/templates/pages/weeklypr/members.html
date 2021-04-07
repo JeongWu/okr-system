@@ -30,7 +30,7 @@
                 </th:block>
             </select>
             <select class="form-control datatable-input w-120px " id="week-select" name="week-select">
-                <option value="">Week</option>
+                <!-- <option value="">Week</option> -->
             </select>
     </div>
     <div layout:fragment="content" class="container">
@@ -62,6 +62,10 @@
                             <select class="form-control datatable-input" 
                                     id="member-search" data-col-index="2" name="member-search">
                                 <option value="">Choose..</option>
+                                <th:block th:each="name: ${model.memberNames}">
+                                    <option th:value="${name}"
+                                        th:text="${name}"></option>
+                                </th:block>
                             </select>
                         </td>
                         <td>

@@ -12,6 +12,5 @@ public class WeeklyPRMemberModel {
     private String subheader = Subheader.WEEKLY_PRS_MEMBERS;
     private String mutedHeader;
     private List<Integer> years;
-    // private List<Integer> months;
-    // private List<WeeklyPRCardDto> weekPRCards = new ArrayList<>();
+    private List<String> memberNames;
 }

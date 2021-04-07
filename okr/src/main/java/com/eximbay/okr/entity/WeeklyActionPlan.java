@@ -11,13 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.eximbay.okr.listener.AbstractAuditable;
+
 import lombok.Data;
 
 @Data
 @Table(name = "weekly_action_plan")
 @Entity
-public class WeeklyActionPlan {
-
+public class WeeklyActionPlan extends AbstractAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "WEEKLY_PR_SEQ", length = 11)

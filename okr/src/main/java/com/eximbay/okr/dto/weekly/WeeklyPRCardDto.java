@@ -1,4 +1,4 @@
-package com.eximbay.okr.dto.weeklypr;
+package com.eximbay.okr.dto.weekly;
 
 import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.listener.AbstractAuditableDto;

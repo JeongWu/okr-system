@@ -23,5 +23,11 @@ public class WeeklyPRsController {
         model.addAttribute("model", viewModel);
         return "pages/weeklypr/members";
     }
+    @GetMapping("/test")
+    public String test(Model model) {
+        WeeklyPRMemberModel viewModel = weeklyPRService.buildViewAllMembersModel();
+        model.addAttribute("model", viewModel);
+        return "pages/weeklypr/test";
+    }
 
 }
