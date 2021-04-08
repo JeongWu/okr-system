@@ -27,6 +27,9 @@ public class WeeklyActionPlan extends AbstractAuditable {
     @ManyToOne
     @JoinColumn(name = "WEEKLY_SEQ", nullable = false)
     private WeeklyPRCard weeklyPRCard;
+
+    @Column(name = "WEEKLY_SEQ", insertable = false, updatable = false, length = 11)
+    private Integer weeklySeq;
     
     @Column(name = "ACTION_PLAN", length = 1000, nullable = false)
     private String actionPlan;

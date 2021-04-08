@@ -5,6 +5,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
   let $week = $("#week-select");
   let teamSearch = $("#team-search");
   let memberSearch = $("#member-search");
+  let searchInput = $("#kt_datatable_search_query");
 
   let initSearch = function () {
     $year.val("");
@@ -12,6 +13,8 @@ let KTDatatablesDataSourceAjaxServer = (function () {
 
     teamSearch.val("");
     memberSearch.val("");
+    searchInput.val("")
+    
   };
 
   let getWeekList = function () {
@@ -38,7 +41,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
         type: "remote",
         source: {
           read: {
-            url: "/api/weekly-prs/data",
+            url: "/api/weekly-prs/last",
             // params: {
             //     query: {
             //         year: $year.val(),
@@ -62,11 +65,16 @@ let KTDatatablesDataSourceAjaxServer = (function () {
 
       pagination: false,
 
+      search: {
+        input: $("#kt_datatable_search_query"),
+        key: "generalSearch",
+      },
+
       columns: [
         {
           //   target: 0,
           title: "NAME",
-          field: "localName",
+          field: "member.localName",
           width: 80,
         },
         // {
@@ -80,42 +88,48 @@ let KTDatatablesDataSourceAjaxServer = (function () {
         {
           //   target: 2,
           title: "PERIOD",
-          field: "weeklyPRCards.beginDate",
+          field: "beginDate",
           textAlign: "center",
           width: 100,
-          // template: function (data) {
-          //   return bindStartDateAndEndDate(data.weeklyPRCards.beginDate, data.weeklyPRCards.endDate);
-          // },
+          template: function (data) {
+            if(!data.weeklyPRCard)
+            return ""
+            return bindStartDateAndEndDate(data.weeklyPRCard.beginDate, data.weeklyPRCard.endDate);
+          },
         },
         {
           //   target: 3,
           title: "END DATE",
-          field: "weeklyPRCards.weekEndDate",
+          field: "weekEndDate",
           textAlign: "center",
-        //   template: function (data) {
-        //     return formatStringDate(data.weeklyPRCards.weekEndDate);
-        //   },
+          template: function (data) {
+            if(!data.weeklyPRCard)
+            return ""
+            return formatStringDate(data.weeklyPRCard.weekEndDate);
+          },
         },
         {
           //   target: 4,
           title: "ACTION PLAN / REVIEW",
-          field: "weeklyPRCards.sumActionPlan",
+          field: "weeklyPRCard.sumActionPlan",
           textAlign: "center",
-          // template: function (data) {
-          //   return data.weeklyPRCards.sumActionPlan + " / " + data.weeklyPRCards.sumReview;
-          // },
+          template: function (data) {
+            if(!data.weeklyPRCard)
+            return ""
+            return data.weeklyPRCard.sumActionPlan + " / " + data.weeklyPRCard.sumReview;
+          },
         },
         {
           //   target: 5,
           title: "CHALLENGE",
-          field: "weeklyPRCards.challenge",
+          field: "weeklyPRCard.challenge",
           width: 250,
           textAlign: "center",
         },
         {
           //   target: 6,
           title: "REG DATE",
-          field: "weeklyPRCards.createdDate",
+          field: "weeklyPRCard.createdDate",
           textAlign: "center",
           // template: function (data) {
           //   return formatInstant(data.createdDate, "-");
@@ -124,7 +138,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
         {
           //   target: 7,
           title: "ACTIONS",
-          field: "weeklyPRCards.weeklySeq",
+          field: "weeklyPRCard.weeklySeq",
           textAlign: "center",
           template: function (data) {
             return (
@@ -160,6 +174,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
 
     //reset button
     $("#kt_reset").on("click", function (e) {
+      e.preventDefault();
       resetTable();
     });
 
@@ -177,17 +192,14 @@ let KTDatatablesDataSourceAjaxServer = (function () {
       table.search($(this).val().toLowerCase(), "member.localName");
     });
 
+    teamSearch.on("change", function () {
+      // datatable.search($(this).val().toLowerCase(), 'teamMembers.teamMemberId.team.name');
+      $("#kt_datatable_search_query").val($(this).val().toLowerCase()).keyup();
+    });
+
     $week.on("change", function () {
-      if ($year.val() && $week.val()) {
-        table.setDataSourceParam("query", {
-          week: $week.val(),
-          year: $year.val(),
-        });
-        table.reload();
-        console.log(table.getDataSourceParam("query"));
-      } else {
-        resetTable();
-      }
+      table.search($year.val().toLowerCase(), "weeklyprcard.year");
+      table.search($week.val().toLowerCase(), "weeklyPRCard.week");
     });
 
     $year.on("change", function () {

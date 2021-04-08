@@ -1,14 +1,23 @@
 package com.eximbay.okr.dto.weekly;
 
-import java.util.List;
+import com.eximbay.okr.listener.AbstractAuditableDto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class MemberswithWeeklyPRCardDto {
-    private Integer memberSeq;
-    private String name;
-    private String localName;
-    private List<WeeklyPRCardDto> weeklyPRCards;
+public class MemberswithWeeklyPRCardDto extends AbstractAuditableDto {
+    private Integer weeklySeq;
+    private Integer year;
+    private Integer week;
+    private String beginDate;
+    private String endDate;
+    private String weekEndDate;
+    // private MemberDto member;
+    private String challenge;
+
+    private Integer sumActionPlan;
+    private Integer sumReview;
 
 }

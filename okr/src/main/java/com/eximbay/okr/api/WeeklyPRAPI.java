@@ -4,11 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.dto.weekly.MemberDatatablesInput;
-import com.eximbay.okr.dto.weekly.MemberswithWeeklyPRCardDto;
 import com.eximbay.okr.dto.weekly.TestData;
-import com.eximbay.okr.dto.weekly.TestDto;
 import com.eximbay.okr.dto.weekly.WeeklyPRCardwithMembersDto;
 import com.eximbay.okr.entity.WeeklyPRCard;
 import com.eximbay.okr.model.weeklypr.YearnAndWeekModel;
@@ -51,11 +48,11 @@ public class WeeklyPRAPI {
         return weeklyPRCardDtos;
     }
 
-    @RequestMapping("/data")
-    public List<MemberswithWeeklyPRCardDto> data() {
-        List<MemberswithWeeklyPRCardDto> weeklyPRCardDtos = weeklyPRService.getDatas();
-        return weeklyPRCardDtos;
-    }
+    // @RequestMapping("/data")
+    // public List<MemberswithWeeklyPRCardDto> data() {
+    //     List<MemberswithWeeklyPRCardDto> weeklyPRCardDtos = weeklyPRService.getDatas();
+    //     return weeklyPRCardDtos;
+    // }
 
 
      

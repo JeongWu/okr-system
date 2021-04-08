@@ -12,5 +12,5 @@ public class WeeklyPRMemberModel {
     private String subheader = Subheader.WEEKLY_PRS_MEMBERS;
     private String mutedHeader;
     private List<Integer> years;
-    private List<String> memberNames;
+    private List<String> teamNames;
 }

@@ -8,7 +8,8 @@ import lombok.Data;
 public class TestData {
     private Integer memberSeq;
     private Integer weeklySeq;
-    private WeeklyPRCardDto weeklyPRCard;
+    // private WeeklyPRCardDto weeklyPRCard;
+    private MemberswithWeeklyPRCardDto weeklyPRCard;
     private MemberDto member;
 
 }
