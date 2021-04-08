@@ -1,20 +1,22 @@
 package com.eximbay.okr.service.specification;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import com.eximbay.okr.constant.AppConst;
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.entity.DivisionMember;
-import com.eximbay.okr.entity.id.DivisionMemberId_;
 import com.eximbay.okr.entity.DivisionMember_;
 import com.eximbay.okr.entity.Division_;
 import com.eximbay.okr.entity.Member_;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.eximbay.okr.entity.id.DivisionMemberId_;
+
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Service
 @Transactional

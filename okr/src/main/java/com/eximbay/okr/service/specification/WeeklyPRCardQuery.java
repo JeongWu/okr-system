@@ -2,6 +2,7 @@ package com.eximbay.okr.service.specification;
 
 import com.eximbay.okr.dto.weekly.DateInput;
 import com.eximbay.okr.dto.weekly.MemberDatatablesInput;
+import com.eximbay.okr.entity.Member_;
 import com.eximbay.okr.entity.WeeklyPRCard;
 import com.eximbay.okr.entity.WeeklyPRCard_;
 import com.eximbay.okr.utils.StringUtils;
@@ -23,6 +24,10 @@ public class WeeklyPRCardQuery {
 
     public Specification<WeeklyPRCard> findByWeek(Integer week) {
         return (root, query, cb) -> cb.equal(root.get(WeeklyPRCard_.WEEK), week);
+    }
+
+    public Specification<WeeklyPRCard> findByMemberSeq(Integer memberSeq) {
+        return (root, query, cb) -> cb.equal(root.get(WeeklyPRCard_.MEMBER).get(Member_.MEMBER_SEQ), memberSeq);
     }
 
 

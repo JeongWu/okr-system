@@ -1,7 +1,5 @@
 package com.eximbay.okr.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,14 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import com.eximbay.okr.listener.AbstractAuditable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 // @EqualsAndHashCode(callSuper = true)
 @Data
@@ -32,6 +29,8 @@ public class WeeklyPRCard extends AbstractAuditable {
     @Column(name = "YEAR", length = 11, nullable = false)
     private Integer year;
 
+    @Min(1)
+    @Max(52)    
     @Column(name = "WEEK", length = 11, nullable = false)
     private Integer week;
 
@@ -43,6 +42,9 @@ public class WeeklyPRCard extends AbstractAuditable {
     
     @Column(name = "WEEK_END_DATE", length = 8, nullable = false)
     private String weekEndDate;
+
+    @Column(name = "MEMBER_SEQ", insertable = false, updatable = false, length = 11)
+    private Integer memberSeq;
     
     @ManyToOne
     @JoinColumn(name = "MEMBER_SEQ", nullable = false)

@@ -261,7 +261,8 @@ let KTAppsProjectsListDatatable = (function () {
 
     //realtime search in the view
     $("#kt_datatable_search_name").on("change keyup paste", function () {
-      $("#searchFun").val($(this).val().toLowerCase()).keyup();
+      // console.log($(this).val());
+      datatable.search($(this).val().toLowerCase(), "localName");
     });
 
     $("#kt_datatable_search_division").on("change", function () {

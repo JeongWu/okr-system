@@ -38,7 +38,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
         type: "remote",
         source: {
           read: {
-            url: "/api/weekly-prs/test",
+            url: "/api/weekly-prs/data",
             // params: {
             //     query: {
             //         year: $year.val(),
@@ -66,7 +66,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
         {
           //   target: 0,
           title: "NAME",
-          field: "member.localName",
+          field: "localName",
           width: 80,
         },
         // {
@@ -80,51 +80,51 @@ let KTDatatablesDataSourceAjaxServer = (function () {
         {
           //   target: 2,
           title: "PERIOD",
-          field: "beginDate",
+          field: "weeklyPRCards.beginDate",
           textAlign: "center",
           width: 100,
-          template: function (data) {
-            return bindStartDateAndEndDate(data.beginDate, data.endDate);
-          },
+          // template: function (data) {
+          //   return bindStartDateAndEndDate(data.weeklyPRCards.beginDate, data.weeklyPRCards.endDate);
+          // },
         },
         {
           //   target: 3,
           title: "END DATE",
-          field: "weekEndDate",
+          field: "weeklyPRCards.weekEndDate",
           textAlign: "center",
-          template: function (data) {
-            return formatStringDate(data.weekEndDate);
-          },
+        //   template: function (data) {
+        //     return formatStringDate(data.weeklyPRCards.weekEndDate);
+        //   },
         },
         {
           //   target: 4,
           title: "ACTION PLAN / REVIEW",
-          field: "sumActionPlan",
+          field: "weeklyPRCards.sumActionPlan",
           textAlign: "center",
-          template: function (data) {
-            return data.sumActionPlan + " / " + data.sumReview;
-          },
+          // template: function (data) {
+          //   return data.weeklyPRCards.sumActionPlan + " / " + data.weeklyPRCards.sumReview;
+          // },
         },
         {
           //   target: 5,
           title: "CHALLENGE",
-          field: "challenge",
+          field: "weeklyPRCards.challenge",
           width: 250,
           textAlign: "center",
         },
         {
           //   target: 6,
           title: "REG DATE",
-          field: "createdDate",
+          field: "weeklyPRCards.createdDate",
           textAlign: "center",
-          template: function (data) {
-            return formatInstant(data.createdDate, "-");
-          },
+          // template: function (data) {
+          //   return formatInstant(data.createdDate, "-");
+          // },
         },
         {
           //   target: 7,
           title: "ACTIONS",
-          field: "weeklySeq",
+          field: "weeklyPRCards.weeklySeq",
           textAlign: "center",
           template: function (data) {
             return (

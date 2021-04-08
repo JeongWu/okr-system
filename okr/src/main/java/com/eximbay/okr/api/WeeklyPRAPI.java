@@ -4,13 +4,17 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.eximbay.okr.dto.weekly.DateInput;
+import com.eximbay.okr.dto.member.MemberDto;
 import com.eximbay.okr.dto.weekly.MemberDatatablesInput;
+import com.eximbay.okr.dto.weekly.MemberswithWeeklyPRCardDto;
+import com.eximbay.okr.dto.weekly.TestData;
+import com.eximbay.okr.dto.weekly.TestDto;
 import com.eximbay.okr.dto.weekly.WeeklyPRCardwithMembersDto;
 import com.eximbay.okr.entity.WeeklyPRCard;
 import com.eximbay.okr.model.weeklypr.YearnAndWeekModel;
 import com.eximbay.okr.repository.WeeklyActionPlanRepository;
 import com.eximbay.okr.repository.WeeklyPRCardRepository;
+import com.eximbay.okr.service.Interface.IMemberService;
 import com.eximbay.okr.service.Interface.IWeeklyActionPlanService;
 import com.eximbay.okr.service.Interface.IWeeklyPRService;
 
@@ -33,7 +37,7 @@ public class WeeklyPRAPI {
     public final WeeklyActionPlanRepository weeklyActionPlanRepository;
     public final WeeklyPRCardRepository weeklyPRCardRepository;
     public final IWeeklyActionPlanService weeklyActionPlanService;
-
+    public final IMemberService memberService;
 
     @PostMapping("/datatables")
     public DataTablesOutput<WeeklyPRCard> getAll(@Valid @RequestBody MemberDatatablesInput input) {
@@ -43,8 +47,22 @@ public class WeeklyPRAPI {
 
     @RequestMapping("/test")
     public List<WeeklyPRCardwithMembersDto> test() {
-        List<WeeklyPRCardwithMembersDto> weeklyPRCardDtos=weeklyPRService.getMembersDatatables();
+        List<WeeklyPRCardwithMembersDto> weeklyPRCardDtos = weeklyPRService.getMembersDatatables();
         return weeklyPRCardDtos;
+    }
+
+    @RequestMapping("/data")
+    public List<MemberswithWeeklyPRCardDto> data() {
+        List<MemberswithWeeklyPRCardDto> weeklyPRCardDtos = weeklyPRService.getDatas();
+        return weeklyPRCardDtos;
+    }
+
+
+     
+    @RequestMapping("/last")
+    public List<TestData> last() {
+        List<TestData> cards= weeklyPRService.testData();
+        return cards;
     }
 
     @PostMapping("/year")
@@ -52,6 +70,5 @@ public class WeeklyPRAPI {
         YearnAndWeekModel selectModels = weeklyPRService.getWeekByYear(Integer.parseInt(year));
         return selectModels;
     }
-    
-    
+
 }
