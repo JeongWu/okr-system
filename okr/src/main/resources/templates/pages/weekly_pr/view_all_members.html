@@ -29,11 +29,15 @@
                 <div class="col-lg-5 col-xl-5">
                     <div class="row align-items-center">
                         <div class="col-lg-6  mb-lg-0 mb-6">
+                            <input type="text" class="form-control datatable-input"
+                            id="kt_datatable_search_query" data-col-index="0"
+                            name="teamName" hidden>
                             <label>Team</label>
-                            
                             <select class="form-control datatable-input" 
                                     id="team-search" data-col-index="1" name="team-search">
-                                <option value="">Choose..</option>
+                                <option value="">All</option>
+                                <option th:each="i:${model.teamNames}" th:value="${i}" th:text="${i}"></option>
+                                </th:block>
                             </select>
 
                         </div>
@@ -81,7 +85,7 @@
 </body>
 
 <th:block layout:fragment="script">
-    <script th:src="@{/assets/js/pages/custom/weeklypr/test.js}"></script>
+    <script th:src="@{/assets/js/pages/weekly-pr/view-all-members.js}"></script>
 </th:block>
 
 </html>

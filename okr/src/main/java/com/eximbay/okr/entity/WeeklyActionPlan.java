@@ -22,11 +22,11 @@ public class WeeklyActionPlan extends AbstractAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "WEEKLY_PR_SEQ", length = 11)
-    private Integer weeklyPRSeq;
+    private Integer weeklyPrSeq;
 
     @ManyToOne
     @JoinColumn(name = "WEEKLY_SEQ", nullable = false)
-    private WeeklyPRCard weeklyPRCard;
+    private WeeklyPrCard weeklyPrCard;
 
     @Column(name = "WEEKLY_SEQ", insertable = false, updatable = false, length = 11)
     private Integer weeklySeq;
@@ -39,4 +39,5 @@ public class WeeklyActionPlan extends AbstractAuditable {
 
     @Column(name = "REVIEW_DT")
     protected Instant reviewDate;
+    
 }

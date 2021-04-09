@@ -7,8 +7,7 @@ import com.eximbay.okr.constant.Subheader;
 import lombok.Data;
 
 @Data
-public class WeeklyPRMemberModel {
-
+public class WeeklyPrMemberModel {
     private String subheader = Subheader.WEEKLY_PRS_MEMBERS;
     private String mutedHeader;
     private List<Integer> years;

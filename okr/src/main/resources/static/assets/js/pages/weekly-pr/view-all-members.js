@@ -1,10 +1,11 @@
 "use strict";
 
-let KTDatatablesDataSourceAjaxServer = (function () {
+let KTDatatablesDataSource= (function () {
   let $year = $("#year-select");
   let $week = $("#week-select");
   let teamSearch = $("#team-search");
   let memberSearch = $("#member-search");
+  let searchInput = $("#kt_datatable_search_query");
 
   let initSearch = function () {
     $year.val("");
@@ -12,11 +13,13 @@ let KTDatatablesDataSourceAjaxServer = (function () {
 
     teamSearch.val("");
     memberSearch.val("");
+    searchInput.val("")
+    
   };
 
   let getWeekList = function () {
     $.ajax({
-      url: "/api/weekly-prs/year",
+      url: "/api/weekly-pr/year",
       type: "POST",
       data: {
         year: $year.val(),
@@ -27,8 +30,6 @@ let KTDatatablesDataSourceAjaxServer = (function () {
           $week.append('<option value="' + d + '">' + d + "</option>");
         });
       },
-      // error(error) {
-      // },
     });
   };
 
@@ -38,13 +39,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
         type: "remote",
         source: {
           read: {
-            url: "/api/weekly-prs/test",
-            // params: {
-            //     query: {
-            //         year: $year.val(),
-            //         week: $week.val()
-            //     },
-            // },
+            url: "/api/weekly-pr/datatables",
           },
         },
         serverPaging: true,
@@ -53,80 +48,80 @@ let KTDatatablesDataSourceAjaxServer = (function () {
       },
       // layout definition
       layout: {
-        scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
-        footer: false, // display/hide footer
+        scroll: false, 
+        footer: false, 
       },
 
-      // column sorting
       sortable: false,
 
       pagination: false,
 
+      search: {
+        input: $("#kt_datatable_search_query"),
+        key: "generalSearch",
+      },
+
       columns: [
         {
-          //   target: 0,
           title: "NAME",
           field: "member.localName",
           width: 80,
         },
-        // {
-        //   //   target: 1,
-        //   title: "TEAM NAME",
-        //   field: "year",
-        //   textAlign: "center",
-        //   width: 80,
-
-        // },
         {
-          //   target: 2,
           title: "PERIOD",
           field: "beginDate",
           textAlign: "center",
           width: 100,
           template: function (data) {
-            return bindStartDateAndEndDate(data.beginDate, data.endDate);
+            if(!data.weeklyPrCard)
+            return ""
+            return bindStartDateAndEndDate(data.weeklyPrCard.beginDate, data.weeklyPrCard.endDate);
           },
         },
         {
-          //   target: 3,
           title: "END DATE",
           field: "weekEndDate",
           textAlign: "center",
           template: function (data) {
-            return formatStringDate(data.weekEndDate);
+            if(!data.weeklyPrCard)
+            return ""
+            return formatStringDate(data.weeklyPrCard.weekEndDate);
           },
         },
         {
-          //   target: 4,
           title: "ACTION PLAN / REVIEW",
-          field: "sumActionPlan",
+          field: "weeklyPrCard.sumActionPlan",
           textAlign: "center",
           template: function (data) {
-            return data.sumActionPlan + " / " + data.sumReview;
+            if(!data.weeklyPrCard)
+            return ""
+            return data.weeklyPrCard.sumActionPlan + " / " + data.weeklyPrCard.sumReview;
           },
         },
         {
-          //   target: 5,
           title: "CHALLENGE",
-          field: "challenge",
+          field: "weeklyPrCard.challenge",
           width: 250,
           textAlign: "center",
         },
         {
-          //   target: 6,
           title: "REG DATE",
-          field: "createdDate",
+          field: "weeklyPrCard.createdDate",
           textAlign: "center",
           template: function (data) {
-            return formatInstant(data.createdDate, "-");
+            if(!data.weeklyPrCard)
+            return ""
+            return formatInstant(data.weeklyPrCard.createdDate, "-");
           },
         },
         {
-          //   target: 7,
           title: "ACTIONS",
-          field: "weeklySeq",
+          field: "weeklyPrCard.weeklySeq",
           textAlign: "center",
           template: function (data) {
+            if (!data.weeklySeq) return '<button class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
+            <i class="flaticon-more-1"></i>\
+                          </button>';
             return (
               '\
 						\
@@ -160,34 +155,22 @@ let KTDatatablesDataSourceAjaxServer = (function () {
 
     //reset button
     $("#kt_reset").on("click", function (e) {
+      e.preventDefault();
       resetTable();
     });
 
-    // $("#kt_search").on("click", function (e) {
-    //   table.setDataSourceParam("query", {
-    //     week: $week.val(),
-    //     year: $year.val(),
-    //   });
-    //   table.search(memberSearch.val().toLowerCase(), "member.localName");
-    //   table.reload();
-    //   console.log(table.getDataSourceParam("query"));
-    // });
 
      memberSearch.on("change keyup paste", function () {
       table.search($(this).val().toLowerCase(), "member.localName");
     });
 
+    teamSearch.on("change", function () {
+      $("#kt_datatable_search_query").val($(this).val().toLowerCase()).keyup();
+    });
+
     $week.on("change", function () {
-      if ($year.val() && $week.val()) {
-        table.setDataSourceParam("query", {
-          week: $week.val(),
-          year: $year.val(),
-        });
-        table.reload();
-        console.log(table.getDataSourceParam("query"));
-      } else {
-        resetTable();
-      }
+      table.search($year.val().toLowerCase(), "weeklyPrCard.year");
+      table.search($week.val().toLowerCase(), "weeklyPrCard.week");
     });
 
     $year.on("change", function () {
@@ -205,7 +188,7 @@ let KTDatatablesDataSourceAjaxServer = (function () {
 })();
 
 $(document).ready(function () {
-  KTDatatablesDataSourceAjaxServer.init();
+  KTDatatablesDataSource.init();
 });
 
 function bindStartDateAndEndDate(startDate, endDate) {

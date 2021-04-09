@@ -6,25 +6,19 @@ import java.util.stream.Collectors;
 
 import com.eximbay.okr.constant.FlagOption;
 import com.eximbay.okr.dto.member.MemberDto;
-import com.eximbay.okr.dto.weekly.MemberDatatablesInput;
-import com.eximbay.okr.dto.weekly.MemberswithWeeklyPRCardDto;
-import com.eximbay.okr.dto.weekly.TestData;
-import com.eximbay.okr.dto.weekly.WeeklyPRCardDto;
-import com.eximbay.okr.dto.weekly.WeeklyPRCardwithMembersDto;
+import com.eximbay.okr.dto.weeklypr.MembersWithWeeklyPrCardDto;
+import com.eximbay.okr.dto.weeklypr.WeeklyPrCardDto;
 import com.eximbay.okr.entity.WeeklyActionPlan;
-import com.eximbay.okr.entity.WeeklyPRCard;
-import com.eximbay.okr.model.weeklypr.WeeklyPRMemberModel;
+import com.eximbay.okr.entity.WeeklyPrCard;
+import com.eximbay.okr.model.weeklypr.WeeklyPrMemberModel;
 import com.eximbay.okr.model.weeklypr.YearnAndWeekModel;
 import com.eximbay.okr.repository.MemberRepository;
 import com.eximbay.okr.repository.WeeklyActionPlanRepository;
-import com.eximbay.okr.repository.WeeklyPRCardRepository;
+import com.eximbay.okr.repository.WeeklyPrCardRepository;
 import com.eximbay.okr.service.Interface.IMemberService;
 import com.eximbay.okr.service.Interface.ITeamService;
-import com.eximbay.okr.service.Interface.IWeeklyActionPlanService;
-import com.eximbay.okr.service.Interface.IWeeklyPRService;
-import com.eximbay.okr.service.specification.WeeklyPRCardQuery;
+import com.eximbay.okr.service.Interface.IWeeklyPrService;
 
-import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,61 +28,34 @@ import ma.glasnost.orika.MapperFacade;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class WeeklyPRService implements IWeeklyPRService {
+public class WeeklyPrService implements IWeeklyPrService {
 
     private final MapperFacade mapper;
-    private final MemberRepository memberRepository;
-    private final WeeklyPRCardQuery weeklyPRCardQuery;
     public final WeeklyActionPlanRepository weeklyActionPlanRepository;
-    public final WeeklyPRCardRepository weeklyPRCardRepository;
-    public final IWeeklyActionPlanService weeklyActionPlanService;
+    public final WeeklyPrCardRepository weeklyPrCardRepository;
+    private final MemberRepository memberRepository;
     public final IMemberService memberService;
     public final ITeamService teamService;
 
     @Override
-    public WeeklyPRMemberModel buildViewAllMembersModel() {
-
-        WeeklyPRMemberModel weeklyPRsMemberModel = new WeeklyPRMemberModel();
+    public WeeklyPrMemberModel buildViewAllMembersModel() {
+        WeeklyPrMemberModel weeklyPrMemberModel = new WeeklyPrMemberModel();
         String totalNum = Long.toString(memberRepository.countByUseFlag(FlagOption.Y));
-        weeklyPRsMemberModel.setMutedHeader(totalNum + " Total");
+        weeklyPrMemberModel.setMutedHeader(totalNum + " Total");
 
-        List<WeeklyPRCardDto> weeklyPRCards = mapper.mapAsList(weeklyPRCardRepository.findAll(), WeeklyPRCardDto.class);
+        List<WeeklyPrCardDto> weeklyPRCards = mapper.mapAsList(weeklyPrCardRepository.findAll(), WeeklyPrCardDto.class);
         List<Integer> years = weeklyPRCards.stream().map(w -> w.getYear()).distinct().collect(Collectors.toList());
-        List<String> teamNames = teamService.findAllInUse().stream().map(t->t.getLocalName()).collect(Collectors.toList());
-        weeklyPRsMemberModel.setYears(years);
-        weeklyPRsMemberModel.setTeamNames(teamNames);
-        return weeklyPRsMemberModel;
-    }
-
-    @Override
-    public DataTablesOutput<WeeklyPRCard> getDataForDatatables(MemberDatatablesInput input) {
-
-        // List<WeeklyPRCard> weeklyPRCards=weeklyPRCardRepository.findAll();
-        // List<WeeklyPRCardwithMembersDto>
-        // weeklyPRCardDtos=mapper.mapAsList(weeklyPRCards,
-        // WeeklyPRCardwithMembersDto.class);
-        // for(int i=0;i<weeklyPRCardDtos.size();i++){
-        // Integer weeklySeq=weeklyPRCardDtos.get(i).getWeeklySeq();
-        // List<WeeklyActionPlan>
-        // weeklyActionPlans=weeklyActionPlanRepository.findByWeeklySeq(weeklySeq);
-        // Integer
-        // sumReview=weeklyActionPlans.stream().map(w->w.getReview()).mapToInt(Integer::valueOf).sum();
-        // Integer
-        // sumActionPlan=weeklyActionPlans.stream().map(w->w.getActionPlan()).mapToInt(Integer::valueOf).sum();
-
-        // weeklyPRCardDtos.get(i).setSumReview(sumReview);
-        // weeklyPRCardDtos.get(i).setSumActionPlan(sumActionPlan);
-        // }
-        DataTablesOutput<WeeklyPRCard> output = weeklyPRCardRepository.findAll(input,
-                weeklyPRCardQuery.buildQueryForDatatables(input));
-        return output;
-        // return null;
+        List<String> teamNames = teamService.findAllInUse().stream().map(t -> t.getLocalName())
+                .collect(Collectors.toList());
+        weeklyPrMemberModel.setYears(years);
+        weeklyPrMemberModel.setTeamNames(teamNames);
+        return weeklyPrMemberModel;
     }
 
     @Override
     public YearnAndWeekModel getWeekByYear(Integer year) {
         YearnAndWeekModel yearnAndWeekModel = new YearnAndWeekModel();
-        List<WeeklyPRCard> weeklyPRCards = weeklyPRCardRepository.findByYear(year);
+        List<WeeklyPrCard> weeklyPRCards = weeklyPrCardRepository.findByYear(year);
         List<Integer> weeks = weeklyPRCards.stream().map(w -> w.getWeek()).distinct().collect(Collectors.toList());
         yearnAndWeekModel.setYear(year);
         yearnAndWeekModel.setWeeks(weeks);
@@ -96,73 +63,54 @@ public class WeeklyPRService implements IWeeklyPRService {
     }
 
     @Override
-    public List<WeeklyPRCardwithMembersDto> getMembersDatatables() {
-        List<WeeklyPRCard> weeklyPRCards = weeklyPRCardRepository.findAll();
-        List<WeeklyPRCardwithMembersDto> weeklyPRCardDtos = mapper.mapAsList(weeklyPRCards,
-                WeeklyPRCardwithMembersDto.class);
-        List<WeeklyActionPlan> weeklyActionPlans = weeklyActionPlanRepository.findAll();
-        for (int i = 0; i < weeklyPRCardDtos.size(); i++) {
-            Integer weeklySeq = weeklyPRCardDtos.get(i).getWeeklySeq();
-            List<WeeklyActionPlan> plans = weeklyActionPlans.stream()
-                    .filter(m -> m.getWeeklyPRCard().getWeeklySeq().equals(weeklySeq)).collect(Collectors.toList());
-            Integer sumReview = plans.stream().map(w -> w.getReview()).mapToInt(Integer::valueOf).sum();
-            Integer sumActionPlan = plans.stream().map(w -> w.getActionPlan()).mapToInt(Integer::valueOf).sum();
+    public List<MembersWithWeeklyPrCardDto> getDataForDatatables() {
 
-            weeklyPRCardDtos.get(i).setSumReview(sumReview);
-            weeklyPRCardDtos.get(i).setSumActionPlan(sumActionPlan);
-        }
-        return weeklyPRCardDtos;
-    }
-
-    @Override
-    public List<TestData> testData() {
         List<MemberDto> members = memberService.findActiveMembers();
-        
-        List<TestData> tests = new ArrayList<>();
 
-        for (int p = 0; p < members.size(); p++) {
-            Integer memberSeq = members.get(p).getMemberSeq();
-            // MemberDto member=members.get(p);
-            List<WeeklyPRCard> cards = weeklyPRCardRepository.findByMemberSeq(memberSeq);
-            TestData testData = new TestData();
-      
-            if (cards.size() != 0) {
-                for (int j = 0; j < cards.size(); j++) {
-                    testData = new TestData();
-                    testData.setMember(mapper.map(members.get(p), MemberDto.class));
-                    testData.setMemberSeq(memberSeq);
-                    Integer weeklySeq = cards.get(j).getWeeklySeq();
-                    testData.setWeeklySeq(weeklySeq);
-                    WeeklyPRCard weeklyPRCard = weeklyPRCardRepository.findByWeeklySeq(weeklySeq);
+        List<MembersWithWeeklyPrCardDto> membersWithWeeklyPrCardDtos = new ArrayList<>();
 
-                    testData.setWeeklyPRCard(buildWeeklyPRCardModel(weeklyPRCard));
+        for (int i = 0; i < members.size(); i++) {
+            Integer memberSeq = members.get(i).getMemberSeq();
+            List<WeeklyPrCard> weeklyPrcards = weeklyPrCardRepository.findByMemberSeq(memberSeq);
+            MembersWithWeeklyPrCardDto membersWithWeeklyPrCardDto = new MembersWithWeeklyPrCardDto();
 
-                    tests.add(testData);
+            if (weeklyPrcards.size() != 0) {
+                for (int j = 0; j < weeklyPrcards.size(); j++) {
+                    membersWithWeeklyPrCardDto = new MembersWithWeeklyPrCardDto();
+                    membersWithWeeklyPrCardDto.setMember(mapper.map(members.get(i), MemberDto.class));
+                    membersWithWeeklyPrCardDto.setMemberSeq(memberSeq);
+                    Integer weeklySeq = weeklyPrcards.get(j).getWeeklySeq();
+                    membersWithWeeklyPrCardDto.setWeeklySeq(weeklySeq);
+                    WeeklyPrCard weeklyPrCard = weeklyPrCardRepository.findByWeeklySeq(weeklySeq);
+
+                    membersWithWeeklyPrCardDto.setWeeklyPrCard(sumReviewAndActionPlan(weeklyPrCard));
+
+                    membersWithWeeklyPrCardDtos.add(membersWithWeeklyPrCardDto);
                 }
             } else {
-                testData.setMember(mapper.map(members.get(p), MemberDto.class));
-                testData.setMemberSeq(memberSeq);
-                tests.add(testData);
+                membersWithWeeklyPrCardDto.setMember(mapper.map(members.get(i), MemberDto.class));
+                membersWithWeeklyPrCardDto.setMemberSeq(memberSeq);
+                membersWithWeeklyPrCardDtos.add(membersWithWeeklyPrCardDto);
 
             }
 
         }
 
-        return tests;
+        return membersWithWeeklyPrCardDtos;
     }
 
     @Override
-    public MemberswithWeeklyPRCardDto buildWeeklyPRCardModel(WeeklyPRCard weeklyPRCard) {
-        MemberswithWeeklyPRCardDto dto=mapper.map(weeklyPRCard,MemberswithWeeklyPRCardDto.class);
+    public WeeklyPrCardDto sumReviewAndActionPlan(WeeklyPrCard weeklyPrCard) {
+        WeeklyPrCardDto weeklyPrCardDto=mapper.map(weeklyPrCard,WeeklyPrCardDto.class);
 
-        List<WeeklyActionPlan> weeklyActionPlans=weeklyActionPlanRepository.findByWeeklySeq(dto.getWeeklySeq());
+        List<WeeklyActionPlan> weeklyActionPlans=weeklyActionPlanRepository.findByWeeklySeq(weeklyPrCardDto.getWeeklySeq());
         Integer sumReview = weeklyActionPlans.stream().map(w -> w.getReview()).mapToInt(Integer::valueOf).sum();
         Integer sumActionPlan = weeklyActionPlans.stream().map(w -> w.getActionPlan()).mapToInt(Integer::valueOf).sum();
 
-        dto.setSumReview(sumReview);
-        dto.setSumActionPlan(sumActionPlan);
+        weeklyPrCardDto.setSumReview(sumReview);
+        weeklyPrCardDto.setSumActionPlan(sumActionPlan);
 
-        return dto;
+        return weeklyPrCardDto;
     }
 
 }

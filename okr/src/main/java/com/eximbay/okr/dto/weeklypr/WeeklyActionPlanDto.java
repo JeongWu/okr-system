@@ -1,8 +1,8 @@
-package com.eximbay.okr.dto.weekly;
+package com.eximbay.okr.dto.weeklypr;
 
 import java.time.Instant;
 
-import com.eximbay.okr.entity.WeeklyPRCard;
+import com.eximbay.okr.entity.WeeklyPrCard;
 import com.eximbay.okr.listener.AbstractAuditableDto;
 
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class WeeklyActionPlanDto extends AbstractAuditableDto {
     private Integer weeklyPRSeq;
-    private WeeklyPRCard weeklyPRCard;
+    private WeeklyPrCard weeklyPrCard;
     private String review;
     protected Instant reviewDate;
 }
