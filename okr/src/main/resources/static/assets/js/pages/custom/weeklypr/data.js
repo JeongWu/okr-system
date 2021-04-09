@@ -131,9 +131,11 @@ let KTDatatablesDataSourceAjaxServer = (function () {
           title: "REG DATE",
           field: "weeklyPRCard.createdDate",
           textAlign: "center",
-          // template: function (data) {
-          //   return formatInstant(data.createdDate, "-");
-          // },
+          template: function (data) {
+            if(!data.weeklyPRCard)
+            return ""
+            return formatInstant(data.weeklyPRCard.createdDate, "-");
+          },
         },
         {
           //   target: 7,
@@ -141,6 +143,9 @@ let KTDatatablesDataSourceAjaxServer = (function () {
           field: "weeklyPRCard.weeklySeq",
           textAlign: "center",
           template: function (data) {
+            if (!data.weeklySeq) return '<button class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">\
+            <i class="flaticon-more-1"></i>\
+                          </button>';
             return (
               '\
 						\
